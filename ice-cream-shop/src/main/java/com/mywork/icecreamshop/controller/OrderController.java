@@ -14,8 +14,10 @@ public class OrderController {
 
     @Autowired
     public OrderController(IceCreamService iceCreamService){
+
         this.iceCreamService = iceCreamService;
-        System.out.println("OrderController constructor");
+
+        System.out.println("OrderController constructor with arguments");
     }
     @RequestMapping("/order")
     public  String onOrder(OrderDTO orderDTO, Model model){
