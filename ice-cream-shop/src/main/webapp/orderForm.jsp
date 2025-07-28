@@ -11,6 +11,7 @@
         <option>BlackCurrent</option>
         <option>Pineapple</option>
     </select><br>
+
     Quantity: <input type="number" name="quantity"><br>
     Take Away: <input type="checkbox" name="takeAway" ><br>
     Add Ons: <input type="checkbox" name="addOns" ><br>
