@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
+
 public class OrderDTO {
     private String name;
     private String flavour;
