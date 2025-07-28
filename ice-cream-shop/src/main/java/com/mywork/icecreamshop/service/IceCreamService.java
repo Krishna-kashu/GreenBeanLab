@@ -23,6 +23,7 @@ public class IceCreamService {
     private static final List<String> validCoupons = Arrays.asList("456ICED", "ABC98H", "ARTY0392H", "FREE093");
 
     public double totalPrice(OrderDTO orderDTO){
+
         double total = flavourPrice.get(orderDTO.getFlavour()) * orderDTO.getQuantity();
 
         if(orderDTO.isAddOns()){
