@@ -13,11 +13,13 @@ public class IceCreamInitializer extends AbstractAnnotationConfigDispatcherServl
     @Override
     protected String[] getServletMappings() {
         return new String[] {"/"};
+
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class[] {IceCreamConfiguration.class};
+
     }
 
     @Override
