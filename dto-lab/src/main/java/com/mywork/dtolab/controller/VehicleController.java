@@ -15,15 +15,11 @@ public class VehicleController {
     }
 
     @RequestMapping("/submitVehicle")
-    public String onSubmit(VehicleDTO vehicleDTO,
-            Model model) {
+    public String onSubmit(VehicleDTO vehicleDTO,Model model) {
 
         System.out.println("onSubmit VehicleController");
-
         model.addAttribute("vehicleDTO", vehicleDTO);
-
         System.out.println("Vehicle Details: " + vehicleDTO);
-
         return "result.jsp";
     }
 }
