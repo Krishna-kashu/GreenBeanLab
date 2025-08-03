@@ -29,7 +29,7 @@ public class OrderController {
     }
 
     @RequestMapping("/order")
-    public  String onOrder(@Validated OrderDTO orderDTO, Model model, BindingResult bindingResult) throws IOException {
+    public  String onOrder(Model model, @Valid OrderDTO orderDTO, BindingResult bindingResult) throws IOException {
         System.out.println("onOrder method");
         System.out.println("dto: " + orderDTO);
 
@@ -46,7 +46,7 @@ public class OrderController {
             System.out.println("Invalid Details");
             model.addAttribute("dto", orderDTO);
             model.addAttribute("message", "Invalid details");
-            return "Order";
+            return "orderForm";
         }
 
         if (iceCreamService.validate(orderDTO)) {
