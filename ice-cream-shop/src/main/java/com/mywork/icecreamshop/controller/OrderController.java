@@ -2,15 +2,19 @@ package com.mywork.icecreamshop.controller;
 
 import com.mywork.icecreamshop.dto.OrderDTO;
 import com.mywork.icecreamshop.service.IceCreamServiceImpl;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,6 +43,9 @@ public class OrderController {
         Path path = Paths.get("D:\\MyFilesJava\\" + orderDTO.getName() + System.currentTimeMillis());
         Files.write(path, bytes);
 
+        String fileName = path.getFileName().toString();
+        orderDTO.setName(fileName);
+
         if (bindingResult.hasErrors()) {
 
             bindingResult.getFieldErrors().forEach(error -> System.out.println(error.getField() + " : " + error.getDefaultMessage()));
@@ -53,6 +60,7 @@ public class OrderController {
             model.addAttribute("name", orderDTO.getName());
             double price = iceCreamService.totalPrice(orderDTO);
             model.addAttribute("price", price);
+            model.addAttribute("file",fileName);
             return "success";
         } else {
             System.out.println("Invalid Details");
@@ -60,5 +68,15 @@ public class OrderController {
             model.addAttribute("message", "Invalid details");
             return "Order";
         }
+
+    }
+    @GetMapping("download")
+    public void download(HttpServletResponse response, @RequestParam("profile") String name) throws IOException {
+        response.setContentType("image/jpg");
+        File file = new File("D:\\MyFilesJava\\"+name);
+        InputStream in = new BufferedInputStream(new FileInputStream(file));
+        ServletOutputStream out = response.getOutputStream();
+        IOUtils.copy(in, out);
+        response.flushBuffer();
     }
 }

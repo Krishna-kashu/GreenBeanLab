@@ -18,15 +18,7 @@ public class IceCreamConfiguration implements WebMvcConfigurer {
         System.out.println("no-arg Constructor of IceCreamConfiguration");
     }
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        Sy @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        System.out.println("addResourceHandlers method");
-//        registry.addResourceHandler("/images/**").addResourceLocations("/images/");
-//
-//        registry.addResourceHandler("/js/**").addResourceLocations("/js/");
-//    }
+
 @Bean
 public InternalResourceViewResolver internalResourceViewResolver()
 {
