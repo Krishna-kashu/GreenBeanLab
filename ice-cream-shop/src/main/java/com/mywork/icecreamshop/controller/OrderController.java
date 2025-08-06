@@ -68,7 +68,6 @@ public class OrderController {
             model.addAttribute("message", "Invalid details");
             return "Order";
         }
-
     }
     @GetMapping("download")
     public void download(HttpServletResponse response, @RequestParam("profile") String name) throws IOException {
