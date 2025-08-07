@@ -1,6 +1,7 @@
 package com.mywork.icecreamshop.controller;
 
 import com.mywork.icecreamshop.dto.OrderDTO;
+import com.mywork.icecreamshop.service.EmailSenderImpl;
 import com.mywork.icecreamshop.service.IceCreamServiceImpl;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +21,30 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Controller
+//@RequestMapping("/")
 public class OrderController {
 
     @Autowired
     private final IceCreamServiceImpl iceCreamService;
+    @Autowired
+    private  EmailSenderImpl emailSender;
 
     public OrderController(IceCreamServiceImpl iceCreamService){
-
         this.iceCreamService = iceCreamService;
-
         System.out.println("OrderController constructor with arguments");
     }
 
-    @RequestMapping("/order")
+//    @GetMapping("sendEmail")
+//    public String mailSender(){
+//        emailSender.mailSend("sonalacharya911@gmail.com","1115");
+//        return null;
+//    }
+
+    @RequestMapping("order")
     public  String onOrder(Model model, @Valid OrderDTO orderDTO, BindingResult bindingResult) throws IOException {
         System.out.println("onOrder method");
         System.out.println("dto: " + orderDTO);
+        emailSender.mailSend("krishnavenin8192@gmail.com","5555");
 
         String filename = orderDTO.getMultipartFile().getOriginalFilename();
 
@@ -78,4 +87,9 @@ public class OrderController {
         IOUtils.copy(in, out);
         response.flushBuffer();
     }
+
+//    @RequestMapping("send")
+//    public void sendMail(){
+//        System.out.println("sendMail method");
+//    }
 }
