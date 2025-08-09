@@ -1,5 +1,6 @@
 package com.mywork.icecreamshop.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -8,6 +9,7 @@ import java.util.Properties;
 @Configuration
 public class EmailConfiguration {
 
+    @Bean
     public JavaMailSenderImpl emailSender() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 
@@ -15,6 +17,7 @@ public class EmailConfiguration {
         javaMailSender.setPort(587);
         javaMailSender.setUsername("krishnavenin8192@gmail.com");
         javaMailSender.setPassword("abtn qmhl milt qnpc");
+
         Properties properties = javaMailSender.getJavaMailProperties();
         properties.put("mail.transport.protocol", "smtp");
         properties.put("mail.smtp.auth", "true");
