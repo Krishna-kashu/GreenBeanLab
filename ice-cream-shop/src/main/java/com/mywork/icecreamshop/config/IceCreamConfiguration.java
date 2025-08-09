@@ -18,7 +18,6 @@ public class IceCreamConfiguration implements WebMvcConfigurer {
         System.out.println("no-arg Constructor of IceCreamConfiguration");
     }
 
-
 @Bean
 public InternalResourceViewResolver internalResourceViewResolver()
 {
