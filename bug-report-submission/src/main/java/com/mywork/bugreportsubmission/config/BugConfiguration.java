@@ -1,0 +1,25 @@
+package com.mywork.bugreportsubmission.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+@Configuration
+@ComponentScan(basePackages = "com.mywork.bugreportsubmission")
+
+public class BugConfiguration {
+
+    public BugConfiguration(){
+        System.out.println("BugConfiguration no-arg constructor");
+    }
+
+    @Bean
+    public InternalResourceViewResolver viewResolver(){
+        InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
+        internalResourceViewResolver.setPrefix("/");
+        internalResourceViewResolver.setSuffix(".jsp");
+
+        return internalResourceViewResolver;
+    }
+}
