@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class NewsLetterDTO {
 
+    private  Integer id;
+
     private String firstName;
 
     private String lastName;
@@ -13,7 +15,7 @@ public class NewsLetterDTO {
 
     private Integer age;
 
-    private String Gender;
+    private String gender;
 
     private String topic;
 }

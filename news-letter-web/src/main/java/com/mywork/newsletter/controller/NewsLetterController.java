@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/")
 public class NewsLetterController {
@@ -43,5 +45,11 @@ public class NewsLetterController {
         }
         return "success";
     }
-
+    @GetMapping("getAll")
+    public String getAll(Model model){
+        System.out.println("get all method in NewsLetterController");
+        List<NewsLetterDTO> newsLetterDTOList = service.getAll();
+        model.addAttribute("allDto", newsLetterDTOList);
+        return "allSubscription";
+    }
 }
