@@ -7,4 +7,5 @@ import java.util.List;
 public interface NewsLetterService {
     boolean valid(NewsLetterDTO dto);
     List<NewsLetterDTO > getAll();
+    NewsLetterDTO getById(int id);
 }

@@ -57,4 +57,22 @@ public class NewsLetterRepoImpl implements  NewsLetterRepo{
 
         return letterEntities;
     }
+
+    @Override
+    public NewsLetterEntity findById(int id) {
+
+        EntityManager manager = emf.createEntityManager();
+        try {
+            return manager.find(NewsLetterEntity.class, id);
+        }catch (PersistenceException e){
+            System.out.println("error from repo in findById"+e.getMessage());
+        }finally {
+            if(manager!= null) manager.close();
+        }
+        return null;
+    }
+
+    public static void emfClose(){
+        if(emf.isOpen()) emf.close();
+    }
 }
