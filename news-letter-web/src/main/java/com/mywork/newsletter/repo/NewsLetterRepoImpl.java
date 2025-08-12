@@ -1,9 +1,12 @@
 package com.mywork.newsletter.repo;
 
+import com.mywork.newsletter.dto.NewsLetterDTO;
 import com.mywork.newsletter.entity.NewsLetterEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.List;
 
 @Repository
 public class NewsLetterRepoImpl implements  NewsLetterRepo{
@@ -34,5 +37,24 @@ public class NewsLetterRepoImpl implements  NewsLetterRepo{
             }
         }
         return true;
+    }
+
+    @Override
+    public List<NewsLetterEntity> fetchAll() {
+        List<NewsLetterEntity> letterEntities= Collections.emptyList();
+        EntityManager manager = null;
+        try{
+            manager = emf.createEntityManager();
+            Query query = manager.createNamedQuery("findAll");
+
+            letterEntities  = query.getResultList();
+
+        }catch (PersistenceException e){
+            System.out.println("error in findAll "+e.getMessage());
+        }finally {
+            if( manager!=null) manager.close();
+        }
+
+        return letterEntities;
     }
 }
