@@ -54,7 +54,24 @@ public class BugRepoImpl implements BugRepo{
         }finally {
            if( manager!=null) manager.close();
         }
-
         return list;
+    }
+
+    @Override
+    public BugEntity findById(int id) {
+
+        EntityManager manager = emf.createEntityManager();
+        try {
+            return manager.find(BugEntity.class, id);
+        }catch (PersistenceException e){
+            System.out.println("error in findById"+e.getMessage());
+        }finally {
+            if(manager!= null) manager.close();
+        }
+        return null;
+    }
+
+    public static void emfClose(){
+        if(emf.isOpen()) emf.close();
     }
 }
