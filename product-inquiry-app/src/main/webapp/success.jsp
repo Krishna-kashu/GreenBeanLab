@@ -11,6 +11,6 @@
 <h2>Dear, <strong>${name} </strong>
      Your inquiry has been sent successfully!</h2>
 <p>We will get back to you shortly.</p>
-<a href="index.jsp">Back to Home</a>
+<a href="index">Back to Home</a>
 </body>
 </html>

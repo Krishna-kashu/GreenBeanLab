@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class BugDTO {
 
-    private  String id;
+    private  Integer id;
 
     private String reporterName;
 

@@ -1,7 +1,6 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ page isELIgnored = "false" %>
 
-<!DOCTYPE html>
 <html>
 <head>
     <title> Product Inquiry details</title>
@@ -32,7 +31,7 @@
     </tr>
     </c:forEach>
 </table>
-<a href="index.jsp">Back to Home</a>
+<a href="index">Back to Home</a>
 </body>
 
 </html>

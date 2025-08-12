@@ -22,6 +22,12 @@ public class ProductController {
         System.out.println("\nno arg constructor of ProductController ");
     }
 
+    @GetMapping("index")
+    public  String redirectToIndex(){
+        System.out.println("redirect to index page");
+        return "index";
+    }
+
     @GetMapping("inquiryForm")
     public String redirectToForm(){
         System.out.println("\nredirecting to inquiryForm ");
@@ -42,7 +48,11 @@ public class ProductController {
             System.out.println("invalid dto");
             return "index";
         }
-        return "success";
+        List<ProductDTO> productDTOS = service.getAll();
+        model.addAttribute("products", productDTOS);
+
+        return "allProduct";
+//        return "success";
     }
 
     @GetMapping("get")
