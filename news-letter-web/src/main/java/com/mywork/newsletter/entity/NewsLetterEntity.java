@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Data
 @RequiredArgsConstructor
 @Table(name = "news_letter_subscription_table")
+@NamedQuery(name = "findAll", query = "select n from NewsLetterEntity n")
 public class NewsLetterEntity {
 
     @Id
