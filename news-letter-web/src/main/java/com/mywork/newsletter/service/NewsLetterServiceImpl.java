@@ -6,7 +6,6 @@ import com.mywork.newsletter.repo.NewsLetterRepoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,5 +64,22 @@ public class NewsLetterServiceImpl implements NewsLetterService{
 
         newsLetterEntities.forEach(System.out::println);
         return newsLetterDTOList;
+    }
+
+    @Override
+    public NewsLetterDTO getById(int id) {
+
+        NewsLetterDTO dto = new NewsLetterDTO();
+        NewsLetterEntity entity = newsLetterRepo.findById(id);
+
+        dto.setId(entity.getId());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setAge(entity.getAge());
+        dto.setGender(entity.getGender());
+        dto.setEmail(entity.getEmail());
+        dto.setTopic(entity.getTopic());
+
+        return dto;
     }
 }
