@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -19,6 +20,12 @@ public class NewsLetterController {
     private NewsLetterServiceImpl service;
     public  NewsLetterController(){
         System.out.println("no-arg constructor of newsLetterController");
+    }
+
+    @GetMapping("index")
+    public  String redirectToIndex(){
+        System.out.println("redirect to index page");
+        return "index";
     }
 
     @GetMapping("redirect")
@@ -43,7 +50,9 @@ public class NewsLetterController {
             System.out.println("invalid dto");
             return "index";
         }
-        return "success";
+        List<NewsLetterDTO> newsLetterDTOList = service.getAll();
+        model.addAttribute("allDto", newsLetterDTOList);
+        return "allSubscription";
     }
     @GetMapping("getAll")
     public String getAll(Model model){
@@ -51,5 +60,15 @@ public class NewsLetterController {
         List<NewsLetterDTO> newsLetterDTOList = service.getAll();
         model.addAttribute("allDto", newsLetterDTOList);
         return "allSubscription";
+    }
+
+    @GetMapping("getById")
+    public String getById(@RequestParam("newsId") Integer newsId, Model model){
+        System.out.println("getById method is invoking ");
+        NewsLetterDTO newsLetterDTO = service.getById(newsId);
+        System.out.println("id is "+newsId);
+        model.addAttribute("dto", newsLetterDTO);
+
+        return "idPage";
     }
 }

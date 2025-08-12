@@ -8,4 +8,5 @@ import java.util.List;
 public interface NewsLetterRepo {
     boolean save(NewsLetterEntity entity);
     List<NewsLetterEntity> fetchAll();
+    NewsLetterEntity findById(int id);
 }
