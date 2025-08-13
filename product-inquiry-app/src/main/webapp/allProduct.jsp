@@ -4,6 +4,36 @@
 <html>
 <head>
     <title> Product Inquiry details</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 <h2>All the product inquiry details</h2>
@@ -28,6 +58,7 @@
         <td>${product.productName}</td>
         <td>${product.inquiryType}</td>
         <td>${product.message}</td>
+        <td><a href="getById?productId=${product.id}"> View </a></td>
     </tr>
     </c:forEach>
 </table>
