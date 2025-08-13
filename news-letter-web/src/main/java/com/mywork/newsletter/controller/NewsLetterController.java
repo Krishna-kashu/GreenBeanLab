@@ -34,7 +34,7 @@ public class NewsLetterController {
         return "form";
     }
 
-    @PostMapping("send")
+    @PostMapping("submitNewsletter")
     public String send(NewsLetterDTO dto, Model model){
         System.out.println("send method is running...");
 
@@ -59,16 +59,19 @@ public class NewsLetterController {
         System.out.println("get all method in NewsLetterController");
         List<NewsLetterDTO> newsLetterDTOList = service.getAll();
         model.addAttribute("allDto", newsLetterDTOList);
+
         return "allSubscription";
     }
 
     @GetMapping("getById")
-    public String getById(@RequestParam("newsId") Integer newsId, Model model){
-        System.out.println("getById method is invoking ");
-        NewsLetterDTO newsLetterDTO = service.getById(newsId);
-        System.out.println("id is "+newsId);
-        model.addAttribute("dto", newsLetterDTO);
+    public  String getById(@RequestParam("newsId") Integer newsId, Model model){
 
-        return "idPage";
+        System.out.println("getById method is invoked..");
+        NewsLetterDTO newsLetterDTO = service.getById(newsId);
+
+        model.addAttribute("dto", newsLetterDTO);
+        System.out.println("id is "+ newsId);
+
+        return "byId";
     }
 }
