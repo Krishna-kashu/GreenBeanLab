@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class ProductController {
         model.addAttribute("products", productDTOS);
 
         return "allProduct";
-//        return "success";
+        //return "success";
     }
 
     @GetMapping("get")
@@ -65,4 +66,15 @@ public class ProductController {
         return "allProduct";
     }
 
+    @GetMapping("getById")
+    public  String getById(@RequestParam("productId") Integer productId, Model model){
+
+        System.out.println("getById method is invoked..");
+        ProductDTO productDTO = service.getById(productId);
+
+        model.addAttribute("dto", productDTO);
+        System.out.println("id is "+ productId);
+
+        return "idPage";
+    }
 }
