@@ -55,4 +55,21 @@ public class ProductRepoImpl implements ProductRepo{
         }
         return list;
     }
+    @Override
+    public ProductEntity findByID(int id) {
+        EntityManager manager = emf.createEntityManager();
+        try {
+            return manager.find(ProductEntity.class, id);
+        }catch (PersistenceException e){
+            System.out.println("error in findById"+e.getMessage());
+        }finally {
+            if(manager!= null) manager.close();
+        }
+        return null;
+    }
+
+
+    public static void emfClose(){
+        if(emf.isOpen()) emf.close();
+    }
 }

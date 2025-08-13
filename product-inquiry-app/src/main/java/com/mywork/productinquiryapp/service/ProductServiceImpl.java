@@ -6,7 +6,6 @@ import com.mywork.productinquiryapp.repo.ProductRepoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,5 +63,21 @@ public class ProductServiceImpl implements ProductService{
 
         productEntities.forEach(System.out::println);
         return productDTOList;
+    }
+
+    @Override
+    public ProductDTO getById(int id) {
+
+        ProductDTO dto = new ProductDTO();
+        ProductEntity entity = repo.findByID(id);
+        dto.setId(entity.getId());
+        dto.setFullName(entity.getFullName());
+        dto.setEmail(entity.getEmail());
+        dto.setPhone(entity.getPhone());
+        dto.setProductName(entity.getProductName());
+        dto.setInquiryType(entity.getInquiryType());
+        dto.setMessage(entity.getMessage());
+
+        return dto;
     }
 }
