@@ -5,10 +5,7 @@ import com.mywork.bugreportsubmission.service.BugServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -71,4 +68,42 @@ public class BugController {
 
         return "byId";
     }
+
+    @GetMapping("update")
+    public String edit(@RequestParam("id") Integer id, Model model){
+
+        System.out.println("updateAll method in controller");
+        System.out.println("id: "+id);
+        BugDTO dto = service.getById(id);
+        System.out.println("dto in update controller: "+dto);
+        model.addAttribute("msg", "updated");
+        model.addAttribute("dto", dto);
+
+        return "editBugEntity";
+    }
+
+    @PostMapping("editBug")
+    public String bugEdit( BugDTO dto, Model model){
+        System.out.println("bugEdit method in controller");
+
+        String isUpdated = service.updateBugDTO(dto);
+        System.out.println("updated: "+isUpdated);
+
+        List<BugDTO> bugList = service.getAll();
+        model.addAttribute("bugs", bugList);
+        return "listOfBug";
+    }
+
+    @GetMapping("delete/{id}")
+    public String delete(@PathVariable("id") Integer id, Model model){
+
+        System.out.println("delete method in controller");
+
+        model.addAttribute("msg", "delete");
+        List<BugDTO> bugList = service.getAll();
+        model.addAttribute("bugs", bugList);
+
+        return "redirect:/getAll";
+    }
+
 }
