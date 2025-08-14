@@ -8,6 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -17,6 +20,11 @@ public class ShopController {
     private ShopServiceImpl service;
     public  ShopController(){
         System.out.println("no-arg constructor of ShopController");
+    }
+    @GetMapping("index")
+    public  String redirectToIndex(){
+        System.out.println("redirect to index page");
+        return "index";
     }
 
     @GetMapping("redirectToForm")
@@ -43,8 +51,29 @@ public class ShopController {
             System.out.println("invalid dto");
             return "index";
         }
-
-        return "shopForm";
+        List<ShopDTO> shopDTOS = service.getAll();
+        model.addAttribute("shops", shopDTOS);
+        return "allShops";
+        //return "shopForm";
     }
 
+    @GetMapping("fetchAll")
+    public String getAll(Model model){
+        System.out.println("get all method");
+        List<ShopDTO> shopDTOS = service.getAll();
+        model.addAttribute("shops", shopDTOS);
+        return "allShops";
+    }
+
+    @GetMapping("fetchId")
+    public  String getById(@RequestParam("shopId") Integer shopId, Model model){
+
+        System.out.println("getById method is invoked..");
+        ShopDTO shopDTO = service.getById(shopId);
+
+        model.addAttribute("dto", shopDTO);
+        System.out.println("id is "+ shopId);
+
+        return "getById";
+    }
 }

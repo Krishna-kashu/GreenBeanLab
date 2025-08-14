@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class ShopDTO {
 
+    private Integer shopId;
+
     private String shopName;
 
     private String shopOwner;
