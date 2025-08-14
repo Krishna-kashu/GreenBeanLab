@@ -8,4 +8,6 @@ public interface BugRepo {
     boolean save(BugEntity entity);
     List<BugEntity> findAll();
     BugEntity findById(int id);
+    boolean updateBugEntity(BugEntity entity);
+    boolean deleteById(int id);
 }
