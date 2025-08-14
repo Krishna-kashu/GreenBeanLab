@@ -1,60 +1,69 @@
-<%@ page isELIgnored="false" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Shop Form</title>
-
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+          font-family: Arial, sans-serif;
+          background-color: #f8f9fa;
+          margin: 30px;
+          color: #333;
         }
-        h2 {
-            color: #333;
+
+        h1, h2 {
+          color: #2c3e50;
         }
+
         form {
-            margin-top: 15px;
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 6px;
-            max-width: 400px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+          background: #fff;
+          padding: 20px 30px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          max-width: 400px;
         }
+
         label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-            color: #555;
+          font-weight: bold;
+          display: block;
+          margin-bottom: 6px;
         }
+
         input[type="text"],
+        input[type="email"],
         input[type="number"],
-        input[type="email"] {
-            width: 100%;
-            padding: 6px;
-            margin-top: 4px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        select,
+        textarea {
+          width: 100%;
+          padding: 8px 10px;
+          margin-bottom: 15px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+          font-size: 14px;
         }
+
         input[type="submit"] {
-            background-color: #0066cc;
-            color: white;
-            padding: 8px 14px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 15px;
+          background-color: #007bff;
+          border: none;
+          color: white;
+          padding: 10px 18px;
+          cursor: pointer;
+          font-size: 16px;
+          border-radius: 4px;
+          transition: background-color 0.3s ease;
         }
+
         input[type="submit"]:hover {
-            background-color: #004d99;
+          background-color: #0056b3;
         }
+
         a {
-            display: inline-block;
-            margin-top: 20px;
-            color: #0066cc;
-            text-decoration: none;
+          color: #007bff;
+          text-decoration: none;
+          font-weight: 600;
         }
+
         a:hover {
-            text-decoration: underline;
+          text-decoration: underline;
         }
     </style>
 </head>
@@ -62,8 +71,10 @@
 
 <h2>Enter Shop Details</h2>
 
-<p> <strong> ${dto}</strong> </p>
+
 <form action="submit" method="post">
+    <span id="emailerror"> </span><br>
+
     Shop Name:
     <input type="text" id="name" name="shopName" required><br><br>
 
@@ -77,14 +88,39 @@
     <input type="text" id="type" name="ShopType"><br><br>
 
     Email:
-    <input type="text" id="mail" name="email"><br><br>
+    <input type="text" id="mail" name="email" onblur="loginEmail()"><br><br>
 
     Contact:
     <input type="number" id="contact" name="contact"><br><br>
 
     <input type="submit" value="Submit">
 </form>
+
+
+
+<script>
+    function loginEmail(){
+    const email = document.getElementById('mail').value;
+    console.log(email);
+
+    if(email != ""){
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://localhost:8089/shop_app/checkEmail?mail=" + email);
+
+    xhttp.send();
+
+    xhttp.onload = function(){
+    document.getElementById("emailerror").innerHTML = this.responseText;
+    }
+    }
+    }
+</script>
+
+
 <br>
-<a href="index">Back to Home</a>
+<a href="index"> Back to Home</a>
+
+
+
 </body>
 </html>

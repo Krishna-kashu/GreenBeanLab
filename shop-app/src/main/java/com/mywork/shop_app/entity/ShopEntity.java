@@ -9,6 +9,10 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "shop_details")
+@NamedQuery(name = "findAll", query = "select s from ShopEntity s")
+@NamedQuery(name = "emailExists", query = "select s from ShopEntity s where s.email = :email")
+
+
 public class ShopEntity {
 
     @Id
