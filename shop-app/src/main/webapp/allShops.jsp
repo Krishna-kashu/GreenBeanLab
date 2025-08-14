@@ -58,23 +58,11 @@
             <td>${shop.shopType}</td>
             <td>${shop.email}</td>
             <td>${shop.contact}</td>
-            <td>  <a href="getId?id=${shop.shopId}"> View  </a></td>
+            <td>  <a href="fetchId?shopId=${shop.shopId}"> View  </a></td>
 
         </tr>
     </c:forEach>
 
-
-<!--    <tr>-->
-
-<!--        <td>${dto.shopId}</td>-->
-<!--        <td>${dto.shopName}</td>-->
-<!--        <td>${dto.shopOwner}</td>-->
-<!--        <td>${dto.totalBranch}</td>-->
-<!--        <td>${dto.shopType}</td>-->
-<!--        <td>${dto.email}</td>-->
-<!--        <td>${dto.contact}</td>-->
-<!--        <td><a href="allShop"> View All </a></td>-->
-<!--    </tr>-->
 </table>
 
 <a href="index">Back to Home</a>
