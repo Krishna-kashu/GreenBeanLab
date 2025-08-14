@@ -2,9 +2,12 @@ package com.mywork.bugreportsubmission.repo;
 
 import com.mywork.bugreportsubmission.dto.BugDTO;
 import com.mywork.bugreportsubmission.entity.BugEntity;
+import org.hibernate.QueryException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,6 +72,53 @@ public class BugRepoImpl implements BugRepo{
             if(manager!= null) manager.close();
         }
         return null;
+    }
+
+    @Override
+    public boolean updateBugEntity(BugEntity entity) {
+        System.out.println("running updateBugEntity in Repo, entity: "+entity);
+        boolean isUpdated = false;
+        EntityManager manager = null;
+        try {
+            manager = emf.createEntityManager();
+            EntityTransaction transaction =  manager.getTransaction();
+            transaction.begin();
+            Integer rows = manager.createNamedQuery("updateBugEntity")
+            .setParameter("reporterName", entity.getReporterName())
+                    .setParameter("email", entity.getEmail())
+                    .setParameter("title", entity.getTitle())
+                    .setParameter("description", entity.getDescription())
+                    .setParameter("stepsCount", entity.getStepsCount())
+                    .setParameter("isCritical", entity.getIsCritical())
+                    .setParameter("id", entity.getId()).executeUpdate();
+            if(rows>0){
+                isUpdated = true;
+            }
+            transaction.commit();
+        }catch ( NoResultException | QueryException e){
+            System.out.println("error in updateBugEntity method in repo: "+e.getMessage());
+        }finally {
+            if(manager!=null) manager.close();
+        }
+        return isUpdated;
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        System.out.println("deleteById method in repo");
+        boolean isDeleted = false;
+        EntityManager manager = null;
+        try {
+            manager = emf.createEntityManager();
+            EntityTransaction transaction = manager.getTransaction();
+            transaction.begin();
+
+        }catch (QueryException | ){
+
+        }finally {
+
+        }
+        return false;
     }
 
     public static void emfClose(){
