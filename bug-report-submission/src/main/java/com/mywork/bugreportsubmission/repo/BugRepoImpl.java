@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -113,12 +114,35 @@ public class BugRepoImpl implements BugRepo{
             EntityTransaction transaction = manager.getTransaction();
             transaction.begin();
 
-        }catch (QueryException | ){
-
+            int row = manager.createNamedQuery("deleteById")
+                    .setParameter("id", id).executeUpdate();
+            if(row>0) isDeleted = true;
+            transaction.commit();
+        }catch (QueryException | NoResultException e){
+            System.out.println("error in deleteById: "+e.getMessage());
         }finally {
-
+            if (manager != null) manager.close();
         }
-        return false;
+        return isDeleted;
+    }
+
+    @Override
+    public List<BugEntity> findByReporterName(String reporterName) {
+        System.out.println(" findByReporterName method in repo, name:"+reporterName);
+        EntityManager manager = null;
+        List<BugEntity>  res = new ArrayList<>();
+
+        try {
+            manager = emf.createEntityManager();;
+            res = manager.createNamedQuery("findByReporterName", BugEntity.class)
+                    .setParameter("reporterName", reporterName)
+                    .getResultList();
+        }catch (NoResultException e){
+            System.out.println("No records found for name "+reporterName+"\t"+e.getMessage());
+        }finally {
+            if (manager != null) manager.close();
+        }
+        return res;
     }
 
     public static void emfClose(){

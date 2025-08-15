@@ -9,4 +9,7 @@ public interface BugService {
     boolean validate(BugDTO dto);
     List<BugDTO> getAll();
     BugDTO getById(int id);
+    String updateBugDTO(BugDTO dto);
+    String deleteById(int id);
+    List<BugDTO> searchByReporterName(String reporterName);
 }
