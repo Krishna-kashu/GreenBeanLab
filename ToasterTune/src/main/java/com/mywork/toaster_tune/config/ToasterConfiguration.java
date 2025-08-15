@@ -32,4 +32,5 @@ public class ToasterConfiguration implements WebMvcConfigurer {
     {
         return  new StandardServletMultipartResolver();
     }
+
 }
