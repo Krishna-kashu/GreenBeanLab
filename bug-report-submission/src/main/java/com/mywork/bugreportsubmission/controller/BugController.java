@@ -99,6 +99,9 @@ public class BugController {
 
         System.out.println("delete method in controller");
 
+        String isDeleted = service.deleteById(id);
+        System.out.println("deleted "+ isDeleted);
+
         model.addAttribute("msg", "delete");
         List<BugDTO> bugList = service.getAll();
         model.addAttribute("bugs", bugList);
@@ -106,4 +109,19 @@ public class BugController {
         return "redirect:/getAll";
     }
 
+    @GetMapping("/search")
+    public String search(@RequestParam("reporterName") String reporterName, Model model){
+
+        System.out.println("Search for reporterName: "+reporterName);
+        List<BugDTO> bugs = service.searchByReporterName(reporterName);
+
+        if(!bugs.isEmpty()){
+            model.addAttribute("bugs", bugs);
+            model.addAttribute("msg","Search results for: " + reporterName);
+        }else {
+            model.addAttribute("msg", "reporter name "+reporterName+" not exists");
+        }
+
+        return "listOfBug";
+    }
 }
