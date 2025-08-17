@@ -1,13 +1,10 @@
 package com.mywork.bugreportsubmission.repo;
 
-import com.mywork.bugreportsubmission.dto.BugDTO;
 import com.mywork.bugreportsubmission.entity.BugEntity;
 import org.hibernate.QueryException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
-import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -143,6 +140,29 @@ public class BugRepoImpl implements BugRepo{
             if (manager != null) manager.close();
         }
         return res;
+    }
+
+    @Override
+    public boolean checkMail(String mail) {
+
+        System.out.println("check mail method in repo");
+        EntityManager manager = null;
+        try{
+            manager = emf.createEntityManager();
+            Query query = manager.createNamedQuery("checkMail");
+            query.setParameter("email", mail);
+
+            BugEntity entity = (BugEntity) query.getSingleResult();
+            System.out.println("Email entity: "+entity);
+            if(entity!=null){
+                return true;
+            }
+        }catch (PersistenceException e){
+            System.out.println("error in checkMail method in repo : "+e.getMessage());
+        }finally {
+            if(manager!=null) manager.close();
+        }
+        return false;
     }
 
     public static void emfClose(){
