@@ -71,12 +71,13 @@
 </head>
 <body>
 <h2>Bug Report Submission</h2>
+<span id="emailerror" ></span><br>
 <form action="submitBug" method="post">
     <label for="reporterName">Reporter Name:</label><br/>
     <input type="text" id="reporterName" name="reporterName" required /><br/><br/>
 
     <label for="email">Email:</label><br/>
-    <input type="email" id="email" name="email" required /><br/><br/>
+    <input type="email" id="email" name="email" onblur="checkMail()" required /><br/><br/>
 
     <label for="title">Title:</label><br/>
     <input type="text" id="title" name="title" required /><br/><br/>
@@ -92,7 +93,23 @@
 
     <input type="submit" value="Submit Bug" />
 </form>
+<script>
+function checkMail(){
+const email = document.getElementById('email').value;
+console.log(email)
 
+if(email != ""){
+var xhttp = new XMLHttpRequest();
+xhttp.open("GET", "http://localhost:8080/bug-report-submission/emailCheck?email=" + email);
+
+xhttp.send();
+
+xhttp.onload = function(){
+document.getElementById("emailerror").innerHTML = this.responseText;
+}
+}
+}
+</script>
 <a href="index"> back to home</a>
 </body>
 </html>
