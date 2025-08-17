@@ -12,4 +12,5 @@ public interface BugService {
     String updateBugDTO(BugDTO dto);
     String deleteById(int id);
     List<BugDTO> searchByReporterName(String reporterName);
+    boolean checkEmail(String email);
 }
