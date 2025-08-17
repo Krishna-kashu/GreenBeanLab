@@ -34,7 +34,7 @@
 </head>
 <body>
 
-<h2>Shop Details</h2>
+<h2>Bug Details</h2>
 <p>DTO for ID <strong>${i}</strong> is: <code>${dto}</code></p>
 
 <table>

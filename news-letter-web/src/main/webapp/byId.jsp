@@ -34,7 +34,7 @@
 </head>
 <body>
 
-<h2>Shop Details</h2>
+<h2>Subscription Details</h2>
 <p>DTO for ID <strong>${i}</strong> is: <code>${dto}</code></p>
 
 <table>
@@ -51,22 +51,21 @@
         <td>${dto.lastName}</td>
     </tr>
     <tr>
-        <th>Email</th>
+        <th>email</th>
         <td>${dto.email}</td>
     </tr>
     <tr>
-        <th>Age</th>
+        <th>age</th>
         <td>${dto.age}</td>
     </tr>
     <tr>
-        <th>Gender</th>
+        <th>gender</th>
         <td>${dto.gender}</td>
     </tr>
     <tr>
-        <th>Topic</th>
+        <th> topic</th>
         <td>${dto.topic}</td>
     </tr>
-
 </table>
 
 <a href="getAll">get all</a>
