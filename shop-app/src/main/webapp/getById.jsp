@@ -68,7 +68,7 @@
     </tr>
 </table>
 
-<a href="getAll">get all</a>
+<a href="fetchAll">get all</a>
 <br><br>
 <a href="index">Back to Home</a>
 
