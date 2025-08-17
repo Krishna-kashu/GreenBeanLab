@@ -3,11 +3,11 @@ package com.mywork.bugreportsubmission.service;
 import com.mywork.bugreportsubmission.dto.BugDTO;
 import com.mywork.bugreportsubmission.entity.BugEntity;
 import com.mywork.bugreportsubmission.repo.BugRepoImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,5 +83,49 @@ public class BugServiceImpl implements BugService{
         dto.setIsCritical(entity.getIsCritical());
 
         return dto;
+    }
+
+    @Override
+    public String updateBugDTO(BugDTO dto) {
+        System.out.println("updateBugDTO method in service ");
+        System.out.println("dto in updateBug: "+dto);
+        BugEntity entity = new BugEntity();
+
+        BeanUtils.copyProperties(dto,entity);
+        boolean isUpdated = repo.updateBugEntity(entity);
+
+        if(isUpdated){
+            return "updated";
+        }
+        return "update failed";
+    }
+
+    @Override
+    public String deleteById(int id) {
+        System.out.println("deleteById method in service");
+        boolean isDeleted = repo.deleteById(id);
+        if(isDeleted) {
+            return "deleted";
+        }
+        return "delete failed";
+    }
+
+    @Override
+    public List<BugDTO> searchByReporterName(String reporterName) {
+        List<BugEntity> entities = repo.findByReporterName(reporterName);
+        List<BugDTO> dtos = new ArrayList<>();
+
+        for (BugEntity entity: entities){
+            BugDTO dto = new BugDTO();
+            BeanUtils.copyProperties(entity, dto);
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+    @Override
+    public boolean checkEmail(String email) {
+        System.out.println("checkEmail method in service");
+        return repo.checkMail(email);
     }
 }
