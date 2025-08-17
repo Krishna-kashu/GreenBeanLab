@@ -14,6 +14,8 @@ import javax.persistence.*;
 @NamedQuery(name = "updateBugEntity", query = "update BugEntity b set b.reporterName=:reporterName, b.email=:email, " +
         "b.title=:title, b.description=:description, b.stepsCount=:stepsCount, b.isCritical=:isCritical where b.id=:id")
 @NamedQuery(name = "deleteById", query = "delete from BugEntity b where b.id=:id")
+@NamedQuery(name = "findByReporterName", query = "select b from BugEntity b where b.reporterName=:reporterName ")
+@NamedQuery(name = "checkMail", query = "select b from BugEntity b where b.email=:email")
 public class BugEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

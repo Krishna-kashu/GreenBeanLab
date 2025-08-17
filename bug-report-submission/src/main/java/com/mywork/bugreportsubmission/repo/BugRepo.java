@@ -11,4 +11,5 @@ public interface BugRepo {
     boolean updateBugEntity(BugEntity entity);
     boolean deleteById(int id);
     List<BugEntity> findByReporterName(String reporterName);
+    boolean checkMail(String mail);
 }
