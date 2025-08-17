@@ -10,7 +10,10 @@
             margin: 20px;
         }
         h2 {
-            color: #333;
+            color: #68b2e4;
+        }
+        h3{
+            color: #ffc76f;
         }
         table {
             border-collapse: collapse;
@@ -23,7 +26,7 @@
             text-align: left;
         }
         th {
-            background-color: #f4f4f4;
+            background-color: #68b2e4;
         }
         a {
             color: #0066cc;
@@ -32,10 +35,19 @@
         a:hover {
             text-decoration: underline;
         }
+
     </style>
 </head>
 <body>
+
+
+<h3> ${msg}</h3>
 <h2>All the bug details</h2>
+
+<form action="search" method="get">
+    <input type="text" name="reporterName" placeholder="Search by reporter name" required>
+    <button type="submit">Search</button>
+</form>
 
 <table>
     <tr>
@@ -58,7 +70,11 @@
             <td>${bug.description}</td>
             <td>${bug.stepsCount}</td>
             <td>${bug.isCritical}</td>
-            <td>  <a href="gettingById?bugId=${bug.id}"> View  </a></td>
+            <td>
+                <a href="gettingById?bugId=${bug.id}"> View  </a> /
+                <a href="update?id=${bug.id}"> Edit </a> /
+                <a href="delete/${bug.id}"> Delete </a>
+            </td>
 
         </tr>
     </c:forEach>
