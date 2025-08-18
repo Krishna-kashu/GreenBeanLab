@@ -36,6 +36,8 @@
     </style>
 </head>
 <body>
+
+<h3> ${msg}</h3>
 <h2>All the NewsLetter Subscription details</h2>
 
 <table>
@@ -59,7 +61,11 @@
         <td>${d.age}</td>
         <td>${d.gender}</td>
         <td>${d.topic}</td>
-        <td><a href="getById?newsId=${d.id}">View</a></td>
+        <td>
+            <a href="getById?newsId=${d.id}"> View  </a> /
+            <a href="edit?id=${d.id}"> Edit </a> /
+            <a href="delete/${d.id}"> Delete </a>
+        </td>
     </tr>
     </c:forEach>
 </table>
