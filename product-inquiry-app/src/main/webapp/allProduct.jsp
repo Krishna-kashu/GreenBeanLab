@@ -47,6 +47,7 @@
         <th>Product Name</th>
         <th>Inquiry Type</th>
         <th>Message</th>
+        <th>View</th>
     </tr>
 
     <c:forEach var="product" items="${products}">
@@ -58,7 +59,11 @@
         <td>${product.productName}</td>
         <td>${product.inquiryType}</td>
         <td>${product.message}</td>
-        <td><a href="getById?productId=${product.id}"> View </a></td>
+        <td>
+            <a href="getById?productId=${product.id}"> View </a> /
+            <a href="edit?id=${product.id}"> Edit </a> /
+            <a href="delete/${product.id}"> Delete </a>
+        </td>
     </tr>
     </c:forEach>
 </table>

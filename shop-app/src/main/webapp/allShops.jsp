@@ -58,7 +58,10 @@
             <td>${shop.shopType}</td>
             <td>${shop.email}</td>
             <td>${shop.contact}</td>
-            <td>  <a href="fetchId?shopId=${shop.shopId}"> View  </a></td>
+            <td>  <a href="fetchId?shopId=${shop.shopId}"> View  </a> /
+                <a href="update?id=${shop.shopId}"> Edit </a> /
+                <a href="delete/${shop.shopId}"> Delete </a>
+            </td>
 
         </tr>
     </c:forEach>
