@@ -5,10 +5,7 @@ import com.mywork.productinquiryapp.service.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -77,4 +74,37 @@ public class ProductController {
 
         return "idPage";
     }
+    @GetMapping("edit")
+    public  String edit(@RequestParam("id") Integer id, Model model){
+        System.out.println("edit method in controller, id:"+id);
+        ProductDTO dto = service.getById(id);
+        System.out.println("dto in edit "+dto);
+        model.addAttribute("msg", "updated");
+        model.addAttribute("dto", dto);
+        return "edit";
+    }
+    @PostMapping("update")
+    public  String update(ProductDTO dto , Model model){
+        System.out.println("update method in controller");
+        String updated = service.updateDto(dto);
+        System.out.println("updated: "+updated);
+
+        List<ProductDTO> productDTOS = service.getAll();
+        model.addAttribute("products", productDTOS);
+
+        return "allProduct";
+    }
+
+    @GetMapping("delete/{id}")
+    public  String delete(@PathVariable("id") Integer id){
+
+        System.out.println("delete method in controller");
+
+        String deleted = service.deleteDto(id);
+        System.out.println("deleted "+deleted);
+
+        return "redirect:/get";
+    }
+
+
 }
