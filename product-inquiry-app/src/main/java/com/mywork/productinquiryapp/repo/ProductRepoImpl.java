@@ -1,6 +1,7 @@
 package com.mywork.productinquiryapp.repo;
 
 import com.mywork.productinquiryapp.entity.ProductEntity;
+import org.hibernate.QueryException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -68,6 +69,82 @@ public class ProductRepoImpl implements ProductRepo{
         return null;
     }
 
+    @Override
+    public boolean updateEntity(ProductEntity entity) {
+
+        System.out.println("update method in repo");
+        System.out.println("Entity = "+entity);
+        boolean isUpdated = false;
+        EntityManager manager = null;
+
+        try {
+            manager = emf.createEntityManager();
+            EntityTransaction transaction = manager.getTransaction();
+            transaction.begin();
+            Integer rows = manager.createNamedQuery("updateEntity")
+                    .setParameter("fullName", entity.getFullName())
+                    .setParameter("email", entity.getEmail())
+                    .setParameter("phone", entity.getPhone())
+                    .setParameter("productName", entity.getProductName())
+                    .setParameter("message", entity.getMessage())
+                    .setParameter("inquiryType", entity.getInquiryType())
+                    .setParameter("id", entity.getId())
+                    .executeUpdate();
+            if(rows>0 )isUpdated = true;
+            transaction.commit();
+        }catch (NoResultException | QueryException e){
+            System.out.println("error in updateEntity method "+e.getMessage());
+        }finally {
+            if(manager!=null) manager.close();
+        }
+        return isUpdated;
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        System.out.println("deleteById method is running in repo");
+        boolean isDeleted = false;
+        EntityManager manager = null;
+        try {
+            manager = emf.createEntityManager();
+            EntityTransaction transaction = manager.getTransaction();
+            transaction.begin();
+
+            int row = manager.createNamedQuery("deleteById")
+                    .setParameter("id", id).executeUpdate();
+            if(row>0){
+                isDeleted = true;
+                transaction.commit();
+            }
+        }catch (NoResultException | QueryException e){
+            System.out.println("error in delete method "+e.getMessage());
+        }finally {
+            if(manager != null) manager.close();
+        }
+        return isDeleted;
+    }
+
+    @Override
+    public boolean checkMail(String email) {
+        System.out.println("check mail method in repo, email:  "+email);
+        EntityManager manager = null;
+        try {
+            manager = emf.createEntityManager();
+            Query query = manager.createNamedQuery("checkMail")
+                    .setParameter("email", email);
+
+            ProductEntity entity = (ProductEntity) query.getSingleResult();
+            System.out.println("email already exists");
+            if(entity!= null){
+                return  true;
+            }
+        }catch ( PersistenceException e){
+            System.out.println("error in checkMail"+e.getMessage());
+        }finally {
+            if(manager != null) manager.close();
+        }
+        return false;
+    }
 
     public static void emfClose(){
         if(emf.isOpen()) emf.close();
