@@ -25,17 +25,26 @@ public class LearnerRepoImpl implements LearnerRepo{
                 manager = emf.createEntityManager();
                 transaction= manager.getTransaction();
                 transaction.begin();
-                manager.persist(entity);
+                if (entity.getLearnerId() == null) {
+                    manager.persist(entity);
+                } else {
+                    manager.merge(entity);
+                }
                 transaction.commit();
+                return true;
+
             }catch (PersistenceException e){
-                if (transaction != null && transaction.isActive()) transaction.rollback();
-                System.err.println("error in save method :"+e.getMessage());
+                if (transaction != null && transaction.isActive()) {
+                    transaction.rollback();
+                }
+                System.err.println("error in save method :" + e.getMessage());
+                return false;
             }
             finally {
                 if (manager!=null) manager.close();
             }
         }
-        return true;
+        return false;
     }
 
     @Override
