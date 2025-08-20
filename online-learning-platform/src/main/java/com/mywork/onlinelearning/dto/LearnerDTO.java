@@ -21,8 +21,7 @@ public class LearnerDTO {
 
     private String address;
 
-    private String password;
+    private String otp;
 
-    private String confirmPassword;
-
+    private Integer resetFlag;
 }
