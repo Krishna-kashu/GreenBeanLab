@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -45,4 +46,14 @@ public class LearnerEntity {
 
     @Column(name = "is_active")
     private Boolean isActive;
+
+    @Column(name="otp")
+    private String otp;
+
+    @Column(name="otp_expiry")
+    private LocalDateTime otpExpiry;
+
+    @Column(name="reset_flag")
+    private Integer resetFlag;
+
 }
