@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Map;
+
 @Service
 public class LearnerServiceImpl implements LearnerService{
 
@@ -17,6 +20,9 @@ public class LearnerServiceImpl implements LearnerService{
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailSenderServiceImpl emailSenderService;
 
     public LearnerServiceImpl(){
         System.out.println("LearnerServiceImpl constructor");
@@ -57,22 +63,26 @@ public class LearnerServiceImpl implements LearnerService{
             System.out.println("\nstate can not be null");
             return false;
         }
-        if (dto.getPassword()== null || dto.getPassword().trim().isEmpty()){
-            System.out.println("\npassword is required");
-            return false;
-        }
-        if (!dto.getPassword().equals(dto.getConfirmPassword())){
-            System.out.println("\nPassword do not match");
-            return false;
-        }
+
 
         System.out.println("dto is valid");
         LearnerEntity entity = new LearnerEntity();
         BeanUtils.copyProperties(dto, entity);
-        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
-        entity.setIsActive(true);
 
-        return repo.save(entity);
+        String otp = String.valueOf((int)(Math.random() * 900000) + 100000);
+        entity.setOtp(passwordEncoder.encode(otp));
+        entity.setOtpExpiry(LocalDateTime.now().plusMinutes(2));
+        entity.setResetFlag(-1);
+        entity.setIsActive(true);
+        entity.setPassword(null);
+
+//        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        boolean saved = repo.save(entity);
+        if (saved){
+            emailSenderService.sendOTP(dto.getEmail(), otp);
+        }
+        return saved;
     }
 
     @Override
@@ -96,6 +106,8 @@ public class LearnerServiceImpl implements LearnerService{
             System.out.println("\nno user found with email:"+email);
             return null;
         }
+        System.out.println("ResetFlag before resetting password: " + entity.getResetFlag());
+
         if (passwordEncoder.matches(password, entity.getPassword())){
             LearnerDTO dto = new LearnerDTO();
             BeanUtils.copyProperties(entity, dto);
@@ -105,4 +117,63 @@ public class LearnerServiceImpl implements LearnerService{
         return null;
     }
 
+    @Override
+    public String generateOTP(String email) {
+        LearnerEntity entity = repo.getByMail(email);
+        if (entity == null) return null;
+
+        String otp = String.valueOf((int)(Math.random() * 900000)+100000);
+        System.out.println("otp..........:"+otp);
+        entity.setOtp(passwordEncoder.encode(otp));
+
+        entity.setOtpExpiry(LocalDateTime.now().plusMinutes(2));
+        entity.setResetFlag(2);
+
+        repo.save(entity);
+        emailSenderService.sendOTP(email,otp);
+
+        return otp;
+    }
+
+    @Override
+    public boolean verifyOTP(String email, String otp) {
+        LearnerEntity entity = repo.getByMail(email);
+        if (entity == null ) return false;
+
+        if (entity.getOtpExpiry().isBefore(LocalDateTime.now())) return false;
+
+        if (passwordEncoder.matches(otp, entity.getOtp())) {
+            entity.setOtp(null);
+            entity.setOtpExpiry(null);
+            entity.setResetFlag(1);
+            repo.save(entity);
+            return true;
+        }
+        return false;
+    }
+        @Override
+        public boolean resetPassword (String email, String newPassword, String confirmPassword){
+            if (!newPassword.equals(confirmPassword)) {
+                System.out.println("password do not match");
+                return false;
+            }
+
+            LearnerEntity entity = repo.getByMail(email);
+
+            if (entity == null){
+                System.out.println("No user found with email: " + email);
+                return false;
+            }
+            if(entity.getResetFlag() == null || entity.getResetFlag() != 1) {
+                System.out.println("Reset not allowed, current resetFlag = " + entity.getResetFlag());
+                return false;
+            }
+
+            entity.setPassword(passwordEncoder.encode(newPassword));
+            entity.setResetFlag(null);
+            repo.save(entity);
+
+            System.out.println("Password reset successful for " + email);
+            return true;
+        }
 }
