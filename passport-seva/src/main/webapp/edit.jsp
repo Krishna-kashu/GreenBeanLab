@@ -86,8 +86,16 @@
     <input type="number" id="id" name="id" value="${dto.id}" readonly />
 
     <label for="passportOffice">Passport Office:</label>
-    <input type="text" id="passportOffice" name="passportOffice" value="${dto.passportOffice}" />
-
+    <select id="passportOffice" name="passportOffice"  required>
+        <option value="">${dto.passportOffice}</option>
+        <option value="India">India</option>
+        <option value="Ahmedabad">Ahmedabad</option>
+        <option value="Bhopal">Bhopal</option>
+        <option value="Delhi">Delhi</option>
+        <option value="Pune">Pune</option>
+        <option value="Surat">Surat</option>
+        <option value="Other">Other</option>
+    </select><br/><br/>
     <label for="givenName">Given Name:</label>
     <input type="text" id="givenName" name="givenName" value="${dto.givenName}" />
 
