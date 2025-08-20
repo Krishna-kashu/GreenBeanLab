@@ -9,17 +9,26 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
 </head>
+
+<style>
+    .login-container {
+        max-width: 450px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+</style>
+
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-
         <a class="navbar-brand" href="#">
                         <img src="images/logo.png" alt="Logo" width="80" height="60">
-
             Online Learning
         </a>
-
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,15 +50,27 @@
 </nav>
 
 <div class="container my-5">
-    <div class="text-center">
-        <h1 class="mb-4">Welcome to Our Online Learning Platform</h1>
-        <h1>Login here </h1>
+    <div class="login-container">
+        <h2 class="text-center mb-4">Login to Your Account</h2>
+
         <form action="login" method="post">
-            Email: <input type="email" name="email" value="${email}" required><br><br>
-            Password: <input type="password" name="password" required><br><br>
-            <input type="submit" value="Login">
-            <p style="color:red">${msg}</p>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" value="${email}" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+
+            <div class="text-center">
+                <input type="submit" class="btn btn-success w-100" value="Login">
+            </div>
         </form>
+
+        <p class="mt-3 text-center text-danger">${msg}</p>
+        <p class="text-center">New here? <a href="registerPage">Register an account</a></p>
     </div>
 </div>
 
