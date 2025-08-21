@@ -56,4 +56,7 @@ public class LearnerEntity {
     @Column(name="reset_flag")
     private Integer resetFlag;
 
+    @Column(name="first_login_done")
+    private Boolean firstLoginDone = false;
+
 }
