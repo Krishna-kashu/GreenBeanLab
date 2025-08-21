@@ -1,6 +1,8 @@
 package com.mywork.onlinelearning.repo;
 
 import com.mywork.onlinelearning.entity.LearnerEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -9,13 +11,16 @@ import java.util.List;
 @Repository
 public class LearnerRepoImpl implements LearnerRepo{
 
-    private final static EntityManagerFactory emf = Persistence
-            .createEntityManagerFactory("my-work");
+    private static final Logger log = LoggerFactory.getLogger(LearnerRepoImpl.class);
+
+    private final static EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-work");
 
     @Override
     public boolean save(LearnerEntity entity) {
 
         System.out.println("save method in repo, entity: "+entity);
+
+        log.info("Trying log");
 
         if(entity!=null) {
             EntityManager manager = null;
