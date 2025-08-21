@@ -3,6 +3,8 @@ package com.mywork.onlinelearning.service;
 import com.mywork.onlinelearning.dto.LearnerDTO;
 import com.mywork.onlinelearning.entity.LearnerEntity;
 import com.mywork.onlinelearning.repo.LearnerRepoImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +17,7 @@ import java.util.Map;
 public class LearnerServiceImpl implements LearnerService{
 
 
+    private static final Logger log = LoggerFactory.getLogger(LearnerServiceImpl.class);
     @Autowired
     private LearnerRepoImpl repo;
 
@@ -26,6 +29,7 @@ public class LearnerServiceImpl implements LearnerService{
 
     public LearnerServiceImpl(){
         System.out.println("LearnerServiceImpl constructor");
+        log.info("LearnerServiceImpl from log");
     }
 
     @Override
@@ -64,19 +68,24 @@ public class LearnerServiceImpl implements LearnerService{
             return false;
         }
 
-
         System.out.println("dto is valid");
         LearnerEntity entity = new LearnerEntity();
         BeanUtils.copyProperties(dto, entity);
 
         String otp = String.valueOf((int)(Math.random() * 900000) + 100000);
-        entity.setOtp(passwordEncoder.encode(otp));
-        entity.setOtpExpiry(LocalDateTime.now().plusMinutes(2));
-        entity.setResetFlag(-1);
-        entity.setIsActive(true);
-        entity.setPassword(null);
-
+//        entity.setPassword(passwordEncoder.encode(otp));
+//        entity.setOtp(null);
+//        entity.setOtpExpiry(LocalDateTime.now().plusMinutes(2));
+//        entity.setResetFlag(null);
+//        entity.setIsActive(true);
+//        entity.setPassword(null);
 //        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        entity.setPassword(passwordEncoder.encode(otp));
+        entity.setOtp(null);
+        entity.setOtpExpiry(null);
+        entity.setResetFlag(null);
+        entity.setFirstLoginDone(false);
 
         boolean saved = repo.save(entity);
         if (saved){
@@ -108,11 +117,26 @@ public class LearnerServiceImpl implements LearnerService{
         }
         System.out.println("ResetFlag before resetting password: " + entity.getResetFlag());
 
-        if (passwordEncoder.matches(password, entity.getPassword())){
-            LearnerDTO dto = new LearnerDTO();
-            BeanUtils.copyProperties(entity, dto);
-            return dto;
+//        if (passwordEncoder.matches(password, entity.getPassword())){
+//            LearnerDTO dto = new LearnerDTO();
+//            BeanUtils.copyProperties(entity, dto);
+//            return dto;
+//        }
+
+        if (entity.getFirstLoginDone() == Boolean.FALSE) {
+            if (passwordEncoder.matches(password, entity.getPassword())) {
+                LearnerDTO dto = new LearnerDTO();
+                BeanUtils.copyProperties(entity, dto);
+                return dto;
+            }
+        } else {
+            if (passwordEncoder.matches(password, entity.getPassword())) {
+                LearnerDTO dto = new LearnerDTO();
+                BeanUtils.copyProperties(entity, dto);
+                return dto;
+            }
         }
+
         System.out.println("Password mismatch for email: "+email);
         return null;
     }
@@ -170,6 +194,7 @@ public class LearnerServiceImpl implements LearnerService{
             }
 
             entity.setPassword(passwordEncoder.encode(newPassword));
+            entity.setFirstLoginDone(true);
             entity.setResetFlag(null);
             repo.save(entity);
 
