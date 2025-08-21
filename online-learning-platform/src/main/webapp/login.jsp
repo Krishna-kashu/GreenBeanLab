@@ -62,6 +62,7 @@
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" id="password" name="password" class="form-control" required>
+                <small class="text-muted">Use the OTP sent to your email for first login</small>
             </div>
 
             <div class="text-center">
