@@ -1,7 +1,6 @@
 package com.mywork.onlinelearning.controller;
 
 import com.mywork.onlinelearning.dto.LearnerDTO;
-import com.mywork.onlinelearning.service.EmailSenderService;
 import com.mywork.onlinelearning.service.EmailSenderServiceImpl;
 import com.mywork.onlinelearning.service.LearnerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.jws.WebParam;
 
 @Controller
 @RequestMapping("/")
@@ -48,6 +46,11 @@ public class LearnerController {
         return "login";
     }
 
+    @GetMapping("verifyOTP")
+    public String redirectToVerifyOTP(){
+        System.out.println("\n redirect to verifyOTP page");
+        return "verifyOTP";
+    }
     @GetMapping("register")
     public String register(LearnerDTO dto, Model model){
         System.out.println("\nregister method in controller, dto: "+dto);
@@ -62,10 +65,11 @@ public class LearnerController {
         }
         if (service.valid(dto)){
             System.out.println("valid dto");
-            model.addAttribute("msg", "Details Saved");
+            //model.addAttribute("msg", "Details Saved");
             model.addAttribute("dto", dto);
             model.addAttribute("email", dto.getEmail());
-            return "verifyOTP";
+            model.addAttribute("msg", "Registration successful. A temporary password has been sent to your email. Use it to login.");
+            return "login";
         }
         else {
             System.out.println("invalid dto");
@@ -81,7 +85,7 @@ public class LearnerController {
         System.out.println("login method in controller");
         System.out.println("email: "+email+" - password: "+password);
         LearnerDTO dto = service.getUserDTO(email, password);
-        if(dto==null){
+        if(dto==null ){
             model.addAttribute("msg", "Invalid email or password");
             model.addAttribute("email", email);
             System.out.println("Details not found");
