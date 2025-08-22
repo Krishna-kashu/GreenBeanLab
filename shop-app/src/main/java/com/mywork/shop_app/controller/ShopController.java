@@ -1,14 +1,12 @@
 package com.mywork.shop_app.controller;
 
 import com.mywork.shop_app.dto.ShopDTO;
+import com.mywork.shop_app.service.ShopService;
 import com.mywork.shop_app.service.ShopServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -71,9 +69,45 @@ public class ShopController {
         System.out.println("getById method is invoked..");
         ShopDTO shopDTO = service.getById(shopId);
 
+        model.addAttribute("id", shopId);
         model.addAttribute("dto", shopDTO);
         System.out.println("id is "+ shopId);
 
         return "getById";
+    }
+
+    @GetMapping("update")
+    public String edit(@RequestParam("id") Integer id, Model model){
+
+        System.out.println("edit method in controller");
+        System.out.println("id: "+id);
+        ShopDTO dto = service.getById(id);
+        System.out.println("dto in update controller: "+dto);
+        model.addAttribute("dto", dto);
+
+        return "edit";
+    }
+
+    @PostMapping("updateEntity")
+    public  String update(ShopDTO dto , Model model){
+        System.out.println("update method in controller");
+        String updated = service.updateDto(dto);
+        System.out.println("updated: "+updated);
+
+        List<ShopDTO> productDTOS = service.getAll();
+        model.addAttribute("shops", productDTOS);
+
+        return "allShops";
+    }
+
+    @GetMapping("delete/{id}")
+    public  String delete(@PathVariable("id") Integer id){
+
+        System.out.println("delete method in controller");
+
+        String deleted = service.deleteDto(id);
+        System.out.println("deleted "+deleted);
+
+        return "redirect:/fetchAll";
     }
 }
