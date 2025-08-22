@@ -73,7 +73,7 @@
 
 
 <form action="submit" method="post">
-    <span id="emailerror"> </span><br>
+
 
     Shop Name:
     <input type="text" id="name" name="shopName" required><br><br>
@@ -85,8 +85,9 @@
     <input type="number" id="branch" name="totalBranch" required><br><br>
 
     Shop Type:
-    <input type="text" id="type" name="ShopType"><br><br>
+    <input type="text" id="type" name="shopType"><br><br>
 
+    <span style="color:red" id="emailerror"> </span><br>
     Email:
     <input type="text" id="mail" name="email" onblur="loginEmail()"><br><br>
 
