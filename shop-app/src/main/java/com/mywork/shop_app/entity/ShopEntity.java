@@ -11,6 +11,10 @@ import javax.persistence.*;
 @Table(name = "shop_details")
 @NamedQuery(name = "findAll", query = "select s from ShopEntity s")
 @NamedQuery(name = "emailExists", query = "select s from ShopEntity s where s.email = :email")
+@NamedQuery(name = "deleteById", query = "delete from ShopEntity p where p.shopId=:id")
+@NamedQuery(name = "updateEntity", query = "update ShopEntity p set p.shopName=:shopName, " +
+        "p.shopOwner=:shopOwner, p.totalBranch=:totalBranch, p.ShopType=:ShopType, p.email=:email, " +
+        "p.contact=:contact where p.shopId=:id")
 
 
 public class ShopEntity {
