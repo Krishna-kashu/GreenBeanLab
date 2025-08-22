@@ -3,6 +3,7 @@ package com.mywork.shop_app.service;
 import com.mywork.shop_app.dto.ShopDTO;
 import com.mywork.shop_app.entity.ShopEntity;
 import com.mywork.shop_app.repo.ShopRepoImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,4 +89,28 @@ public class ShopServiceImpl implements  ShopService{
         System.out.println("from service Checking if email exists: " + email);
         return shopRepo.existsByEmail(email);
     }
+
+    @Override
+    public String updateDto(ShopDTO dto) {
+        System.out.println("updateDto method in service "+"\t dto in updateDto: "+dto);
+        ShopEntity entity = new ShopEntity();
+
+        BeanUtils.copyProperties(dto, entity);
+        boolean updated= shopRepo.updateEntity(entity);
+        if (updated){
+            return "updated";
+        }return "update failed";
+
+    }
+
+    @Override
+    public String deleteDto(int id) {
+        System.out.println("deleteDto method in service");
+        boolean deleted = shopRepo.deleteById(id);
+        if (deleted){
+            return "deleted";
+        }
+        return "delete failed";
+    }
+
 }
