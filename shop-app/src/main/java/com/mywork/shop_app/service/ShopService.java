@@ -9,4 +9,8 @@ public interface ShopService {
     List<ShopDTO> getAll();
     ShopDTO getById(int id);
     boolean mailExits(String email);
+
+    String updateDto(ShopDTO dto);
+
+    String deleteDto(int id);
 }
