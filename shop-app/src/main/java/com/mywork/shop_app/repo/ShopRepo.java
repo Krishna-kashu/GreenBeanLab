@@ -9,4 +9,6 @@ public interface ShopRepo {
     List<ShopEntity> findAll();
     ShopEntity findById(int id);
     boolean existsByEmail(String email);
+    boolean updateEntity(ShopEntity entity);
+    boolean deleteById(int id);
 }
