@@ -1,6 +1,7 @@
 package com.mywork.shop_app.repo;
 
 import com.mywork.shop_app.entity.ShopEntity;
+import org.hibernate.QueryException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -91,6 +92,61 @@ public class ShopRepoImpl implements ShopRepo {
             if (manager != null) manager.close();
         }
         return false;
+    }
+
+    @Override
+    public boolean updateEntity(ShopEntity entity) {
+
+        System.out.println("update method in repo");
+        System.out.println("Entity = "+entity);
+        boolean isUpdated = false;
+        EntityManager manager = null;
+
+        try {
+            manager = emf.createEntityManager();
+            EntityTransaction transaction = manager.getTransaction();
+            transaction.begin();
+            Integer rows = manager.createNamedQuery("updateEntity")
+                    .setParameter("shopName", entity.getShopName())
+                    .setParameter("shopOwner", entity.getShopOwner())
+                    .setParameter("totalBranch", entity.getTotalBranch())
+                    .setParameter("ShopType", entity.getShopType())
+                    .setParameter("email", entity.getEmail())
+                    .setParameter("contact", entity.getContact())
+                    .setParameter("id", entity.getShopId())
+                    .executeUpdate();
+            if(rows>0 )isUpdated = true;
+            transaction.commit();
+        }catch (NoResultException | QueryException e){
+            System.out.println("error in updateEntity method "+e.getMessage());
+        }finally {
+            if(manager!=null) manager.close();
+        }
+        return isUpdated;
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        System.out.println("deleteById method is running in repo");
+        boolean isDeleted = false;
+        EntityManager manager = null;
+        try {
+            manager = emf.createEntityManager();
+            EntityTransaction transaction = manager.getTransaction();
+            transaction.begin();
+
+            int row = manager.createNamedQuery("deleteById")
+                    .setParameter("id", id).executeUpdate();
+            if(row>0){
+                isDeleted = true;
+                transaction.commit();
+            }
+        }catch (NoResultException | QueryException e){
+            System.out.println("error in deleteById  method "+e.getMessage());
+        }finally {
+            if(manager != null) manager.close();
+        }
+        return isDeleted;
     }
 }
 
