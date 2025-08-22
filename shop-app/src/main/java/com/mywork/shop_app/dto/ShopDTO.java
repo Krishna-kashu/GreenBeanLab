@@ -14,7 +14,7 @@ public class ShopDTO {
 
     private Integer totalBranch;
 
-    private String ShopType;
+    private String shopType;
 
     private String email;
 
