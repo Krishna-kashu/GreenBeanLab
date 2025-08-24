@@ -2,6 +2,7 @@ package com.mywork.newsletter.repo;
 
 import com.mywork.newsletter.dto.NewsLetterDTO;
 import com.mywork.newsletter.entity.NewsLetterEntity;
+import org.hibernate.QueryException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -59,17 +60,93 @@ public class NewsLetterRepoImpl implements  NewsLetterRepo{
     }
 
     @Override
-    public NewsLetterEntity findById(int id) {
-
+    public NewsLetterEntity findByID(int id) {
         EntityManager manager = emf.createEntityManager();
         try {
             return manager.find(NewsLetterEntity.class, id);
         }catch (PersistenceException e){
-            System.out.println("error from repo in findById"+e.getMessage());
+            System.out.println("error in findById"+e.getMessage());
         }finally {
             if(manager!= null) manager.close();
         }
         return null;
+    }
+
+    @Override
+    public boolean updateEntity(NewsLetterEntity entity) {
+
+        System.out.println("update method in repo");
+        System.out.println("Entity = "+entity);
+        boolean isUpdated = false;
+        EntityManager manager = null;
+
+        try {
+            manager = emf.createEntityManager();
+            EntityTransaction transaction = manager.getTransaction();
+            transaction.begin();
+            Integer rows = manager.createNamedQuery("updateEntity")
+                    .setParameter("firstName", entity.getFirstName())
+                    .setParameter("lastName", entity.getLastName())
+                    .setParameter("gender", entity.getGender())
+                    .setParameter("age", entity.getAge())
+                    .setParameter("email", entity.getEmail())
+                    .setParameter("topic", entity.getTopic())
+                    .setParameter("id", entity.getId())
+                    .executeUpdate();
+           if(rows>0 )isUpdated = true;
+           transaction.commit();
+        }catch (NoResultException | QueryException e){
+            System.out.println("error in updateEntity method "+e.getMessage());
+        }finally {
+            if(manager!=null) manager.close();
+        }
+        return isUpdated;
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        System.out.println("delete by id method is running in repo");
+        boolean isDeleted = false;
+        EntityManager manager = null;
+        try {
+            manager = emf.createEntityManager();
+            EntityTransaction transaction = manager.getTransaction();
+            transaction.begin();
+
+            int row = manager.createNamedQuery("deleteById")
+                    .setParameter("id", id).executeUpdate();
+            if(row>0){
+                isDeleted = true;
+                transaction.commit();
+            }
+        }catch (NoResultException | QueryException e){
+            System.out.println("error in delete method "+e.getMessage());
+        }finally {
+            if(manager != null) manager.close();
+        }
+        return isDeleted;
+    }
+
+    @Override
+    public boolean checkMail(String email) {
+        System.out.println("check mail method in repo, email:  "+email);
+        EntityManager manager = null;
+        try {
+            manager = emf.createEntityManager();
+            Query query = manager.createNamedQuery("checkMail")
+                    .setParameter("email", email);
+
+            NewsLetterEntity entity = (NewsLetterEntity) query.getSingleResult();
+            System.out.println("email already exists");
+            if(entity!= null){
+                return  true;
+            }
+        }catch ( PersistenceException e){
+            System.out.println("error in checkmail"+e.getMessage());
+        }finally {
+            if(manager != null) manager.close();
+        }
+        return false;
     }
 
     public static void emfClose(){
