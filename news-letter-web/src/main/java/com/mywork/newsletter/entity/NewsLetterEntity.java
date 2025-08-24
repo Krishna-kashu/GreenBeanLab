@@ -10,6 +10,11 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 @Table(name = "news_letter_subscription_table")
 @NamedQuery(name = "findAll", query = "select n from NewsLetterEntity n")
+@NamedQuery(name = "updateEntity", query = "update NewsLetterEntity n set n.firstName=:firstName, n.lastName=:lastName, " +
+        "n.email=:email, n.age=:age, n.gender=:gender, n.topic=:topic where n.id=:id")
+@NamedQuery(name = "deleteById", query = "delete from NewsLetterEntity n where n.id =:id")
+@NamedQuery(name = "checkMail", query = "select n from NewsLetterEntity n where n.email=:email")
+
 public class NewsLetterEntity {
 
     @Id
@@ -30,7 +35,7 @@ public class NewsLetterEntity {
     private Integer age;
 
     @Column(name = "gender")
-    private String Gender;
+    private String gender;
 
     @Column(name = "topic")
     private String topic;
