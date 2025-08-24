@@ -5,10 +5,7 @@ import com.mywork.newsletter.service.NewsLetterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -73,5 +70,36 @@ public class NewsLetterController {
         System.out.println("id is "+ newsId);
 
         return "byId";
+    }
+
+    @GetMapping("edit")
+    public  String edit(@RequestParam("id") Integer id, Model model){
+        System.out.println("edit method in controller, id:"+id);
+        NewsLetterDTO dto = service.getById(id);
+        System.out.println("dto in edit "+dto);
+        model.addAttribute("msg", "updated");
+        model.addAttribute("dto", dto);
+        return "edit";
+    }
+    @PostMapping("update")
+    public  String update(NewsLetterDTO dto , Model model){
+        System.out.println("update method in controller");
+        String updated = service.updateDto(dto);
+        System.out.println("updated: "+updated);
+
+        List<NewsLetterDTO> newsLetterDTOList = service.getAll();
+        model.addAttribute("allDto", newsLetterDTOList);
+        return "allSubscription";
+    }
+
+    @GetMapping("delete/{id}")
+    public  String delete(@PathVariable("id") Integer id){
+
+        System.out.println("delete method in controller");
+
+        String deleted = service.deleteDto(id);
+        System.out.println("deleted "+deleted);
+
+        return "redirect:/getAll";
     }
 }
