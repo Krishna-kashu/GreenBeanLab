@@ -79,8 +79,9 @@
     <label for="lastName">Last Name:</label><br/>
     <input type="text" id="lastName" name="lastName" required /><br/><br/>
 
+    <span id="emailerror" ></span><br>
     <label for="email">Email:</label><br/>
-    <input type="email" id="email" name="email" required /><br/><br/>
+    <input type="email" id="email" name="email" onblur="checkMail()" required /><br/><br/>
 
     <label for="age">Age:</label><br/>
     <input type="number" id="age" name="age" /><br/><br/>
@@ -98,6 +99,24 @@
 
     <input type="submit" value="Subscribe" />
 </form>
+
+<script>
+    function checkMail(){
+    const email = document.getElementById('email').value;
+    console.log(email)
+
+    if(email != ""){
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://localhost:8081/news-letter-web/check?email=" + email);
+
+    xhttp.send();
+
+    xhttp.onload = function(){
+    document.getElementById("emailerror").innerHTML = this.responseText;
+    }
+    }
+    }
+</script>
 <br><br>
 <a href="index">Back to Home</a>
 
