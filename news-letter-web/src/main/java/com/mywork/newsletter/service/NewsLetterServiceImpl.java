@@ -3,6 +3,7 @@ package com.mywork.newsletter.service;
 import com.mywork.newsletter.dto.NewsLetterDTO;
 import com.mywork.newsletter.entity.NewsLetterEntity;
 import com.mywork.newsletter.repo.NewsLetterRepoImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,16 +71,47 @@ public class NewsLetterServiceImpl implements NewsLetterService{
     public NewsLetterDTO getById(int id) {
 
         NewsLetterDTO dto = new NewsLetterDTO();
-        NewsLetterEntity entity = newsLetterRepo.findById(id);
+        NewsLetterEntity entity = newsLetterRepo.findByID(id);
+//        dto.setId(entity.getId());
+//        dto.setFirstName(entity.getFirstName());
+//        dto.setEmail(entity.getEmail());
+//        dto.setLastName(entity.getLastName());
+//        dto.setAge(entity.getAge());
+//        dto.setGender(entity.getGender());
+//        dto.setTopic(entity.getTopic());
 
-        dto.setId(entity.getId());
-        dto.setFirstName(entity.getFirstName());
-        dto.setLastName(entity.getLastName());
-        dto.setAge(entity.getAge());
-        dto.setGender(entity.getGender());
-        dto.setEmail(entity.getEmail());
-        dto.setTopic(entity.getTopic());
-
+        if (entity!= null) {
+            BeanUtils.copyProperties(entity, dto);
+        }
         return dto;
+    }
+
+    @Override
+    public String updateDto(NewsLetterDTO dto) {
+        System.out.println("updateDto method in service "+"\t dto in updateDto: "+dto);
+        NewsLetterEntity entity = new NewsLetterEntity();
+
+        BeanUtils.copyProperties(dto, entity);
+        boolean updated= newsLetterRepo.updateEntity(entity);
+        if (updated){
+            return "updated";
+        }return "update failed";
+
+    }
+
+    @Override
+    public String deleteDto(int id) {
+        System.out.println("deleteDto method in service");
+        boolean deleted = newsLetterRepo.deleteById(id);
+        if (deleted){
+            return "deleted";
+        }
+        return "delete failed";
+    }
+
+    @Override
+    public boolean checkMail(String email) {
+        System.out.println("checkEmail method in service");
+        return newsLetterRepo.checkMail(email);
     }
 }
