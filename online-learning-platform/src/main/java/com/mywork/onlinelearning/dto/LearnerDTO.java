@@ -1,6 +1,9 @@
 package com.mywork.onlinelearning.dto;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Data
 public class LearnerDTO {
@@ -11,7 +14,8 @@ public class LearnerDTO {
 
     private String gender;
 
-    private String dob;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dob;
 
     private String email;
 
@@ -19,9 +23,11 @@ public class LearnerDTO {
 
     private String state;
 
+    private String password;
+
     private String address;
 
-    private String otp;
+    private Boolean isActive;
 
-    private Integer resetFlag;
+    private Integer loginCount;
 }
