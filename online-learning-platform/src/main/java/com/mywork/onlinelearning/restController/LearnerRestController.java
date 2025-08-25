@@ -21,7 +21,7 @@ public class LearnerRestController {
         String existingMail = service.checkEmail(email);
         System.out.println("Email : "+existingMail);
         if (existingMail==null){
-            return "Email not exists";
+            return "";
         }
         else {
             return "Email Registered";
@@ -31,9 +31,9 @@ public class LearnerRestController {
     @GetMapping("phoneCheck")
     public String checkPhone(@RequestParam("phone") Long phone){
         System.out.println("checkPhone method in restController");
-        String existingPhone = service.checkPhone(phone);
-        if(existingPhone == null || existingPhone.isEmpty()){
-            return "Phone number not registered";
+        Long existingPhone = service.checkPhone(phone);
+        if(existingPhone == null){
+            return "";
         }
         return "Phone number already registered";
     }
