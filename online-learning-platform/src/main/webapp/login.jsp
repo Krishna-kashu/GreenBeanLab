@@ -51,6 +51,7 @@
 
 <div class="container my-5">
     <div class="login-container">
+
         <h2 class="text-center mb-4">Login to Your Account</h2>
 
         <form action="login" method="post">
@@ -60,7 +61,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
+                <label for="password" class="form-label">Password / OTP</label>
                 <input type="password" id="password" name="password" class="form-control" required>
                 <small class="text-muted">Use the OTP sent to your email for first login</small>
             </div>
