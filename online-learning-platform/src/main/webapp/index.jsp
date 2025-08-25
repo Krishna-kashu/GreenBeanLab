@@ -30,13 +30,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link active" href="index">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="verifyOTP">Verify otp</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Courses</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
 
                 <li class="nav-item"><a class="btn btn-outline-light me-2" href="registerPage">Register</a></li>
                 <li class="nav-item"><a class="btn btn-warning" href="loginPage">Login</a></li>
+
             </ul>
         </div>
     </div>
@@ -54,8 +54,9 @@
             Join thousands of learners who are upgrading their skills and advancing
             their careers with flexible, interactive, and affordable learning.
         </p>
-        <a href="register" class="btn btn-primary btn-lg mt-3">Explore Courses</a>
-    </div>
+        <a href="registerPage" class="btn btn-primary btn-lg mt-3">Explore Courses</a>
+
+        </div>
 </div>
 
 <footer class="bg-dark text-white text-center py-3">
