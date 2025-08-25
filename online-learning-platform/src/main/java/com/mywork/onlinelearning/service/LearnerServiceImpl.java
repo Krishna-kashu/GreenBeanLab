@@ -11,7 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
+
 
 @Service
 public class LearnerServiceImpl implements LearnerService{
@@ -27,6 +29,9 @@ public class LearnerServiceImpl implements LearnerService{
     @Autowired
     private EmailSenderServiceImpl emailSenderService;
 
+
+    private Map<String, Integer> failedAttempts = new HashMap<>();
+
     public LearnerServiceImpl(){
         System.out.println("LearnerServiceImpl constructor");
         log.info("LearnerServiceImpl from log");
@@ -34,7 +39,9 @@ public class LearnerServiceImpl implements LearnerService{
 
     @Override
     public boolean valid(LearnerDTO dto) {
-        System.out.println("Running validate in FanServiceImpl");
+        System.out.println("Running validate in LearnerServiceImpl");
+
+        System.out.println("Service data: " + dto);
 
         if (dto == null){
             System.out.println("DTO is null");
@@ -50,6 +57,7 @@ public class LearnerServiceImpl implements LearnerService{
         }
         if (dto.getDob() == null){
             System.out.println("\n dob can not be null");
+            return false;
         }
         if (dto.getEmail() == null || !dto.getEmail().contains("@")){
             System.out.println("\nEmail is invalid");
@@ -73,25 +81,22 @@ public class LearnerServiceImpl implements LearnerService{
         BeanUtils.copyProperties(dto, entity);
 
         String otp = String.valueOf((int)(Math.random() * 900000) + 100000);
-//        entity.setPassword(passwordEncoder.encode(otp));
-//        entity.setOtp(null);
-//        entity.setOtpExpiry(LocalDateTime.now().plusMinutes(2));
-//        entity.setResetFlag(null);
-//        entity.setIsActive(true);
-//        entity.setPassword(null);
-//        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
-
         entity.setPassword(passwordEncoder.encode(otp));
-        entity.setOtp(null);
-        entity.setOtpExpiry(null);
-        entity.setResetFlag(null);
-        entity.setFirstLoginDone(false);
+        entity.setIsActive(true);
+        entity.setLoginCount(-1);
+        entity.setLockTime(null);
 
-        boolean saved = repo.save(entity);
-        if (saved){
-            emailSenderService.sendOTP(dto.getEmail(), otp);
+        if (repo.save(entity)) {
+            if (emailSenderService.sendOTP(dto.getEmail(), otp)) {
+                System.out.println("Email sent successfully");
+                return true;
+            }
+
+            System.out.println("Failed to send email");
+            return false;
         }
-        return saved;
+        System.out.println("Entity not saved");
+        return false;
     }
 
     @Override
@@ -101,104 +106,72 @@ public class LearnerServiceImpl implements LearnerService{
     }
 
     @Override
-    public String checkPhone(Long phone) {
+    public Long checkPhone(Long phone) {
         System.out.println("\ncheckPhone method in service");
         return repo.checkPhone(phone);
     }
 
     @Override
-    public LearnerDTO getUserDTO(String email, String password) {
-        System.out.println("getUserDTO method in service");
-        LearnerEntity entity = repo.getByMail(email);
+    public boolean setPassword(String email, String password, String confirmPassword) {
+        System.out.println("setPassword method in service");
 
-        if (entity==null){
-            System.out.println("\nno user found with email:"+email);
-            return null;
+        if (!password.equals(confirmPassword)) {
+            System.out.println("Passwords do not match");
+            return false;
         }
-        System.out.println("ResetFlag before resetting password: " + entity.getResetFlag());
 
-//        if (passwordEncoder.matches(password, entity.getPassword())){
-//            LearnerDTO dto = new LearnerDTO();
-//            BeanUtils.copyProperties(entity, dto);
-//            return dto;
-//        }
+        LearnerEntity entity = repo.getByMail(email);
+        if (entity == null) {
+            return false;
+        }
 
-        if (entity.getFirstLoginDone() == Boolean.FALSE) {
-            if (passwordEncoder.matches(password, entity.getPassword())) {
-                LearnerDTO dto = new LearnerDTO();
-                BeanUtils.copyProperties(entity, dto);
-                return dto;
+        entity.setPassword(passwordEncoder.encode(password));
+        entity.setLoginCount(1);
+        entity.setLockTime(null);
+        repo.updateLoginCount(entity);
+        return true;
+    }
+
+    public LearnerEntity getByEmail(String email) {
+        return repo.getByMail(email);
+    }
+
+    @Override
+    public boolean loginWithOtpOrPassword(String email, String inputPassword) {
+        LearnerEntity learner = repo.getByMail(email);
+        if (learner == null || !learner.getIsActive()) {
+            return false;
+        }
+
+        if (learner.getLockTime() != null) {
+            LocalDateTime now = LocalDateTime.now();
+            if (now.isBefore(learner.getLockTime().plusMinutes(1))) {
+                System.out.println("Account is temporarily locked");
+                return false;
+            } else {
+                learner.setLockTime(null);
+                learner.setLoginCount(0);
+                repo.updateLoginCount(learner);
             }
+        }
+
+        boolean matches = passwordEncoder.matches(inputPassword, learner.getPassword());
+
+        if (matches) {
+            if (learner.getLoginCount() < 0) {
+                return true;
+            }
+            learner.setLoginCount(0);
+            repo.updateLoginCount(learner);
+            return true;
         } else {
-            if (passwordEncoder.matches(password, entity.getPassword())) {
-                LearnerDTO dto = new LearnerDTO();
-                BeanUtils.copyProperties(entity, dto);
-                return dto;
+            learner.setLoginCount(learner.getLoginCount() + 1);
+            if (learner.getLoginCount() >= 3) {
+                learner.setLockTime(LocalDateTime.now());
+                System.out.println("Account locked due to 3 failed attempts");
             }
+            repo.updateLoginCount(learner);
+            return false;
         }
-
-        System.out.println("Password mismatch for email: "+email);
-        return null;
     }
-
-    @Override
-    public String generateOTP(String email) {
-        LearnerEntity entity = repo.getByMail(email);
-        if (entity == null) return null;
-
-        String otp = String.valueOf((int)(Math.random() * 900000)+100000);
-        System.out.println("otp..........:"+otp);
-        entity.setOtp(passwordEncoder.encode(otp));
-
-        entity.setOtpExpiry(LocalDateTime.now().plusMinutes(2));
-        entity.setResetFlag(2);
-
-        repo.save(entity);
-        emailSenderService.sendOTP(email,otp);
-
-        return otp;
-    }
-
-    @Override
-    public boolean verifyOTP(String email, String otp) {
-        LearnerEntity entity = repo.getByMail(email);
-        if (entity == null ) return false;
-
-        if (entity.getOtpExpiry().isBefore(LocalDateTime.now())) return false;
-
-        if (passwordEncoder.matches(otp, entity.getOtp())) {
-            entity.setOtp(null);
-            entity.setOtpExpiry(null);
-            entity.setResetFlag(1);
-            repo.save(entity);
-            return true;
-        }
-        return false;
-    }
-        @Override
-        public boolean resetPassword (String email, String newPassword, String confirmPassword){
-            if (!newPassword.equals(confirmPassword)) {
-                System.out.println("password do not match");
-                return false;
-            }
-
-            LearnerEntity entity = repo.getByMail(email);
-
-            if (entity == null){
-                System.out.println("No user found with email: " + email);
-                return false;
-            }
-            if(entity.getResetFlag() == null || entity.getResetFlag() != 1) {
-                System.out.println("Reset not allowed, current resetFlag = " + entity.getResetFlag());
-                return false;
-            }
-
-            entity.setPassword(passwordEncoder.encode(newPassword));
-            entity.setFirstLoginDone(true);
-            entity.setResetFlag(null);
-            repo.save(entity);
-
-            System.out.println("Password reset successful for " + email);
-            return true;
-        }
 }
