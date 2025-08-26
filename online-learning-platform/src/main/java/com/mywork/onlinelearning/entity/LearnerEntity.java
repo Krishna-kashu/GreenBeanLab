@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
         ),
         @NamedQuery( name = "getByEmail", query = "select l from LearnerEntity l where l.email=:email and l.isActive=true"
         ),
+        @NamedQuery(name = "updateDTO", query = "update LearnerEntity l set l.name=:name, l.gender=:gender, l.dob=:dob, l.phone=:phone, l.state=:state, l.address=:address, l.password=:password where l.learnerId=:id"
+        ),
 })
 public class LearnerEntity {
 
@@ -48,6 +50,9 @@ public class LearnerEntity {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "profile_image")
+    private String profileImage;
+
     @Column(name = "is_active")
     private Boolean isActive;
 
@@ -56,4 +61,13 @@ public class LearnerEntity {
 
     @Column(name = "lock_time", columnDefinition = "DATETIME")
     private LocalDateTime lockTime;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "pincode")
+    private String pincode;
+
+//    @Column(name = "last_otp_sent_time")
+//    private LocalDateTime lastOtpSentTime;
 }
