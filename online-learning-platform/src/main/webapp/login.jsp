@@ -57,7 +57,7 @@
         <form action="login" method="post">
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" name="email" value="${email}" class="form-control" required>
+                <input type="email" id="email" name="email" value="${email}"  class="form-control" required>
             </div>
 
             <div class="mb-3">
