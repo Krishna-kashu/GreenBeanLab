@@ -6,13 +6,16 @@ public interface LearnerService {
     boolean valid(LearnerDTO dto);
 
     String checkEmail(String email);
-    String checkPhone(Long phone);
-    LearnerDTO getUserDTO(String email, String password);
 
-    String generateOTP(String email);
+    Long checkPhone(Long phone);
 
-    boolean verifyOTP(String email, String otp);
+    boolean setPassword(String email, String password, String confirmPassword);
 
-    boolean resetPassword(String email, String newPassword, String confirmPassword);
+    boolean loginWithOtpOrPassword(String email, String inputPassword);
 
+    String updateEntity(LearnerDTO dto);
+
+    LearnerDTO getByID(int id);
+
+    LearnerDTO getByEmailDTO(String email);
 }
