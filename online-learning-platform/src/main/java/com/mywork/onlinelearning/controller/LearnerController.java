@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.PersistenceException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
+
 
 @Controller
 @RequestMapping("/")
@@ -76,19 +81,6 @@ public class LearnerController {
         }
     }
 
-//    @PostMapping("/loginWithOtp")
-//    public String loginWithOtp(@RequestParam("email") String email,
-//                               @RequestParam("otp") String otp,
-//                               Model model) {
-//        if (service.loginWithOtpOrPassword(email, otp)) {
-//            model.addAttribute("email", email);
-//            return "resetPassword";
-//        }
-//        model.addAttribute("msg", "Invalid OTP");
-//        return "loginWithOTP";
-//    }
-
-
     @PostMapping("/login")
     public String login(@RequestParam("email") String email,
                         @RequestParam("password") String password,
@@ -107,8 +99,8 @@ public class LearnerController {
                 model.addAttribute("email", email);
                 return "resetPassword";
             }
-
-            model.addAttribute("dto", learner);
+            LearnerDTO dto = service.getByEmailDTO(email);
+            model.addAttribute("dto", dto);
             model.addAttribute("email", email);
             return "success";
         }
@@ -117,9 +109,19 @@ public class LearnerController {
         return "login";
     }
 
+    @GetMapping("dashboard")
+    public String dashboard(@RequestParam("email") String email, Model model) {
+        LearnerDTO dto = service.getByEmailDTO(email);
+        if (dto == null) return "login";
+        model.addAttribute("dto", dto);
+        return "dashboard";
+    }
+
     @PostMapping("reset-password")
-    public String resetPassword(@RequestParam String email,@RequestParam String password,
-                                @RequestParam String confirmPassword, Model model){
+    public String resetPassword(@RequestParam String email,
+                                @RequestParam String password,
+                                @RequestParam String confirmPassword,
+                                Model model){
 
         boolean reset = service.setPassword(email, password, confirmPassword);
         if (reset) {
@@ -130,5 +132,86 @@ public class LearnerController {
             model.addAttribute("email", email);
             return "resetPassword";
         }
+    }
+
+//    @GetMapping("redirectToDashboard")
+//    public String dashboard(@RequestParam("email") String email, Model model, HttpSession session) {
+//        System.out.println("Redirecting to user dashboard for email: " + email);
+//
+//        LearnerDTO dto = service.getByEmailDTO(email);
+//        model.addAttribute("dto", dto);
+//        session.setAttribute("user", dto);
+//        return "dashboard";
+//    }
+
+    @PostMapping("update")
+    public String updateDashboard(LearnerDTO dto, Model model) {
+        System.out.println("Updating dashboard for DTO: " + dto);
+
+        if(dto.getLearnerId() == null) {
+            model.addAttribute("msg", "Invalid request: User ID missing");
+            return "dashboard";
+        }
+
+        LearnerDTO existing = service.getByID(dto.getLearnerId());
+        if(existing == null) {
+            model.addAttribute("msg", "User not found");
+            return "dashboard";
+        }
+
+        existing.setName(dto.getName());
+        existing.setGender(dto.getGender());
+        existing.setState(dto.getState());
+        existing.setDob(dto.getDob());
+        existing.setPhone(dto.getPhone());
+        existing.setAddress(dto.getAddress());
+
+        String result = service.updateEntity(existing);
+        model.addAttribute("dto", existing);
+        model.addAttribute("msg", result.equals("Updated") ? "Profile updated successfully" : "Update failed");
+
+        return "dashboard";
+    }
+    @PostMapping("uploadProfileImage")
+    public String uploadProfileImage(@RequestParam("email") String email,
+                                     @RequestParam("profileImage") MultipartFile file,
+                                     HttpServletRequest request,
+                                     Model model)  {
+
+        LearnerDTO dto = service.getByEmailDTO(email);
+        if (dto == null) {
+            model.addAttribute("msg", "Invalid user. Please login again.");
+            return "login";
+        }
+
+        if (!file.isEmpty()) {
+            try {
+                String uploadDir = request.getServletContext().getRealPath("/uploads/");
+                File dir = new File(uploadDir);
+                if (!dir.exists()) dir.mkdirs();
+
+                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                File dest = new File(dir, fileName);
+
+                file.transferTo(dest);
+
+                dto.setProfileImage("uploads/" + fileName);
+                service.updateEntity(dto);
+
+                model.addAttribute("dto", dto);
+                model.addAttribute("msg", "Profile picture uploaded successfully.");
+
+                return "dashboard";
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                model.addAttribute("msg", "Error uploading profile picture.");
+            }
+        } else {
+            model.addAttribute("msg", "No file selected.");
+        }
+
+        model.addAttribute("dto", dto);
+        return "dashboard";
     }
 }
