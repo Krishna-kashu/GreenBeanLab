@@ -3,6 +3,7 @@ package com.mywork.onlinelearning.dto;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import java.time.LocalDate;
 
 @Data
@@ -25,9 +26,15 @@ public class LearnerDTO {
 
     private String password;
 
+    private String profileImage;
+
     private String address;
 
     private Boolean isActive;
 
     private Integer loginCount;
+
+    private String city;
+
+    private String pincode;
 }
