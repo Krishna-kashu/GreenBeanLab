@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -173,5 +174,38 @@ public class LearnerServiceImpl implements LearnerService{
             repo.updateLoginCount(learner);
             return false;
         }
+    }
+
+    @Override
+    public LearnerDTO getByID(int id) {
+
+        LearnerDTO dto = new LearnerDTO();
+        LearnerEntity entity = repo.findByID(id);
+
+        if (entity!=null){
+            BeanUtils.copyProperties(entity, dto);
+        }
+        return dto;
+    }
+
+    @Override
+    public String updateEntity(LearnerDTO dto) {
+
+        System.out.println("updateEntity method in service "+"\tDTO in updateEntity method: "+dto);
+        LearnerEntity entity = new LearnerEntity();
+        BeanUtils.copyProperties( dto, entity);
+        boolean updated = repo.updateEntity(entity);
+        if (updated) return "Updated";
+        return "Update failed";
+    }
+
+    @Override
+    public LearnerDTO getByEmailDTO(String email) {
+        LearnerEntity entity = repo.getByMail(email);
+        if (entity == null) return null;
+
+        LearnerDTO dto = new LearnerDTO();
+        BeanUtils.copyProperties(entity, dto);
+        return dto;
     }
 }
