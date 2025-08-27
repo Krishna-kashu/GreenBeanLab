@@ -1,7 +1,6 @@
 package com.mywork.shop_app.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 public class ShopInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
@@ -18,5 +17,4 @@ public class ShopInitializer extends AbstractAnnotationConfigDispatcherServletIn
     protected String[] getServletMappings() {
         return new String[] {"/"};
     }
-
 }
