@@ -26,7 +26,6 @@ public class IceCreamInitializer extends AbstractAnnotationConfigDispatcherServl
     @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class[] {IceCreamConfiguration.class};
-
     }
 
     @Override
