@@ -72,7 +72,7 @@ public class BugController {
     @GetMapping("update")
     public String edit(@RequestParam("id") Integer id, Model model){
 
-        System.out.println("updateAll method in controller");
+        System.out.println("edit method in controller");
         System.out.println("id: "+id);
         BugDTO dto = service.getById(id);
         System.out.println("dto in update controller: "+dto);
