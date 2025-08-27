@@ -2,7 +2,6 @@ package com.mywork.bugreportsubmission.restController;
 
 import com.mywork.bugreportsubmission.service.BugServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,13 +14,13 @@ public class BugRestController {
     @Autowired
     BugServiceImpl service;
 
-    public BugRestController(){
+    public BugRestController() {
         System.out.println("no-arg constructor of BugRestController ");
     }
 
     @GetMapping("/emailCheck")
-    public String redirect(@RequestParam("email") String email){
-        System.out.println("redirect to index");
+    public String checkMail(@RequestParam("email") String email){
+        System.out.println("mail check method");
         System.out.println("restController email: "+email);
 
         boolean result = service.checkEmail(email);
