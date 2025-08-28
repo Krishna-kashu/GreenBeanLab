@@ -77,8 +77,9 @@
     <label for="fullName">Full Name</label>
     <input type="text" id="fullName" name="fullName" required />
 
+    <span style="color:red" id="emailerror" ></span><br>
     <label for="email">Email</label>
-    <input type="email" id="email" name="email" required />
+    <input type="email" id="email" name="email" onblur="checkMail()" required />
 
     <label for="phone">Phone Number</label>
     <input type="tel" id="phone" name="phone"  placeholder="Digits only" required />
@@ -88,7 +89,8 @@
 
     <label for="inquiryType">Inquiry Type</label>
     <select id="inquiryType" name="inquiryType" required>
-        <option value="" disabled selected>Select an option</option>
+        <option value="">Select an option</option>
+        <option value="Warranty">Warranty</option>
         <option value="General Question">General Question</option>
         <option value="Pricing">Pricing</option>
         <option value="Technical Support">Technical Support</option>
@@ -100,6 +102,25 @@
 
     <button type="submit">Send Inquiry</button>
 </form>
+
+<script>
+    function checkMail(){
+    const email = document.getElementById('email').value;
+    console.log(email)
+
+        if(email != ""){
+            var xhttp = new XMLHttpRequest();
+                xhttp.open("GET", "http://localhost:8083/product-inquiry-app/mailCheck?mail=" + email);
+
+            xhttp.send();
+
+            xhttp.onload = function(){
+                document.getElementById("emailerror").innerHTML = this.responseText;
+            }
+        }
+    }
+</script>
+
 <br>
 <br>
 <h2>
