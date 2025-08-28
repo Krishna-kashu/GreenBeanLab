@@ -3,6 +3,7 @@ package com.mywork.productinquiryapp.service;
 import com.mywork.productinquiryapp.dto.ProductDTO;
 import com.mywork.productinquiryapp.entity.ProductEntity;
 import com.mywork.productinquiryapp.repo.ProductRepoImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +53,7 @@ public class ProductServiceImpl implements ProductService{
 
         productDTOList = productEntities.stream().map(e->{ProductDTO productDTO = new ProductDTO();
             productDTO.setId(e.getId());
-            productDTO.setProductName(e.getProductName());
+            productDTO.setFullName(e.getFullName());
             productDTO.setEmail(e.getEmail());
             productDTO.setPhone(e.getPhone());
             productDTO.setProductName(e.getProductName());
@@ -70,14 +71,46 @@ public class ProductServiceImpl implements ProductService{
 
         ProductDTO dto = new ProductDTO();
         ProductEntity entity = repo.findByID(id);
-        dto.setId(entity.getId());
-        dto.setFullName(entity.getFullName());
-        dto.setEmail(entity.getEmail());
-        dto.setPhone(entity.getPhone());
-        dto.setProductName(entity.getProductName());
-        dto.setInquiryType(entity.getInquiryType());
-        dto.setMessage(entity.getMessage());
+//        dto.setId(entity.getId());
+//        dto.setFullName(entity.getFullName());
+//        dto.setEmail(entity.getEmail());
+//        dto.setPhone(entity.getPhone());
+//        dto.setProductName(entity.getProductName());
+//        dto.setInquiryType(entity.getInquiryType());
+//        dto.setMessage(entity.getMessage());
 
+        if (entity!=null) BeanUtils.copyProperties(entity, dto);
         return dto;
     }
+
+    @Override
+    public String updateDto(ProductDTO dto) {
+        System.out.println("updateDto method in service "+"\t dto in updateDto: "+dto);
+        ProductEntity entity = new ProductEntity();
+
+        BeanUtils.copyProperties(dto, entity);
+        boolean updated= repo.updateEntity(entity);
+        if (updated){
+            return "updated";
+        }return "update failed";
+
+    }
+
+    @Override
+    public String deleteDto(int id) {
+        System.out.println("deleteDto method in service");
+        boolean deleted = repo.deleteById(id);
+        if (deleted){
+            return "deleted";
+        }
+        return "delete failed";
+    }
+
+    @Override
+    public boolean checkMail(String email) {
+        System.out.println("checkEmail method in service");
+        return repo.checkMail(email);
+    }
+
+
 }
