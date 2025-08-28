@@ -13,6 +13,10 @@ import javax.persistence.*;
         @NamedQuery( name = "findAll", query = "select p from PassportEntity p"),
         @NamedQuery(name = "checkMail", query = "select p from PassportEntity p where p.email=:email"),
         @NamedQuery(name = "checkNumber", query = "select p from PassportEntity p where p.phone =:phone"),
+        @NamedQuery(name = "deleteById", query = "delete from PassportEntity p where p.id=:id"),
+        @NamedQuery(name = "updateEntity", query = "update PassportEntity p set p.passportOffice=:passportOffice, p.givenName=:givenName, " +
+                "p.surName=:surName, p.dob=:dob, p.email=:email, p.phone=:phone, " +
+                "p.sameLoginId=:sameLoginId, p.loginId=:loginId, p.password=:password, p.hintQuestion=:hintQuestion, p.hintAnswer=:hintAnswer where p.id=:id")
         })
 
 public class PassportEntity {
