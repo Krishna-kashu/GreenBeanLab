@@ -28,7 +28,7 @@ public class PassportRestController {
 
     @GetMapping("/numberCheck")
     public  String checkPhoneNUmber(@RequestParam("phone") long phone){
-        System.out.println("invoking checkPhoneNUmber method in restcontroller");
+        System.out.println("invoking checkPhoneNUmber method in restController");
         System.out.println("phone number "+phone);
 
         boolean res = service.checkPhoneNumber(phone);
