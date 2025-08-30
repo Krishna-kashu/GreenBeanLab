@@ -9,4 +9,7 @@ public interface PassportRepo {
     List<PassportEntity> findAll();
     boolean checkMail(String mail);
     boolean checkPhone(long phoneNumber);
+    boolean deleteById(int id);
+    boolean updateEntity(PassportEntity entity);
+    PassportEntity findById(int id);
 }
