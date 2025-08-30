@@ -1,6 +1,7 @@
 package com.mywork.passport_seva.repo;
 
 import com.mywork.passport_seva.entity.PassportEntity;
+import org.hibernate.QueryException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -103,5 +104,84 @@ public class PassportRepoImpl implements PassportRepo{
             if(manager!=null) manager.close();
         }
         return false;
+    }
+
+    @Override
+    public PassportEntity findById(int id) {
+        EntityManager manager = emf.createEntityManager();
+        try {
+            return manager.find(PassportEntity.class, id);
+        }catch (PersistenceException e){
+            System.out.println("error in findById"+e.getMessage());
+        }finally {
+            if(manager!= null) manager.close();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        System.out.println("deleteById method in repo");
+        boolean isDeleted = false;
+        EntityManager manager = null;
+        try {
+            manager = emf.createEntityManager();
+            EntityTransaction transaction = manager.getTransaction();
+            transaction.begin();
+
+            int row = manager.createNamedQuery("deleteById")
+                    .setParameter("id", id).executeUpdate();
+            if(row>0) isDeleted = true;
+            transaction.commit();
+        }catch (QueryException | NoResultException e){
+            System.out.println("error in deleteById: "+e.getMessage());
+        }finally {
+            if (manager != null) manager.close();
+        }
+        return isDeleted;
+    }
+
+    @Override
+    public boolean updateEntity(PassportEntity entity) {
+        System.out.println("Running updateEntity in Repo, entity: " + entity);
+        boolean isUpdated = false;
+        EntityManager manager = null;
+
+        try {
+            manager = emf.createEntityManager();
+            EntityTransaction transaction = manager.getTransaction();
+            transaction.begin();
+
+            Integer rows = manager.createNamedQuery("updateEntity")
+                    .setParameter("passportOffice", entity.getPassportOffice())
+                    .setParameter("givenName", entity.getGivenName())
+                    .setParameter("surName", entity.getSurName())
+                    .setParameter("dob", entity.getDob())
+                    .setParameter("email", entity.getEmail())
+                    .setParameter("phone", entity.getPhone())
+                    .setParameter("sameLoginId", entity.isSameLoginId())
+                    .setParameter("loginId", entity.getLoginId())
+                    .setParameter("password", entity.getPassword())
+                    .setParameter("hintQuestion", entity.getHintQuestion())
+                    .setParameter("hintAnswer", entity.getHintAnswer())
+                    .setParameter("id", entity.getId())
+                    .executeUpdate();
+
+            if (rows > 0) {
+                isUpdated = true;
+            }
+            transaction.commit();
+
+        } catch (NoResultException | QueryException e) {
+            System.out.println("Error in updateEntity method in repo: " + e.getMessage());
+        } finally {
+            if (manager != null) manager.close();
+        }
+        return isUpdated;
+    }
+
+
+    public static void emfClose(){
+        if(emf.isOpen()) emf.close();
     }
 }
