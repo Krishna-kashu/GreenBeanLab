@@ -17,6 +17,4 @@ public interface LearnerRepo {
     boolean updateEntity(LearnerEntity entity);
 
     LearnerEntity findByID(int id);
-
-//    boolean updateOtpAndTime(LearnerEntity learner);
 }
