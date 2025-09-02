@@ -1,6 +1,5 @@
 package com.mywork.productinquiryapp.repo;
 
-import com.mywork.productinquiryapp.dto.ProductDTO;
 import com.mywork.productinquiryapp.entity.ProductEntity;
 
 import java.util.List;
