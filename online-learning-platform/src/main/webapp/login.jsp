@@ -1,4 +1,6 @@
 <%@ page isELIgnored = "false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 
 <html lang="en">
 <head>
@@ -69,6 +71,15 @@
             <div class="text-center">
                 <input type="submit" class="btn btn-success w-100" value="Login">
             </div>
+
+            <c:if test="${not empty email}">
+                <div class="mb-3 text-center">
+                    <button type="button" id="resendBtn" class="btn btn-secondary w-100" disabled>
+                        Resend OTP (120s)
+                    </button>
+                </div>
+            </c:if>
+
         </form>
 
         <p class="mt-3 text-center text-danger">${msg}</p>
@@ -79,6 +90,39 @@
 <footer class="bg-dark text-white text-center py-3">
     <p class="mb-0">&copy; 2025 Online Learning Platform | All Rights Reserved</p>
 </footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let timeLeft = 120;
+        let btn = document.getElementById('resendBtn');
+
+        if (btn) {
+            let timer = setInterval(function () {
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    btn.innerText = "Resend OTP";
+                    btn.disabled = false;
+
+                    // Attach click handler to redirect to resend endpoint
+                    btn.addEventListener('click', function () {
+                        const email = document.getElementById('email').value;
+                        if (email) {
+                            window.location.href = 'resend-otp?email=' + encodeURIComponent(email);
+                        } else {
+                            alert("Email is missing");
+                        }
+                    });
+
+                } else {
+                    btn.innerText = `Resend OTP (${timeLeft}s)`;
+                    btn.disabled = true;
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    });
+</script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
