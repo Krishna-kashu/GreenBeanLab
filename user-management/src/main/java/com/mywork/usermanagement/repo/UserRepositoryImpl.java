@@ -1,0 +1,128 @@
+package com.mywork.usermanagement.repo;
+
+import com.mywork.usermanagement.entity.UserEntity;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.*;
+import java.util.Collections;
+import java.util.List;
+
+@Repository
+public class UserRepositoryImpl implements UserRepository{
+
+
+    private final static EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-work");
+
+    @Override
+    public boolean save(UserEntity entity) {
+
+
+        if (entity!=null){
+            System.out.println("entity in repo: "+entity);
+            EntityManager em =null;
+            EntityTransaction transaction = null;
+
+            try {
+                em = emf.createEntityManager();
+                transaction = em.getTransaction();
+
+                transaction.begin();
+                em.merge(entity);
+                transaction.commit();
+                System.out.println("entity saved: "+entity);
+            }catch (PersistenceException e){
+                if (transaction.isActive()) transaction.rollback();
+                System.err.println("error in save method in repo "+e.getMessage());
+
+            }finally {
+                if (em!=null) em.close();
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public List<UserEntity> fetchAll() {
+        List<UserEntity> list = Collections.emptyList();
+        EntityManager manager = null;
+
+        try {
+            manager = emf.createEntityManager();
+            Query query = manager.createNamedQuery("allUser");
+            list = query.getResultList();
+        }catch (PersistenceException e){
+            System.err.println("error in fetchAll "+e.getMessage());
+        }finally {
+            if (manager != null) manager.close();
+        }
+        return list;
+    }
+
+    @Override
+    public UserEntity findById(int id) {
+        EntityManager manager = emf.createEntityManager();
+        try {
+            return manager.find(UserEntity.class, id);
+        }catch (PersistenceException e){
+            System.err.println("error in findById "+e.getMessage());
+        }finally {
+            if (manager!=null) manager.close();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean updateEntity(UserEntity entity) {
+
+        System.out.println("updateEntity method in repoImpl");
+        boolean isUpdated = false;
+        EntityManager manager= null;
+        try {
+            manager = emf.createEntityManager();
+            EntityTransaction transaction = manager.getTransaction();
+            transaction.begin();
+
+            Integer row = manager.createNamedQuery("updateEntity")
+                    .setParameter( "", entity.getUserName())
+                    .setParameter("", entity.getGender())
+                    .setParameter("", entity.getAge())
+                    .setParameter("", entity.getEmail())
+                    .setParameter("", entity.getPhoneNumber())
+                    .setParameter("id", entity.getUserId()).executeUpdate();
+
+            if (row>0) isUpdated=true;
+            transaction.commit();
+        }catch (PersistenceException e){
+            System.err.println("error in update method "+e.getMessage());
+        }finally {
+            if (manager!=null) manager.close();
+        }
+        return isUpdated;
+    }
+
+    @Override
+    public boolean deleteBYId(int id) {
+        System.out.println("deleteById method is running in repo ");
+
+        boolean isDeleted = false;
+        EntityManager manager = null;
+        try {
+            manager = emf.createEntityManager();
+            EntityTransaction transaction = manager.getTransaction();
+            transaction.commit();
+
+            int row = manager.createNamedQuery("deleteById")
+                    .setParameter("id", id).executeUpdate();
+
+            if (row>0){
+                isDeleted = true;
+                transaction.commit();
+            }
+        }catch (PersistenceException e){
+            System.err.println("error i delete by id "+e.getMessage());
+        }finally {
+            if (manager!=null) manager.close();
+        }
+        return isDeleted;
+    }
+}
