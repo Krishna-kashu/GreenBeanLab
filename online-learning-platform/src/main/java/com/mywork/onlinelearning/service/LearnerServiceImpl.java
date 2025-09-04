@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -83,6 +82,7 @@ public class LearnerServiceImpl implements LearnerService{
 
         String otp = String.valueOf((int)(Math.random() * 900000) + 100000);
         entity.setPassword(passwordEncoder.encode(otp));
+        entity.setOtpGeneratedTime(LocalDateTime.now());
         entity.setIsActive(true);
         entity.setLoginCount(-1);
         entity.setLockTime(null);
@@ -207,5 +207,8 @@ public class LearnerServiceImpl implements LearnerService{
         LearnerDTO dto = new LearnerDTO();
         BeanUtils.copyProperties(entity, dto);
         return dto;
+    }
+    public void saveUpdatedLearner(LearnerEntity entity) {
+        repo.updateLoginCount(entity);
     }
 }
