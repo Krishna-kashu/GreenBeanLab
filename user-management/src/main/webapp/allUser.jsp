@@ -29,6 +29,9 @@
             <td>${u.phoneNumber}</td>
             <td>
                 <a href="getById?userId=${u.userId}"> View </a> /
+                <a href="edit?id=${u.userId}"> Edit </a> /
+                <a href="delete/${u.userId}"> Delete </a> /
+
             </td>
         </tr>
 
