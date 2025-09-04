@@ -37,7 +37,7 @@
     </tr>
 </table>
 
-    <a href="get">View All </a>
+    <a href="getAll">View All </a>
     <a href="index">Back to Home</a>
 
 </body>
