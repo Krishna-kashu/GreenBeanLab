@@ -68,6 +68,6 @@ public class LearnerEntity {
     @Column(name = "pincode")
     private String pincode;
 
-//    @Column(name = "last_otp_sent_time")
-//    private LocalDateTime lastOtpSentTime;
+    @Column(name = "otp_generated_time")
+    private LocalDateTime otpGeneratedTime;
 }
