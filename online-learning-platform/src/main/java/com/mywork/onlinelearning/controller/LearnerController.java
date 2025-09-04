@@ -5,6 +5,7 @@ import com.mywork.onlinelearning.entity.LearnerEntity;
 import com.mywork.onlinelearning.service.EmailSenderServiceImpl;
 import com.mywork.onlinelearning.service.LearnerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -134,16 +135,6 @@ public class LearnerController {
         }
     }
 
-//    @GetMapping("redirectToDashboard")
-//    public String dashboard(@RequestParam("email") String email, Model model, HttpSession session) {
-//        System.out.println("Redirecting to user dashboard for email: " + email);
-//
-//        LearnerDTO dto = service.getByEmailDTO(email);
-//        model.addAttribute("dto", dto);
-//        session.setAttribute("user", dto);
-//        return "dashboard";
-//    }
-
     @PostMapping("update")
     public String updateDashboard(LearnerDTO dto, Model model) {
         System.out.println("Updating dashboard for DTO: " + dto);
@@ -214,4 +205,34 @@ public class LearnerController {
         model.addAttribute("dto", dto);
         return "dashboard";
     }
+
+    @GetMapping("resend-otp")
+    public String resendOtp(@RequestParam String email, Model model) {
+        LearnerEntity learner = service.getByEmail(email);
+
+        if (learner == null || !learner.getIsActive()) {
+            model.addAttribute("msg", "Invalid email or user not active.");
+            return "login";
+        }
+
+        LocalDateTime lastSent = learner.getOtpGeneratedTime();
+        if (lastSent != null && LocalDateTime.now().isBefore(lastSent.plusMinutes(2))) {
+            long secondsLeft = java.time.Duration.between(LocalDateTime.now(), lastSent.plusMinutes(2)).getSeconds();
+            model.addAttribute("msg", "Please wait " + secondsLeft + " seconds before resending OTP.");
+            model.addAttribute("email", email);
+            return "login";
+        }
+
+        String newOtp = String.valueOf((int)(Math.random() * 900000) + 100000);
+        learner.setPassword(new BCryptPasswordEncoder().encode(newOtp));
+        learner.setOtpGeneratedTime(LocalDateTime.now());
+
+        service.saveUpdatedLearner(learner);
+
+        emailSenderService.sendOTP(email, newOtp);
+        model.addAttribute("msg", "OTP resent successfully.");
+        model.addAttribute("email", email);
+        return "login";
+    }
+
 }
