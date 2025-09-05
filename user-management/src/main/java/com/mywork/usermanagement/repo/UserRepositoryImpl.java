@@ -1,6 +1,7 @@
 package com.mywork.usermanagement.repo;
 
 import com.mywork.usermanagement.entity.UserEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -11,7 +12,8 @@ import java.util.List;
 public class UserRepositoryImpl implements UserRepository{
 
 
-    private final static EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-work");
+    @Autowired
+   EntityManagerFactory emf;
 
     @Override
     public boolean save(UserEntity entity) {
@@ -83,11 +85,11 @@ public class UserRepositoryImpl implements UserRepository{
             transaction.begin();
 
             Integer row = manager.createNamedQuery("updateEntity")
-                    .setParameter( "", entity.getUserName())
-                    .setParameter("", entity.getGender())
-                    .setParameter("", entity.getAge())
-                    .setParameter("", entity.getEmail())
-                    .setParameter("", entity.getPhoneNumber())
+                    .setParameter( "userName", entity.getUserName())
+                    .setParameter("gender", entity.getGender())
+                    .setParameter("age", entity.getAge())
+                    .setParameter("email", entity.getEmail())
+                    .setParameter("phoneNumber", entity.getPhoneNumber())
                     .setParameter("id", entity.getUserId()).executeUpdate();
 
             if (row>0) isUpdated=true;
@@ -109,7 +111,7 @@ public class UserRepositoryImpl implements UserRepository{
         try {
             manager = emf.createEntityManager();
             EntityTransaction transaction = manager.getTransaction();
-            transaction.commit();
+            transaction.begin();
 
             int row = manager.createNamedQuery("deleteById")
                     .setParameter("id", id).executeUpdate();
@@ -119,7 +121,7 @@ public class UserRepositoryImpl implements UserRepository{
                 transaction.commit();
             }
         }catch (PersistenceException e){
-            System.err.println("error i delete by id "+e.getMessage());
+            System.err.println("error in delete by id "+e.getMessage());
         }finally {
             if (manager!=null) manager.close();
         }
