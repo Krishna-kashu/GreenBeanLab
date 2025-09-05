@@ -6,11 +6,9 @@ import com.mywork.usermanagement.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.jws.WebParam;
 import java.util.List;
 
 @Controller
@@ -48,7 +46,10 @@ public class UserController {
             System.out.println("invalid DTO");
             return "index";
         }
-        return "success";
+        List<UserDTO> userDTOList = service.getAll();
+        model.addAttribute("user", userDTOList);
+
+        return "allUser";
     }
 
     @GetMapping("getAll")
@@ -72,4 +73,36 @@ public class UserController {
 
         return "idPage";
     }
+
+    @GetMapping("edit")
+    public  String edit(@RequestParam("id") Integer id, Model model){
+        System.out.println("edit method in controller");
+        UserDTO dto = service.getById(id);
+        System.out.println("dto in edit "+dto);
+        model.addAttribute("dto", dto);
+
+        return "edit";
+    }
+
+    @PostMapping("update")
+    public  String update(UserDTO dto, Model model){
+        System.out.println("update method in controller");
+        String updated = service.updateDto(dto);
+        System.out.println("updated: "+updated);
+        List<UserDTO> userDTOList = service.getAll();
+        model.addAttribute("user", userDTOList);
+
+        return "allUser";
+    }
+
+    @GetMapping("delete/{id}")
+    public String delete(@PathVariable("id") Integer id){
+        System.out.println("delete method in controller");
+
+        String deleted = service.deleteDto(id);
+        System.out.println("deleted "+deleted);
+
+        return "redirect:/getAll";
+    }
+
 }
