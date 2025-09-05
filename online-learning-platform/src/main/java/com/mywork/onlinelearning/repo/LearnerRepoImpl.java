@@ -13,7 +13,7 @@ public class LearnerRepoImpl implements LearnerRepo{
 
     private static final Logger log = LoggerFactory.getLogger(LearnerRepoImpl.class);
 
-    private final static EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-work");
+    private EntityManagerFactory emf;
 
     @Override
     public boolean save(LearnerEntity entity) {
