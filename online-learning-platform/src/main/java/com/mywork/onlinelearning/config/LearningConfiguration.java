@@ -99,19 +99,3 @@ public class LearningConfiguration implements WebMvcConfigurer {
         return properties;
     }
 }
-/*
-
-create one audit table that shd update whenever the rej table altered
-
-audit table fields:
-auditID
-//admin id
-//admin name
-learnerId
-updated by
-updated on
-created by
-created on
-
-
- */
