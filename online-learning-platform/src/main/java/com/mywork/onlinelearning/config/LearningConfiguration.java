@@ -99,8 +99,6 @@ public class LearningConfiguration implements WebMvcConfigurer {
         return properties;
     }
 }
-
-
 /*
 
 create one audit table that shd update whenever the rej table altered
