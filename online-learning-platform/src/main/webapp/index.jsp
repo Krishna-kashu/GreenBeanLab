@@ -36,6 +36,7 @@
 
                 <li class="nav-item"><a class="btn btn-outline-light me-2" href="registerPage">Register</a></li>
                 <li class="nav-item"><a class="btn btn-warning" href="loginPage">Login</a></li>
+                <li class="nav-item"><a href="${pageContext.request.contextPath}/allAudit">Audit History</a></li>
 
             </ul>
         </div>
