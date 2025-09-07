@@ -1,5 +1,5 @@
 <%@ page isELIgnored="false" %>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.mywork.onlinelearning.dto.LearnerDTO" %>
 
 <html lang="en">
@@ -13,6 +13,7 @@
 <div class="container my-5">
     <h2 class="mb-4 text-center">User Dashboard</h2>
 
+    <!-- Success Message -->
     <c:if test="${not empty msg}">
         <div class="alert alert-success text-center">${msg}</div>
     </c:if>
@@ -22,10 +23,8 @@
         <div class="col-md-4">
             <div class="card shadow-sm p-3 text-center">
                 <h5 class="mb-3">Profile Picture</h5>
-<!--                <img src="${dto.profileImage != null ? dto.profileImage : 'images/default-avatar.jpg'}"-->
-<!--                     alt="Profile" width="100" height="100">-->
                 <img src="${pageContext.request.contextPath}/${dto.profileImage}"
-                     alt="Profile" width="100" height="100">
+                     alt="Profile" width="100" height="100" class="rounded-circle mb-3">
 
                 <form action="uploadProfileImage" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="email" value="${dto.email}" />
@@ -34,10 +33,9 @@
                     </div>
                     <button type="submit" class="btn btn-sm btn-primary">Upload</button>
                 </form>
-
-                <a href="success.jsp" class="btn btn-warning mt-3">Back</a>
             </div>
         </div>
+
         <!-- Profile Details Section -->
         <div class="col-md-8">
             <div class="card shadow-sm p-4">
@@ -89,6 +87,23 @@
                             <option value="AndhraPradesh" ${dto.state=='AndhraPradesh'?'selected':''}>Andhra Pradesh</option>
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">City</label>
+                        <select id="city" name="city" class="form-select" required>
+                            <c:forEach var="city" items="${locationData[dto.state].keySet()}">
+                                <option value="${city}" ${city == dto.city ? 'selected' : ''}>${city}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Pincode</label>
+                        <select id="pincode" name="pincode" class="form-select" required>
+                            <c:forEach var="pin" items="${locationData[dto.state][dto.city]}">
+                                <option value="${pin}" ${pin == dto.pincode ? 'selected' : ''}>${pin}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
 
                     <div class="mb-3">
                         <label class="form-label">Address</label>
@@ -97,12 +112,97 @@
 
                     <div class="d-flex justify-content-between">
                         <button type="submit" class="btn btn-primary">Update Profile</button>
-                        <a href="index" class="btn btn-warning">Logout</a>
+                        <a href="success?email=${dto.email}" class="btn btn-warning mt-3">Back</a>
+                        <a href="index" class="btn btn-danger">Logout</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<!-- JavaScript -->
+<script>
+    const locationData = {
+        "Karnataka": {
+            "Bangalore": ["560001","560002","560003"],
+            "Mysore": ["570001","570002"],
+            "Mangalore": ["575001","575002"]
+        },
+        "Maharashtra": {
+            "Mumbai": ["400001","400002","400003"],
+            "Pune": ["411001","411002"]
+        },
+        "Goa": {
+            "Panaji": ["403001","403002"],
+            "Margao": ["403601","403602"]
+        },
+        "Telangana": {
+            "Hyderabad": ["500001","500002"],
+            "Warangal": ["506001","506002"]
+        },
+        "TamilNadu": {
+            "Chennai": ["600001","600002"],
+            "Coimbatore": ["641001","641002"]
+        },
+        "Kerala": {
+            "Kochi": ["682001","682002"],
+            "Thiruvananthapuram": ["695001","695002"]
+        },
+        "AndhraPradesh": {
+            "Vijayawada": ["520001","520002"],
+            "Visakhapatnam": ["530001","530002"]
+        }
+    };
+
+    const stateSelect = document.getElementById("state");
+    const citySelect = document.getElementById("city");
+    const pincodeSelect = document.getElementById("pincode");
+
+    stateSelect.addEventListener("change", function () {
+        const state = this.value;
+        citySelect.innerHTML = '<option value="" disabled selected>Select City</option>';
+        pincodeSelect.innerHTML = '<option value="" disabled selected>Select Pincode</option>';
+
+        if (locationData[state]) {
+            Object.keys(locationData[state]).forEach(city => {
+                let opt = document.createElement("option");
+                opt.value = city;
+                opt.textContent = city;
+                citySelect.appendChild(opt);
+            });
+        }
+    });
+
+    citySelect.addEventListener("change", function () {
+        const city = this.value;
+        const state = stateSelect.value;
+        pincodeSelect.innerHTML = '<option value="" disabled selected>Select Pincode</option>';
+
+        if (locationData[state] && locationData[state][city]) {
+            locationData[state][city].forEach(pin => {
+                let opt = document.createElement("option");
+                opt.value = pin;
+                opt.textContent = pin;
+                pincodeSelect.appendChild(opt);
+            });
+        }
+    });
+
+    // Preselect values on page load
+    window.addEventListener("DOMContentLoaded", function () {
+        if ("${dto.state}") {
+            stateSelect.value = "${dto.state}";
+            stateSelect.dispatchEvent(new Event('change'));
+        }
+        if ("${dto.city}") {
+            citySelect.value = "${dto.city}";
+            citySelect.dispatchEvent(new Event('change'));
+        }
+        if ("${dto.pincode}") {
+            pincodeSelect.value = "${dto.pincode}";
+        }
+    });
+</script>
 </body>
 </html>
