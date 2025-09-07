@@ -8,26 +8,27 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "learner_audit")
-public class AuditEntity {
+public class LearnerAuditEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "audit_id")
     private Integer auditId;
 
-    @Column(name = "audit_name")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "learner_id", nullable = false)
     private LearnerEntity learner;
 
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @Column(name = "updated_on")
+    @Column(name = "updated_on", columnDefinition = "DATETIME")
     private LocalDateTime updatedOn;
 
     @Column(name = "created_by")
     private String createdBy;
 
-    @Column(name = "created_on")
+    @Column(name = "created_on", columnDefinition = "DATETIME")
     private LocalDateTime createdOn;
 
 }
