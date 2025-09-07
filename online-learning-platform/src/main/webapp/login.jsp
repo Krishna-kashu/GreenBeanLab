@@ -97,7 +97,12 @@
         let btn = document.getElementById('resendBtn');
 
         if (btn) {
+            // Set initial text before countdown starts
+            btn.innerText = "Resend OTP (" + timeLeft + "s)";
+            btn.disabled = true;
+
             let timer = setInterval(function () {
+                timeLeft--;
                 if (timeLeft <= 0) {
                     clearInterval(timer);
                     btn.innerText = "Resend OTP";
@@ -113,10 +118,8 @@
                     });
 
                 } else {
-                    btn.innerText = `Resend OTP (${timeLeft}s)`;
-                    btn.disabled = true;
+                    btn.innerText = "Resend OTP (" + timeLeft + "s)";
                 }
-                timeLeft--;
             }, 1000);
         }
     });
