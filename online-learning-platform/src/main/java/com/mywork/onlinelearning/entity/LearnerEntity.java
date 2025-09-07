@@ -5,6 +5,8 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -70,4 +72,8 @@ public class LearnerEntity {
 
     @Column(name = "otp_generated_time")
     private LocalDateTime otpGeneratedTime;
+
+    @OneToMany(mappedBy = "learner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LearnerAuditEntity> audits = new ArrayList<>();
+
 }
