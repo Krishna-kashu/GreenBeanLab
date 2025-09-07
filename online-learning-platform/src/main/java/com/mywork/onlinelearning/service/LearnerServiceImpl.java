@@ -1,7 +1,9 @@
 package com.mywork.onlinelearning.service;
 
 import com.mywork.onlinelearning.dto.LearnerDTO;
+import com.mywork.onlinelearning.entity.LearnerAuditEntity;
 import com.mywork.onlinelearning.entity.LearnerEntity;
+import com.mywork.onlinelearning.repo.AuditRepoImpl;
 import com.mywork.onlinelearning.repo.LearnerRepoImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +18,15 @@ import java.util.Map;
 
 
 @Service
-public class LearnerServiceImpl implements LearnerService{
+public class LearnerServiceImpl implements LearnerService {
 
 
     private static final Logger log = LoggerFactory.getLogger(LearnerServiceImpl.class);
     @Autowired
     private LearnerRepoImpl repo;
+
+    @Autowired
+    private AuditRepoImpl auditRepo;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -32,7 +37,7 @@ public class LearnerServiceImpl implements LearnerService{
 
     private Map<String, Integer> failedAttempts = new HashMap<>();
 
-    public LearnerServiceImpl(){
+    public LearnerServiceImpl() {
         System.out.println("LearnerServiceImpl constructor");
         log.info("LearnerServiceImpl from log");
     }
@@ -43,35 +48,35 @@ public class LearnerServiceImpl implements LearnerService{
 
         System.out.println("Service data: " + dto);
 
-        if (dto == null){
+        if (dto == null) {
             System.out.println("DTO is null");
             return false;
         }
-        if(dto.getName()==null || dto.getName().trim().isEmpty()){
+        if (dto.getName() == null || dto.getName().trim().isEmpty()) {
             System.out.println("Name is invalid");
             return false;
         }
-        if (dto.getPhone() == null){
+        if (dto.getPhone() == null) {
             System.out.println("\nphone number can not be null");
             return false;
         }
-        if (dto.getDob() == null){
+        if (dto.getDob() == null) {
             System.out.println("\n dob can not be null");
             return false;
         }
-        if (dto.getEmail() == null || !dto.getEmail().contains("@")){
+        if (dto.getEmail() == null || !dto.getEmail().contains("@")) {
             System.out.println("\nEmail is invalid");
             return false;
         }
-        if (dto.getAddress() == null){
+        if (dto.getAddress() == null) {
             System.out.println("\naddress can not be null");
             return false;
         }
-        if (dto.getGender() == null){
+        if (dto.getGender() == null) {
             System.out.println("\ngender can not be null");
             return false;
         }
-        if (dto.getState() == null){
+        if (dto.getState() == null) {
             System.out.println("\nstate can not be null");
             return false;
         }
@@ -80,7 +85,7 @@ public class LearnerServiceImpl implements LearnerService{
         LearnerEntity entity = new LearnerEntity();
         BeanUtils.copyProperties(dto, entity);
 
-        String otp = String.valueOf((int)(Math.random() * 900000) + 100000);
+        String otp = String.valueOf((int) (Math.random() * 900000) + 100000);
         entity.setPassword(passwordEncoder.encode(otp));
         entity.setOtpGeneratedTime(LocalDateTime.now());
         entity.setIsActive(true);
@@ -88,6 +93,13 @@ public class LearnerServiceImpl implements LearnerService{
         entity.setLockTime(null);
 
         if (repo.save(entity)) {
+
+            LearnerAuditEntity audit = new LearnerAuditEntity();
+            audit.setLearner(entity);
+            audit.setCreatedBy(dto.getName());
+            audit.setCreatedOn(LocalDateTime.now());
+            auditRepo.save(audit);
+
             if (emailSenderService.sendOTP(dto.getEmail(), otp)) {
                 System.out.println("Email sent successfully");
                 return true;
@@ -98,6 +110,8 @@ public class LearnerServiceImpl implements LearnerService{
         }
         System.out.println("Entity not saved");
         return false;
+
+
     }
 
     @Override
@@ -182,7 +196,7 @@ public class LearnerServiceImpl implements LearnerService{
         LearnerDTO dto = new LearnerDTO();
         LearnerEntity entity = repo.findByID(id);
 
-        if (entity!=null){
+        if (entity != null) {
             BeanUtils.copyProperties(entity, dto);
         }
         return dto;
@@ -194,10 +208,22 @@ public class LearnerServiceImpl implements LearnerService{
         System.out.println("updateEntity method in service "+"\tDTO in updateEntity method: "+dto);
         LearnerEntity entity = new LearnerEntity();
         BeanUtils.copyProperties( dto, entity);
+
         boolean updated = repo.updateEntity(entity);
-        if (updated) return "Updated";
+
+        if (updated) {
+            LearnerAuditEntity audit = new LearnerAuditEntity();
+            audit.setLearner(entity);
+            audit.setUpdatedBy(entity.getName());
+            audit.setUpdatedOn(LocalDateTime.now());
+            auditRepo.save(audit);
+            return "Updated";
+        }
+
         return "Update failed";
     }
+
+
 
     @Override
     public LearnerDTO getByEmailDTO(String email) {
