@@ -214,16 +214,15 @@ public class LearnerServiceImpl implements LearnerService {
         if (updated) {
             LearnerAuditEntity audit = new LearnerAuditEntity();
             audit.setLearner(entity);
+            //audit.setCreatedBy();
+            //audit.setCreatedOn();
             audit.setUpdatedBy(entity.getName());
             audit.setUpdatedOn(LocalDateTime.now());
             auditRepo.save(audit);
             return "Updated";
         }
-
         return "Update failed";
     }
-
-
 
     @Override
     public LearnerDTO getByEmailDTO(String email) {
