@@ -2,7 +2,6 @@ package com.mywork.onlinelearning.controller;
 
 
 import com.mywork.onlinelearning.entity.LearnerAuditEntity;
-import com.mywork.onlinelearning.repo.AuditRepo;
 import com.mywork.onlinelearning.repo.AuditRepoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
