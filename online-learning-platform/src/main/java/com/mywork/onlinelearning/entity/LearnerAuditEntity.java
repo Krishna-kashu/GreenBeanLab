@@ -30,5 +30,4 @@ public class LearnerAuditEntity {
 
     @Column(name = "created_on", columnDefinition = "DATETIME")
     private LocalDateTime createdOn;
-
 }
