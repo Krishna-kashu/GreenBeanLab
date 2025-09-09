@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class LearnerRestController {
     @Autowired
     private LearnerServiceImpl service;
+
     public LearnerRestController(){
         System.out.println("LearnerRestController constructor");
     }
+
     @GetMapping("mailCheck")
     public String checkMail(@RequestParam("email") String email){
         System.out.println("checkMail method in restController");
