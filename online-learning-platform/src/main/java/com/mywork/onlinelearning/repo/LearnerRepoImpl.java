@@ -1,5 +1,6 @@
 package com.mywork.onlinelearning.repo;
 
+import com.mywork.onlinelearning.entity.LearnerAuditEntity;
 import com.mywork.onlinelearning.entity.LearnerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,11 +68,7 @@ public class LearnerRepoImpl implements LearnerRepo {
             List<String> resultList = manager.createNamedQuery("checkMail", String.class)
                     .setParameter("email", email)
                     .getResultList();
-//            if (resultList.isEmpty()) {
-//                return null;
-//            } else {
-//                return resultList.get(0);
-//            }
+
             return resultList.isEmpty() ? null : resultList.get(0);
 
         } catch (PersistenceException e) {
@@ -189,5 +186,7 @@ public class LearnerRepoImpl implements LearnerRepo {
         }
         return null;
     }
+
+
 
 }
