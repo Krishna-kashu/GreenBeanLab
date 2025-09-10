@@ -29,7 +29,7 @@
             <th>Created On</th>
             <th>Updated By</th>
             <th>Updated On</th>
-            <th> View </th>
+<!--            <th> View </th>-->
         </tr>
         <c:forEach var="audit" items="${audits}">
             <tr>
@@ -39,10 +39,10 @@
                 <td>${audit.createdOn}</td>
                 <td>${audit.updatedBy}</td>
                 <td>${audit.updatedOn}</td>
-                <td>
-                    <a href="edit?id=${audit.auditId}"> Edit </a> /
-                    <a href="delete/${audit.auditId}"> Delete </a> /
-                </td>
+<!--                <td>-->
+<!--                    <a href="edit?id=${audit.auditId}"> Edit </a> /-->
+<!--                    <a href="delete/${audit.auditId}"> Delete </a> /-->
+<!--                </td>-->
             </tr>
         </c:forEach>
     </table>
