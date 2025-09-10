@@ -231,7 +231,6 @@ public class LearnerController {
         return "login";
     }
 
-
     @GetMapping("success")
     public String success(@RequestParam("email") String email, Model model) {
         LearnerDTO dto = service.getByEmailDTO(email);
@@ -242,5 +241,4 @@ public class LearnerController {
         model.addAttribute("dto", dto);
         return "success";
     }
-
 }
