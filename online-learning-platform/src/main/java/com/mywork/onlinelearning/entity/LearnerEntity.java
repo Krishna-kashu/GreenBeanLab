@@ -75,5 +75,4 @@ public class LearnerEntity {
 
     @OneToMany(mappedBy = "learner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LearnerAuditEntity> audits = new ArrayList<>();
-
 }
