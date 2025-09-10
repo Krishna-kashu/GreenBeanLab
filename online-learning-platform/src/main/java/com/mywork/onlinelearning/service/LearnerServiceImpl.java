@@ -212,10 +212,18 @@ public class LearnerServiceImpl implements LearnerService {
         boolean updated = repo.updateEntity(entity);
 
         if (updated) {
+
+            LearnerAuditEntity firstAudit = auditRepo.findFirstByLearnerId(entity.getLearnerId());
             LearnerAuditEntity audit = new LearnerAuditEntity();
             audit.setLearner(entity);
-            //audit.setCreatedBy();
-            //audit.setCreatedOn();
+
+            if (firstAudit != null) {
+                audit.setCreatedBy(firstAudit.getCreatedBy());
+                audit.setCreatedOn(firstAudit.getCreatedOn());
+            } else {
+                audit.setCreatedBy(entity.getName());
+                audit.setCreatedOn(LocalDateTime.now());
+            }
             audit.setUpdatedBy(entity.getName());
             audit.setUpdatedOn(LocalDateTime.now());
             auditRepo.save(audit);
