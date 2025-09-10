@@ -1,5 +1,6 @@
 package com.mywork.onlinelearning.repo;
 
+import com.mywork.onlinelearning.entity.LearnerAuditEntity;
 import com.mywork.onlinelearning.entity.LearnerEntity;
 
 public interface LearnerRepo {
@@ -17,4 +18,5 @@ public interface LearnerRepo {
     boolean updateEntity(LearnerEntity entity);
 
     LearnerEntity findByID(int id);
+
 }
