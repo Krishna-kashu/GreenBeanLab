@@ -20,7 +20,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-
 @PropertySource("classpath:application.properties")
 @Configuration
 @EnableWebMvc
