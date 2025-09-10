@@ -3,7 +3,6 @@ package com.mywork.onlinelearning.dto;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
 import java.time.LocalDate;
 
 @Data
