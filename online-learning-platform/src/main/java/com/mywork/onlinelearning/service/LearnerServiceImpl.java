@@ -16,10 +16,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @Service
 public class LearnerServiceImpl implements LearnerService {
-
 
     private static final Logger log = LoggerFactory.getLogger(LearnerServiceImpl.class);
     @Autowired
@@ -33,7 +31,6 @@ public class LearnerServiceImpl implements LearnerService {
 
     @Autowired
     private EmailSenderServiceImpl emailSenderService;
-
 
     private Map<String, Integer> failedAttempts = new HashMap<>();
 
@@ -110,8 +107,6 @@ public class LearnerServiceImpl implements LearnerService {
         }
         System.out.println("Entity not saved");
         return false;
-
-
     }
 
     @Override
