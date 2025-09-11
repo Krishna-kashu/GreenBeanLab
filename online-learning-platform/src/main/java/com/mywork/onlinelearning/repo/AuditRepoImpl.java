@@ -4,10 +4,7 @@ import com.mywork.onlinelearning.entity.LearnerAuditEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 import java.util.List;
 
 @Repository
@@ -48,4 +45,18 @@ public class AuditRepoImpl implements AuditRepo{
             em.close();
         }
     }
+
+    @Override
+    public LearnerAuditEntity findFirstByLearnerId(Integer learnerId) {
+        EntityManager em = emf.createEntityManager();
+
+        String jpql = "SELECT a FROM LearnerAuditEntity a WHERE a.learner.learnerId = :id";
+
+        return em.createQuery(jpql, LearnerAuditEntity.class)
+                .setParameter("id", learnerId)
+                .setMaxResults(1)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
+}
 }
