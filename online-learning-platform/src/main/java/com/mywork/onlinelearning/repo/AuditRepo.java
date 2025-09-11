@@ -9,4 +9,6 @@ public interface AuditRepo {
     List<LearnerAuditEntity> findAllAudits();
 
     void save(LearnerAuditEntity audit);
+
+    LearnerAuditEntity findFirstByLearnerId(Integer learnerId);
 }
