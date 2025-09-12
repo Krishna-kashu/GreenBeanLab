@@ -2,13 +2,13 @@ package com.mywork.usermanagement.controller;
 
 import com.mywork.usermanagement.dto.UserDTO;
 
+import com.mywork.usermanagement.entity.AuditInfoEntity;
 import com.mywork.usermanagement.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.WebParam;
 import java.util.List;
 
 @Controller
@@ -17,7 +17,6 @@ public class UserController {
 
     @Autowired
     UserServiceImpl service;
-
 
     public UserController(){
         System.out.println("no-arg constructor of UserController");
@@ -104,5 +103,13 @@ public class UserController {
 
         return "redirect:/getAll";
     }
+
+    @GetMapping("audit/{id}")
+    public String getAuditHistory(@PathVariable("id") Integer id, Model model) {
+        List<AuditInfoEntity> audits = service.getAuditHistory(id);
+        model.addAttribute("audits", audits);
+        return "auditPage";
+    }
+
 
 }
