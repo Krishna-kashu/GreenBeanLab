@@ -2,6 +2,8 @@ package com.mywork.usermanagement.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class UserDTO {
 
@@ -17,4 +19,9 @@ public class UserDTO {
 
     private String  email;
 
+    private String address;
+
+    private String bio;
+
+    private List<String> roles;
 }
