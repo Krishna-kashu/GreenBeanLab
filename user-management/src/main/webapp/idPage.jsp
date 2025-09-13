@@ -39,6 +39,6 @@
 
     <a href="getAll">View All </a>
     <a href="index">Back to Home</a>
-
+<p><a href="audit/${user.userId}">View Audit History</a></p>
 </body>
 </html>
