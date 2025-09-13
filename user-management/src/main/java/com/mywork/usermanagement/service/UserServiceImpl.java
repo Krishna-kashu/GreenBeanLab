@@ -1,7 +1,10 @@
 package com.mywork.usermanagement.service;
 
 import com.mywork.usermanagement.dto.UserDTO;
+import com.mywork.usermanagement.entity.AuditInfoEntity;
+import com.mywork.usermanagement.entity.RoleEntity;
 import com.mywork.usermanagement.entity.UserEntity;
+import com.mywork.usermanagement.entity.UserProfileEntity;
 import com.mywork.usermanagement.repo.UserRepositoryImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,25 @@ public class UserServiceImpl implements UserService {
         System.out.println("DTO is not null");
         UserEntity entity = new UserEntity();
         BeanUtils.copyProperties(dto, entity);
+
+        if (dto.getAddress() != null || dto.getBio() != null) {
+            UserProfileEntity profile = new UserProfileEntity();
+            profile.setAddress(dto.getAddress());
+            profile.setBio(dto.getBio());
+            profile.setUser(entity);
+            entity.setProfile(profile);
+        }
+
+        if (dto.getRoles() != null && !dto.getRoles().isEmpty()) {
+            List<RoleEntity> roleEntities = dto.getRoles().stream().map(roleName -> {
+                RoleEntity role = new RoleEntity();
+                role.setRoleName(roleName);
+                role.getUsers().add(entity);
+                return role;
+            }).collect(Collectors.toList());
+            entity.setRoles(roleEntities);
+        }
+
         repository.save(entity);
         return true;
     }
@@ -44,6 +66,17 @@ public class UserServiceImpl implements UserService {
         userDTO.setGender(e.getGender());
         userDTO.setEmail(e.getEmail());
         userDTO.setPhoneNumber(e.getPhoneNumber());
+
+            if (e.getProfile() != null) {
+                userDTO.setAddress(e.getProfile().getAddress());
+                userDTO.setBio(e.getProfile().getBio());
+            }
+
+            if (e.getRoles() != null) {
+                userDTO.setRoles(e.getRoles().stream()
+                        .map(RoleEntity::getRoleName)
+                        .collect(Collectors.toList()));
+            }
 
         return userDTO;
         }).collect(Collectors.toList());
@@ -70,17 +103,22 @@ public class UserServiceImpl implements UserService {
         boolean updated= repository.updateEntity(entity);
         if (updated){
             return "updated";
-        }return "update failed";
-
+        }
+        return "update failed";
     }
 
     @Override
     public String deleteDto(int id) {
         System.out.println("deleteDto method in service");
-        boolean deleted = repository.deleteBYId(id);
+        boolean deleted = repository.softDeleteById(id);
         if (deleted){
             return "deleted";
         }
         return "delete failed";
+    }
+
+    @Override
+    public List<AuditInfoEntity> getAuditHistory(int userId) {
+        return repository.fetchAuditsByUserId(userId);
     }
 }
