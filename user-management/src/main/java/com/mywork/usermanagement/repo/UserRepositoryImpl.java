@@ -1,5 +1,6 @@
 package com.mywork.usermanagement.repo;
 
+import com.mywork.usermanagement.entity.AuditInfoEntity;
 import com.mywork.usermanagement.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,13 +12,11 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl implements UserRepository{
 
-
     @Autowired
-   EntityManagerFactory emf;
+    EntityManagerFactory emf;
 
     @Override
     public boolean save(UserEntity entity) {
-
 
         if (entity!=null){
             System.out.println("entity in repo: "+entity);
@@ -29,7 +28,11 @@ public class UserRepositoryImpl implements UserRepository{
                 transaction = em.getTransaction();
 
                 transaction.begin();
-                em.merge(entity);
+                if (entity.getUserId() == null) {
+                    em.persist(entity);
+                } else {
+                    em.merge(entity);
+                }
                 transaction.commit();
                 System.out.println("entity saved: "+entity);
             }catch (PersistenceException e){
@@ -102,29 +105,70 @@ public class UserRepositoryImpl implements UserRepository{
         return isUpdated;
     }
 
-    @Override
-    public boolean deleteBYId(int id) {
-        System.out.println("deleteById method is running in repo ");
+//    @Override
+//    public boolean deleteBYId(int id) {
+//        System.out.println("deleteById method is running in repo ");
+//
+//        boolean isDeleted = false;
+//        EntityManager manager = null;
+//        try {
+//            manager = emf.createEntityManager();
+//            EntityTransaction transaction = manager.getTransaction();
+//            transaction.begin();
+//
+//            int row = manager.createNamedQuery("deleteById")
+//                    .setParameter("id", id).executeUpdate();
+//
+//            if (row>0){
+//                isDeleted = true;
+//                transaction.commit();
+//            }
+//        }catch (PersistenceException e){
+//            System.err.println("error in delete by id "+e.getMessage());
+//        }finally {
+//            if (manager!=null) manager.close();
+//        }
+//        return isDeleted;
+//    }
 
-        boolean isDeleted = false;
+    @Override
+    public List<AuditInfoEntity> fetchAuditsByUserId(int userId) {
+        EntityManager manager = emf.createEntityManager();
+        try {
+            String jpql = "select a from AuditInfoEntity a where a.user.userId = :id";
+            return manager.createQuery(jpql, AuditInfoEntity.class)
+                    .setParameter("id", userId)
+                    .getResultList();
+        } finally {
+            manager.close();
+        }
+    }
+
+    @Override
+    public boolean softDeleteById(int id) {
+        System.out.println("softDeleteById method running in repo");
+
+        boolean updated = false;
         EntityManager manager = null;
         try {
             manager = emf.createEntityManager();
             EntityTransaction transaction = manager.getTransaction();
             transaction.begin();
 
-            int row = manager.createNamedQuery("deleteById")
-                    .setParameter("id", id).executeUpdate();
-
-            if (row>0){
-                isDeleted = true;
-                transaction.commit();
+            UserEntity entity = manager.find(UserEntity.class, id);
+            if (entity != null) {
+                entity.setDeleted(true);
+                manager.merge(entity);
+                updated = true;
             }
-        }catch (PersistenceException e){
-            System.err.println("error in delete by id "+e.getMessage());
-        }finally {
-            if (manager!=null) manager.close();
+
+            transaction.commit();
+        } catch (PersistenceException e) {
+            System.err.println("error in soft delete by id " + e.getMessage());
+        } finally {
+            if (manager != null) manager.close();
         }
-        return isDeleted;
+        return updated;
     }
+
 }
