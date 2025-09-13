@@ -30,10 +30,12 @@
     Email:
     <input type="email" name="email" id="email" value="${dto.email}" ><br><br>
 
+    Address:
     <input type="submit" value="Submit">
-    <!--    Submit </input>-->
+
 
 </form>
+<a href="audit/${dto.userId}">Check Audit History</a>
 
 <h3> Go <a href="index"> Home</a></h3>
 </body>
