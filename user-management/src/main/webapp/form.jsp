@@ -26,6 +26,16 @@
     Email:
     <input type="email" name="email" id="email" required><br><br>
 
+    <label>Address:</label>
+    <input type="text" name="address"/><br/>
+
+    <label>Bio:</label>
+    <textarea name="bio"></textarea><br/>
+
+    <label>Roles (comma separated):</label>
+    <input type="text" name="roles"/><br/>
+
+
     <input type="submit" value="Submit">
 <!--    Submit </input>-->
 
