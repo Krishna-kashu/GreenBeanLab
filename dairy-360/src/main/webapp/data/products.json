@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "title": "Cow Milk (1L)",
+    "description": "Fresh farm cow milk, rich in protein and calcium. Ideal for daily use in tea, coffee, and drinking. Delivered hygienically in eco-friendly packs.",
+    "price": 50,
+    "image": "images/cow-milk.jpeg"
+  },
+  {
+    "id": 2,
+    "title": "Buffalo Milk (1L)",
+    "description": "Thick, creamy buffalo milk with higher fat content. Perfect for making curd, paneer, and ghee.",
+    "price": 65,
+    "image": "images/buffalo-milk.jpeg"
+  },
+  {
+    "id": 3,
+    "title": "Goat Milk (1L)",
+    "description": "Easily digestible goat milk, rich in minerals and vitamins. A healthier alternative for people with mild lactose intolerance.",
+    "price": 80,
+    "image": "images/goat-milk.jpeg"
+  },
+  {
+    "id": 4,
+    "title": "Organic A2 Milk (1L)",
+    "description": "Pure desi cow A2 milk from grass-fed cows. Boosts immunity, improves digestion, and is chemical-free.",
+    "price": 100,
+    "image": "images/a2-milk.jpeg"
+  },
+  {
+    "id": 5,
+    "title": "Cheese (200g)",
+    "description": "Soft and creamy cheese, made from fresh cow milk. Perfect for sandwiches, pizzas, and healthy snacking.",
+    "price": 120,
+    "image": "images/cheese.jpg"
+  },
+  {
+    "id": 6,
+    "title": "Curd (500g)",
+    "description": "Rich, probiotic curd made from buffalo milk. Helps in digestion and keeps the gut healthy.",
+    "price": 60,
+    "image": "images/curd1.jpeg"
+  },
+  {
+    "id": 7,
+    "title": "Paneer (200g)",
+    "description": "Soft, fresh paneer cubes made from buffalo milk. Great source of protein for cooking curries and snacks.",
+    "price": 150,
+    "image": "images/paneer.jpeg"
+  },
+  {
+    "id": 8,
+    "title": "Butter (200g)",
+    "description": "Pure yellow butter churned from fresh cream. Adds richness to parathas, bread, and baking.",
+    "price": 180,
+    "image": "images/butter.jpeg"
+  },
+  {
+    "id": 9,
+    "title": "Ghee (500ml)",
+    "description": "Traditional pure cow ghee with natural aroma. Perfect for cooking, pooja, and boosting immunity.",
+    "price": 350,
+    "image": "images/ghee.jpeg"
+  },
+  {
+    "id": 10,
+    "title": "Flavored Milk (200ml)",
+    "description": "Refreshing chilled flavored milk in chocolate, strawberry, and vanilla. A healthy alternative to soft drinks.",
+    "price": 40,
+    "image": "images/flavored-milk.jpeg"
+  },
+  {
+    "id": 11,
+    "title": "Yogurt (200g)",
+    "description": "Thick and creamy yogurt, rich in probiotics. Keeps the stomach cool and improves digestion.",
+    "price": 70,
+    "image": "images/yogurt.jpeg"
+  },
+  {
+    "id": 12,
+    "title": "Ice Cream (500ml)",
+    "description": "Delicious ice cream in multiple flavors like vanilla, chocolate, and mango. Made from pure milk without preservatives.",
+    "price": 120,
+    "image": "images/icecream.jpeg"
+  }
+]
