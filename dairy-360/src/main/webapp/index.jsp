@@ -151,7 +151,7 @@
                 <li class="nav-item"><a class="nav-link text-white fw-semibold" href="register">Register</a></li>
                 <li class="nav-item"><a class="nav-link text-white fw-semibold" href="products">Products</a></li>
 <!--                <li class="nav-item"><a class="nav-link text-white fw-semibold" href="admin">Admin </a></li>-->
-<!--                <li class="nav-item"><a class="nav-link text-white fw-semibold" href="adminLogin">Admin Login</a></li>-->
+                <li class="nav-item"><a class="nav-link text-white fw-semibold" href="adminLogin">Admin Login</a></li>
 <!--                <li class="nav-item"><a class="nav-link text-white fw-semibold" href="seller">Seller</a></li>-->
 <!--                <li class="nav-item"><a class="nav-link text-white fw-semibold" href="buyer">Buyer</a></li>-->
 <!--                <li class="nav-item"><a class="nav-link text-white fw-semibold" href="delivery">Delivery</a></li>-->
