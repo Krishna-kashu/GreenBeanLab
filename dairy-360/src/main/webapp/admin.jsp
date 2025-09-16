@@ -76,6 +76,40 @@
 
 <!-- Dashboard -->
 <div class="container py-5">
+    <h1 class="text-center fw-bold mb-4">Admin Dashboard</h1>
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card text-center p-3">
+                <img src="images/users.png" class="card-img-top" style="height:150px;object-fit:contain;">
+                <h5 class="mt-3 text-success">Manage Users</h5>
+                <p>View or update buyers, sellers & delivery staff.</p>
+                <a href="UserServlet" class="btn btn-success">Go</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center p-3">
+                <img src="images/products.png" class="card-img-top" style="height:150px;object-fit:contain;">
+                <h5 class="mt-3 text-success">Manage Products</h5>
+                <p>Add, update or delete products.</p>
+                <a href="ProductServlet" class="btn btn-success">Go</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center p-3">
+                <img src="images/orders.png" class="card-img-top" style="height:150px;object-fit:contain;">
+                <h5 class="mt-3 text-success">Manage Orders</h5>
+                <p>Track and update customer orders.</p>
+                <a href="OrderServlet" class="btn btn-success">Go</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard -->
+<div class="container py-5">
     <div class="dashboard-header">
         <h1 class="fw-bold">Admin Dashboard</h1>
         <p class="lead">Manage Users, Products & Orders</p>
@@ -121,9 +155,48 @@
 </div>
 
 <!-- Footer -->
-<footer class="text-white text-center py-3">
-    &copy; 2025 Dairy-360. All rights reserved.
+<!-- Footer -->
+<footer class="text-lg-start py-4" style="background: linear-gradient(90deg, #2196F3, #4CAF50); color: #fff;">
+    <div class="container">
+        <div class="row text-center text-md-start">
+
+            <!-- Address -->
+            <div class="col-md-3 mb-3">
+                <h6 class="fw-bold">Address</h6>
+                <p class="mb-1"><i class="bi bi-geo-alt-fill me-2"></i>123 Dairy Street</p>
+                <p>Hyderabad, India</p>
+            </div>
+
+            <!-- Contact -->
+            <div class="col-md-3 mb-3">
+                <h6 class="fw-bold">Contact</h6>
+                <p class="mb-1"><i class="bi bi-telephone-fill me-2"></i>+91-9876543210</p>
+                <small>Mon-Sat: 7am - 9pm</small>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-3 mb-3">
+                <h6 class="fw-bold">Email</h6>
+                <p><i class="bi bi-envelope-fill me-2"></i>support@dairy360.com</p>
+            </div>
+
+            <!-- Social Links -->
+            <div class="col-md-3 mb-3">
+                <h6 class="fw-bold">Follow Us</h6>
+                <a href="#" class="text-white me-3"><i class="bi bi-facebook fs-4"></i></a>
+                <a href="#" class="text-white me-3"><i class="bi bi-instagram fs-4"></i></a>
+                <a href="#" class="text-white"><i class="bi bi-twitter-x fs-4"></i></a>
+            </div>
+        </div>
+
+        <hr class="border-light">
+
+        <div class="text-center">
+            &copy; 2025 Dairy-360. All rights reserved.
+        </div>
+    </div>
 </footer>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
