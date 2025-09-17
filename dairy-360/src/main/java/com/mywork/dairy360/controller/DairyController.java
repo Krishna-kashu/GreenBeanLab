@@ -14,24 +14,16 @@ public class DairyController {
     }
 
     @GetMapping("index")
-    public String redirectToIndex(){
-        System.out.println("redirecting to index");
-
+    public String getIndexPage()
+    {
+        System.out.println("redirected to Index page");
         return "index";
     }
-
     @GetMapping("login")
     public String redirectToLogin(){
         System.out.println("redirecting to login");
 
         return "login";
-    }
-
-    @GetMapping("register")
-    public String redirectToRegister(){
-        System.out.println("redirecting to register");
-
-        return "register";
     }
 
     @GetMapping("products")
@@ -41,18 +33,6 @@ public class DairyController {
         return "products";
     }
 
-    @GetMapping("admin")
-    public String redirectToAdminPage(){
-        System.out.println("admin login");
-        return "admin";
-    }
-
-    @GetMapping("adminLogin")
-    public String redirectToAdminLogin(){
-        System.out.println("redirecting to AdminLogin");
-
-        return "adminLogin";
-    }
 
     @GetMapping("seller")
     public String redirectToSeller(){
@@ -88,9 +68,4 @@ public class DairyController {
         return "delivery";
     }
 
-    public String register(){
-        System.out.println("register in controller");
-
-        return "login";
-    }
 }
