@@ -3,6 +3,7 @@ package com.mywork.dairy360.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -34,7 +35,22 @@ public class AdminEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Transient
-    private String confirmPassword;
+    @Column(name = "failed_attempts")
+    private Integer failedAttempts =0;
+
+    @Column(name = "account_non_locked")
+    private Boolean accountNonLocked = true;
+
+    @Column(name = "reset_token")
+    private String resetToken;
+
+    @Column(name = "lock_time")
+    private LocalDateTime lockTime;
+
+    @Column(name = "token_expiry")
+    private LocalDateTime tokenExpiry;
+
+    @Column(name = "profile_image_path")
+    private String profileImagePath;
 
 }
