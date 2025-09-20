@@ -161,4 +161,10 @@ public class AdminServiceImpl implements AdminService{
         return adminRepository.updateProfileImage(email, imagePath);
     }
 
+    @Override
+    public String checkMail(String email){
+        System.out.println("checkMail method in service for restController");
+        return adminRepository.checkMail(email);
+    }
+
 }
