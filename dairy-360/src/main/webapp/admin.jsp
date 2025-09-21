@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page isELIgnored = "false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -17,7 +20,8 @@
         }
 
         body {
-            background: url('images/dairy-bg1.jpg') center/cover no-repeat fixed;
+
+            background: url('${pageContext.request.contextPath}/images/dairy-bg1.jpg') center/cover no-repeat fixed;
             color: white;
             padding-top: 80px;
         }
@@ -45,12 +49,91 @@
             background: linear-gradient(90deg, #2196F3, #4CAF50);
         }
 
-        .nav-link {
-            color: #f8f9fa !important;
+
+        .navbar .nav-link {
+            color: #ffffff !important;
+            font-weight: 500;
         }
-        .nav-link:hover {
+        .navbar .nav-link:hover {
             color: #ffe082 !important;
         }
+
+
+        .modal .nav-tabs .nav-link {
+            background-color: #e9f7ef;
+            color: #4CAF50;
+        }
+        .modal .nav-tabs .nav-link.active {
+            background-color: #4CAF50;
+            color: #fff !important;
+        }
+        .modal .nav-tabs .nav-link:hover {
+            background-color: #d4edda;
+            color: #2e7d32;
+        }
+
+        .nav-tabs .nav-link {
+            background-color: #e9f7ef;
+            color: #4CAF50;
+            border-radius: 10px 10px 0 0;
+            margin-right: 5px;
+        }
+
+        .nav-tabs .nav-link:hover {
+            background-color: #d4edda;
+            color: #2e7d32;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #4CAF50;
+            color: #fff !important;
+            border: none;
+        }
+
+
+        .nav-link {
+            color:  #4CAF50
+        }
+        .nav-link:hover {
+            color: #1e3e1f !important;
+        }
+
+        .dropdown-menu {
+            border-radius: 15px;
+            box-shadow: 0px 6px 20px rgba(0,0,0,0.2);
+            padding: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(10px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0px 10px 40px rgba(0,0,0,0.3);
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from {transform: scale(0.8); opacity: 0;}
+            to {transform: scale(1); opacity: 1;}
+        }
+
+        .modal-title {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #4CAF50;
+        }
+
+        .modal-body img {
+            border: 4px solid #4CAF50;
+            padding: 5px;
+            background: #fff;
+        }
+
     </style>
 </head>
 <body>
@@ -58,8 +141,8 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand fw-bold text-white" href="index">
-            <img src="images/logo.png" alt="Logo" width="70" height="50" class="me-2">
+        <a class="navbar-brand fw-bold text-white" href="${pageContext.request.contextPath}/index">
+            <img src="${pageContext.request.contextPath}/images/logo.png" alt="Logo" width="70" height="50" class="me-2">
             Dairy-360
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -67,46 +150,100 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link fw-semibold" href="products">Products</a></li>
-                <li class="nav-item"><a class="nav-link fw-semibold" href="logout">Logout</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/products">Products</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/audit-info">Audit Info</a></li>
+
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="adminDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                        <img src="${pageContext.request.contextPath}/${dto.profileImagePath != null ? dto.profileImagePath : 'images/default-avatar.jpeg'}"
+                             alt="Profile" width="40" height="40" class="rounded-circle me-2">
+
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                        <li>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
+                                View Profile
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin-logout">Logout</a></li>
+                    </ul>
+
+
+                </li>
+
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- Dashboard -->
-<div class="container py-5">
-    <h1 class="text-center fw-bold mb-4">Admin Dashboard</h1>
-    <div class="row g-4">
-
-        <div class="col-md-4">
-            <div class="card text-center p-3">
-                <img src="images/users.png" class="card-img-top" style="height:150px;object-fit:contain;">
-                <h5 class="mt-3 text-success">Manage Users</h5>
-                <p>View or update buyers, sellers & delivery staff.</p>
-                <a href="UserServlet" class="btn btn-success">Go</a>
-            </div>
+<div class="container mt-3">
+    <c:if test="${not empty successMessage}">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            ${successMessage}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+    </c:if>
 
-        <div class="col-md-4">
-            <div class="card text-center p-3">
-                <img src="images/products.png" class="card-img-top" style="height:150px;object-fit:contain;">
-                <h5 class="mt-3 text-success">Manage Products</h5>
-                <p>Add, update or delete products.</p>
-                <a href="ProductServlet" class="btn btn-success">Go</a>
-            </div>
+    <c:if test="${not empty errorMessage}">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            ${errorMessage}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+    </c:if>
+</div>
 
-        <div class="col-md-4">
-            <div class="card text-center p-3">
-                <img src="images/orders.png" class="card-img-top" style="height:150px;object-fit:contain;">
-                <h5 class="mt-3 text-success">Manage Orders</h5>
-                <p>Track and update customer orders.</p>
-                <a href="OrderServlet" class="btn btn-success">Go</a>
+<div class="modal fade" id="profileModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <h5 class="modal-title text-center">Admin Profile</h5>
+            <div class="modal-body text-center">
+
+                <!-- Profile Picture (clickable upload) -->
+                <form action="${pageContext.request.contextPath}/admin/uploadProfileImage"
+                      method="post" enctype="multipart/form-data" id="imageUploadForm">
+                    <input type="hidden" name="email" value="${dto.email}">
+
+                    <label for="profileImageInput" style="cursor:pointer;">
+                        <img src="${pageContext.request.contextPath}/${dto.profileImagePath != null ? dto.profileImagePath : 'images/default-avatar.jpeg'}"
+                             width="120" height="120"
+                             class="rounded-circle mb-3 shadow"
+                             alt="Profile">
+                    </label>
+                    <input type="file" id="profileImageInput" name="profileImage"
+                           class="d-none" onchange="document.getElementById('imageUploadForm').submit();">
+                </form>
+
+
+                <!-- Edit Info Form -->
+                <form action="${pageContext.request.contextPath}/updateAdminProfile" method="post" class="text-start mt-3">
+                    <input type="hidden" name="email" value="${dto.email}">
+
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="text" value="${dto.email}" class="form-control" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" name="adminName" value="${dto.adminName}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" name="phoneNumber" value="${dto.phoneNumber}" class="form-control" required>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-success rounded-pill">Update</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Dashboard -->
 <div class="container py-5">
@@ -151,10 +288,11 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 </div>
 
-<!-- Footer -->
 <!-- Footer -->
 <footer class="text-lg-start py-4" style="background: linear-gradient(90deg, #2196F3, #4CAF50); color: #fff;">
     <div class="container">
