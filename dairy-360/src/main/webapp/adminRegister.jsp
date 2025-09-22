@@ -125,6 +125,8 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     const SUPER_ADMIN_KEY = "SUPER123";
 
@@ -149,6 +151,32 @@
     }
     return true;
 }
+$(document).ready(function(){
+    $("input[name='email']").on("blur", function(){
+        var email = $(this).val();
+        if(email.length > 0){
+            $.ajax({
+                url: "/dairy-360/api/admin/mailCheck",
+                type: "GET",
+                data: { email: email },
+                success: function(response){
+                    if(response === "Available"){
+                        console.log("Email available");
+                    }
+                },
+                error: function(xhr){
+                    if(xhr.status === 409){
+                        alert("This email is already registered!");
+                    } else {
+                        console.error("Error while checking email:", xhr);
+                    }
+                }
+            });
+        }
+    });
+});
+
+
 </script>
 
 </body>
