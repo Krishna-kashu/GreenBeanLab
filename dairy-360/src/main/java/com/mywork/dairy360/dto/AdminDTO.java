@@ -31,4 +31,7 @@ public class AdminDTO {
     @Size(min = 6, message = "Password must have at least 6 characters")
     private String confirmPassword;
 
+    private Boolean accountNonLocked = true;
+
+    private String profileImagePath;
 }
