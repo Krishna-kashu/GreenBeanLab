@@ -2,16 +2,14 @@ package com.mywork.dairy360.dto;
 
 import com.mywork.dairy360.entity.AdminEntity;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
 @Data
-public class AuditDTO {
-    private Long id;
+public class AdminAuditDTO {
+    private Integer id;
 
     private AdminEntity admin;
 
@@ -30,5 +28,4 @@ public class AuditDTO {
         return logoutTime == null ? null :
                 Date.from(logoutTime.atZone(ZoneId.systemDefault()).toInstant());
     }
-
 }
