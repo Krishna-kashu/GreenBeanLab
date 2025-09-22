@@ -7,16 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/admin")
-public class AdminController {
+public class AdminRestController {
 
     @Autowired
     private AdminServiceImpl adminService;
@@ -25,16 +22,28 @@ public class AdminController {
     @ApiOperation(value = "Save admin data")
     public ResponseEntity<String> saveAdminDetails(@Valid @RequestBody AdminDTO adminDTO, BindingResult bindingResult) {
         System.out.println("saveAdminDetails method in rest controller");
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             System.out.println("Error in fields");
             bindingResult.getFieldErrors()
-                    .forEach(fieldError -> System.out.println(fieldError.getField()+"-> "+fieldError.getDefaultMessage()));
+                    .forEach(fieldError -> System.out.println(fieldError.getField() + "-> " + fieldError.getDefaultMessage()));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errors in fields");
         }
-        if(adminService.save(adminDTO)) {
+        if (adminService.save(adminDTO)) {
             return ResponseEntity.ok("Details saved");
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid details");
+        }
+    }
+
+    @GetMapping("/mailCheck")
+    public ResponseEntity<String> checkMail(@RequestParam("email") String email) {
+        System.out.println("checkMail method in admin restController : " + email);
+        String mail = adminService.checkMail(email);
+
+        if (mail == null) {
+            return ResponseEntity.ok("Available");
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email Registered");
         }
     }
 }
