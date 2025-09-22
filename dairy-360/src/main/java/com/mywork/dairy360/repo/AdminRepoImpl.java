@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Repository
 public class AdminRepoImpl implements AdminRepo {
@@ -55,7 +56,7 @@ public class AdminRepoImpl implements AdminRepo {
         AdminEntity entity = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
-            entity = (AdminEntity) entityManager.createNamedQuery("getPasswordByEmail").setParameter("email", email).getSingleResult();
+            entity = (AdminEntity) entityManager.createNamedQuery("getByEmail").setParameter("email", email).getSingleResult();
             return entity;
         } catch (PersistenceException e) {
             System.out.println(e.getMessage());
@@ -78,7 +79,7 @@ public class AdminRepoImpl implements AdminRepo {
             entityManager = entityManagerFactory.createEntityManager();
             entityTransaction = entityManager.getTransaction();
             entityTransaction.begin();
-            existingEntity = (AdminEntity) entityManager.createNamedQuery("getPasswordByEmail").setParameter("email", email).getSingleResult();
+            existingEntity = (AdminEntity) entityManager.createNamedQuery("getByEmail").setParameter("email", email).getSingleResult();
             if (existingEntity == null) {
                 return false;
             }
@@ -104,7 +105,7 @@ public class AdminRepoImpl implements AdminRepo {
     public AdminEntity getByResetToken(String token) {
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
-            return em.createQuery("SELECT a FROM AdminEntity a WHERE a.resetToken = :token", AdminEntity.class)
+            return em.createNamedQuery("getByResetToken", AdminEntity.class)
                     .setParameter("token", token)
                     .getSingleResult();
         } catch (Exception e) {
@@ -119,8 +120,7 @@ public class AdminRepoImpl implements AdminRepo {
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
-            String jpql = "SELECT a FROM AdminEntity a WHERE a.email = :email";
-            TypedQuery<AdminEntity> query = entityManager.createQuery(jpql, AdminEntity.class);
+            TypedQuery<AdminEntity> query = entityManager.createNamedQuery("getByEmail", AdminEntity.class);
             query.setParameter("email", email);
             return query.getSingleResult();
         } catch (NoResultException e) {
@@ -138,7 +138,7 @@ public class AdminRepoImpl implements AdminRepo {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            AdminEntity admin = em.createQuery("SELECT a FROM AdminEntity a WHERE a.email = :email", AdminEntity.class)
+            AdminEntity admin = em.createNamedQuery("getByEmail", AdminEntity.class)
                     .setParameter("email", email)
                     .getSingleResult();
             if (admin == null) return false;
@@ -154,5 +154,22 @@ public class AdminRepoImpl implements AdminRepo {
         }
     }
 
+    @Override
+    public String checkMail(String email){
+        System.out.println("checkMail method in repo");
+        EntityManager manager = null;
 
+        try {
+            manager = entityManagerFactory.createEntityManager();
+            List<AdminEntity> result = manager.createNamedQuery("getByEmail", AdminEntity.class)
+                    .setParameter("email", email).getResultList();
+
+            return result.isEmpty() ? null : result.get(0).getEmail();
+        }catch (PersistenceException e){
+            System.out.println("Error in check mail: " +e.getMessage());
+            return null;
+        }finally {
+            if(manager != null) manager.close();
+        }
+    }
 }
