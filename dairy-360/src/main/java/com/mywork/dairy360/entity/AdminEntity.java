@@ -7,14 +7,10 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "admin_details",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "email"),
-                @UniqueConstraint(columnNames = "phone_number")
-        })
+@Table(name = "admin_details")
 @NamedQueries({
-        @NamedQuery(name = "getPasswordByEmail",
-                query = "SELECT a FROM AdminEntity a WHERE a.email = :email"),
+        @NamedQuery(name = "getByEmail", query = "SELECT a FROM AdminEntity a WHERE a.email = :email"),
+        @NamedQuery(name = "getByResetToken", query = "SELECT a FROM AdminEntity a WHERE a.resetToken = :token"),
         })
 public class AdminEntity {
 
