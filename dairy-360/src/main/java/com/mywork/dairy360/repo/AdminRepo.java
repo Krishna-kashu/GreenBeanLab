@@ -9,10 +9,11 @@ public interface AdminRepo {
 
     boolean updateAdminProfileByEmail(String email,String adminName,String phoneNumber);
 
-
     AdminEntity getByResetToken(String token);
 
     AdminEntity getAdminEntityByEmail(String email);
 
     boolean updateProfileImage(String email, String imagePath);
+
+    String checkMail(String email);
 }
