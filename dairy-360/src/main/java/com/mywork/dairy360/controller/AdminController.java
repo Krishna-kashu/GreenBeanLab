@@ -248,10 +248,13 @@ public class AdminController {
         }
 
         try {
-            String uploadDir = "C:/dairy/uploads";
+            String uploadDir = System.getProperty("user.dir") + "/src/main/webapp/uploads/";
+            File dir = new File(uploadDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
             File saveFile = new File(uploadDir, fileName);
-            saveFile.getParentFile().mkdirs();
             file.transferTo(saveFile);
 
             String dbPath = "uploads/" + fileName;
@@ -259,12 +262,12 @@ public class AdminController {
 
             AdminDTO updated = adminService.getAdminDetailsByEmail(email);
             model.addAttribute("dto", updated);
-            System.out.println("image updated successfully");
             model.addAttribute("successMessage", "Profile picture updated successfully!");
+            System.out.println("image updated successfully");
+
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Error uploading file: " + e.getMessage());
         }
-
         return "admin";
     }
 }
