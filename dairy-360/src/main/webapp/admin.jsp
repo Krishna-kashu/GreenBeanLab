@@ -339,7 +339,7 @@
         <!-- Users Management -->
         <div class="col-md-4">
             <div class="card text-center p-3">
-                <img src="images/users.png" class="card-img-top" alt="Users" style="height:180px; object-fit:contain;">
+                <img src="#" class="card-img-top" alt="Users" style="height:180px; object-fit:contain;">
                 <div class="card-body">
                     <h5 class="card-title text-success">Manage Users</h5>
                     <p class="card-text">View, approve or remove Buyers, Sellers, and Delivery Staff.</p>
@@ -351,7 +351,7 @@
         <!-- Products Management -->
         <div class="col-md-4">
             <div class="card text-center p-3">
-                <img src="images/products.png" class="card-img-top" alt="Products" style="height:180px; object-fit:contain;">
+                <img src="#" class="card-img-top" alt="Products" style="height:180px; object-fit:contain;">
                 <div class="card-body">
                     <h5 class="card-title text-success">Manage Products</h5>
                     <p class="card-text">Add, update, or delete milk & by-products from the system.</p>
@@ -363,7 +363,7 @@
         <!-- Orders Management -->
         <div class="col-md-4">
             <div class="card text-center p-3">
-                <img src="images/orders.png" class="card-img-top" alt="Orders" style="height:180px; object-fit:contain;">
+                <img src="#" class="card-img-top" alt="Orders" style="height:180px; object-fit:contain;">
                 <div class="card-body">
                     <h5 class="card-title text-success">Manage Orders</h5>
                     <p class="card-text">Track, assign delivery, and update order status.</p>
