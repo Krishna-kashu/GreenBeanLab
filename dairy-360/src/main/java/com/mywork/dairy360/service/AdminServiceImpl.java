@@ -3,6 +3,8 @@ package com.mywork.dairy360.service;
 import com.mywork.dairy360.dto.AdminDTO;
 import com.mywork.dairy360.entity.AdminEntity;
 import com.mywork.dairy360.repo.AdminRepoImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,11 +21,13 @@ public class AdminServiceImpl implements AdminService{
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    private static final Logger log = LoggerFactory.getLogger(AdminServiceImpl.class);
+
     private static final int LOCK_TIME_DURATION = 2;
 
     public AdminServiceImpl()
     {
-        System.out.println("AdminServiceImpl constructor");
+        log.info("AdminServiceImpl from log");
     }
 
     @Override
