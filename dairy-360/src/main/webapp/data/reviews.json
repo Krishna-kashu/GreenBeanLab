@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Priya",
+    "location": "Bangalore",
+    "review": "Best milk delivery service! Always fresh and on time."
+  },
+  {
+    "name": "Rahul",
+    "location": "Hyderabad",
+    "review": "The paneer tastes just like homemade. Love it!"
+  },
+  {
+    "name": "Kavitha",
+    "location": "Chennai",
+    "review": "Switched to Dairy-360 and never looked back!"
+  }
+]
