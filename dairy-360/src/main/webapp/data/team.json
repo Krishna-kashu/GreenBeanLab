@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Ramesh Kumar",
+    "role": "Founder & CEO",
+    "image": "images/founder.jpg"
+  },
+  {
+    "name": "Anita Sharma",
+    "role": "Operations Manager",
+    "image": "images/manager.jpg"
+  },
+  {
+    "name": "Rahul Verma",
+    "role": "Quality Head",
+    "image": "images/quality.jpg"
+  },
+  {
+    "name": "Priya Nair",
+    "role": "Customer Relations",
+    "image": "images/customer.jpg"
+  }
+]
