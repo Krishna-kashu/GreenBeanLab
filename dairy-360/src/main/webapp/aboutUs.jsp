@@ -14,7 +14,7 @@
             padding-top: 80px; /* space for fixed navbar */
         }
         .navbar {
-            background: linear-gradient(90deg, #38d3ff, #4CAF50);
+            background: linear-gradient(90deg, #2196F3, #4CAF50);
             position: fixed;
             top: 0;
             left: 0;
