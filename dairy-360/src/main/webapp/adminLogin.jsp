@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .navbar {
-            background: linear-gradient(90deg,#38d3ff,#4CAF50);
+            background: linear-gradient(90deg, #2196F3, #4CAF50);
             position: fixed; top:0; width:100%; z-index:1000;
         }
         body {
