@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Fresh Milk",
+    "description": "Get daily fresh and organic milk directly from trusted farmers.",
+    "image": "images/milk.jpeg"
+  },
+  {
+    "title": "By-Products",
+    "description": "Buy cheese, butter, ghee, and curd with premium quality assurance.",
+    "image": "images/cheese.jpg"
+  },
+  {
+    "title": "Fast Delivery",
+    "description": "On-time doorstep delivery with freshness preserved always.",
+    "image": "images/delivery.jpeg"
+  }
+]
