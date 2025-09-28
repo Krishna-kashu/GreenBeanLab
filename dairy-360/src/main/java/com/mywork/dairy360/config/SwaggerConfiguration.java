@@ -14,6 +14,7 @@ public class SwaggerConfiguration {
 
     @Bean
     public Docket api() {
+        System.out.println("Docket api in SwaggerConfiguration class");
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.mywork.dairy360"))
@@ -21,6 +22,5 @@ public class SwaggerConfiguration {
                 .build();
     }
 }
-
 
 //link : http://localhost:8080/dairy-360/swagger-ui.html
