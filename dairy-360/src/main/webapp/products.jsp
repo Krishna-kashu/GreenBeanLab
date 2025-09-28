@@ -10,7 +10,7 @@
 
     <style>
         .navbar {
-            background: linear-gradient(90deg, #38d3ff, #4CAF50);
+            background: linear-gradient(90deg, #2196F3, #4CAF50);
             position: fixed;
             top: 0; left: 0;
             width: 100%;
@@ -88,9 +88,47 @@
     </div>
 
 <!-- Footer -->
-<footer class="text-white text-center py-3">
-    &copy; 2025 Dairy-360. All rights reserved.
+<footer class="text-lg-start py-4" style="background: linear-gradient(90deg, #2196F3, #4CAF50); color: #fff;">
+    <div class="container">
+        <div class="row text-center text-md-start">
+
+            <!-- Address -->
+            <div class="col-md-3 mb-3">
+                <h6 class="fw-bold">Address</h6>
+                <p class="mb-1"><i class="bi bi-geo-alt-fill me-2"></i>123 Dairy Street</p>
+                <p>India</p>
+            </div>
+
+            <!-- Contact -->
+            <div class="col-md-3 mb-3">
+                <h6 class="fw-bold">Contact</h6>
+                <p class="mb-1"><i class="bi bi-telephone-fill me-2"></i>+91-9876543210</p>
+                <small>Mon-Sat: 7am - 9pm</small>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-3 mb-3">
+                <h6 class="fw-bold">Email</h6>
+                <p><i class="bi bi-envelope-fill me-2"></i>support@dairy360.com</p>
+            </div>
+
+            <!-- Social Links -->
+            <div class="col-md-3 mb-3">
+                <h6 class="fw-bold">Follow Us</h6>
+                <a href="#" class="text-white me-3"><i class="bi bi-facebook fs-4"></i></a>
+                <a href="#" class="text-white me-3"><i class="bi bi-instagram fs-4"></i></a>
+                <a href="#" class="text-white"><i class="bi bi-twitter-x fs-4"></i></a>
+            </div>
+        </div>
+
+        <hr class="border-light">
+
+        <div class="text-center">
+            &copy; 2025 Dairy-360. All rights reserved.
+        </div>
+    </div>
 </footer>
+
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -110,7 +148,8 @@
                                 <h5 class="card-title text-success">${product.title}</h5>
                                 <p class="card-text">${product.description}</p>
                                 <p class="fw-bold">₹${product.price}</p>
-                                <a href="buyProduct?id=${product.id}" class="btn btn-success mt-auto">Buy Now</a>
+                                <a href="#" class="btn btn-success mt-auto">Buy Now</a>
+<!--                                <a href="buyProduct?id=${product.id}" class="btn btn-success mt-auto">Buy Now</a>-->
                             </div>
                         </div>
                     </div>
