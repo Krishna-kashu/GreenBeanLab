@@ -11,7 +11,7 @@
     <style>
         /* Match index.jsp theme */
         .navbar {
-            background: linear-gradient(90deg, #38d3ff, #4CAF50);
+            background: linear-gradient(90deg, #2196F3, #4CAF50);
             position: fixed;
             top: 0; left: 0;
             width: 100%;
@@ -36,6 +36,66 @@
             background: linear-gradient(90deg, #2196F3, #4CAF50);
             color: #fff;
         }
+        /* Floating menu button */
+.menu-container {
+    position: fixed;
+    top: 90px;   /* just below navbar */
+    left: 15px;
+    z-index: 1100;
+}
+.menu-btn {
+    font-size: 26px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+}
+.menu-btn:hover {
+    background: #388E3C;
+}
+
+.drawer ul {
+    padding: 15px;
+}
+
+.drawer-link {
+    display: block;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.15); /* semi-transparent box */
+    border-radius: 8px;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.drawer-link:hover {
+    background: rgb(48 204 56 / 38%);
+    transform: translateX(5px); /* small slide effect on hover */
+}
+
+.drawer.active {
+    left: 0;
+}
+.drawer h5 {
+    background: #3abd71;
+    margin: 0;
+}
+.drawer {
+    position: fixed;
+    top: 80px;   /* height of your navbar (so it starts just below) */
+    left: -250px;  /* hidden initially */
+    width: 250px;
+    height: calc(100% - 80px); /* full height minus navbar */
+    transition: all 0.3s ease;
+    z-index: 1200;
+    overflow-y: auto;
+    background: linear-gradient(90deg, #38d3ff, #4CAF50); /* match navbar style */
+}
     </style>
 </head>
 <body>
@@ -56,10 +116,29 @@
                 <li class="nav-item"><a class="nav-link fw-semibold" href="products">Products</a></li>
                 <li class="nav-item"><a class="nav-link fw-semibold" href="about">About Us</a></li>
                 <li class="nav-item"><a class="nav-link fw-semibold" href="contact">Contact</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/admin-logout">Logout</a></li>
             </ul>
         </div>
     </div>
 </nav>
+
+<!-- Floating Hamburger Menu -->
+<div class="menu-container">
+    <button class="menu-btn" id="menu-toggle">&#9776;</button>
+</div>
+
+<!-- Drawer Menu -->
+<div id="drawer" class="drawer text-white">
+    <h5 class="p-3 border-bottom">Dashboard Menu</h5>
+    <ul class="list-unstyled">
+        <li><a href="${pageContext.request.contextPath}/list" class="drawer-link">Seller Info</a></li>
+        <li><a href="${pageContext.request.contextPath}/audit" class="drawer-link">View Seller Audit Logs</a></li>
+        <li><a href="ProductServlet" class="drawer-link">Product Info</a></li>
+        <li><a href="OrderServlet" class="drawer-link">Orders</a></li>
+        <li><a href="#" class="drawer-link">Reports</a></li>
+    </ul>
+</div>
+
 
 <!-- Content -->
 <div class="container py-5">
@@ -127,7 +206,21 @@
         <p class="mb-0">&copy; 2025 Dairy-360. All rights reserved.</p>
     </div>
 </footer>
+<script>
+    const drawer = document.getElementById("drawer");
+    const toggleBtn = document.getElementById("menu-toggle");
 
+    toggleBtn.addEventListener("click", function() {
+        drawer.classList.toggle("active");
+    });
+
+    // Close drawer when clicking outside
+    document.addEventListener("click", function(e) {
+        if (!drawer.contains(e.target) && !toggleBtn.contains(e.target)) {
+            drawer.classList.remove("active");
+        }
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
