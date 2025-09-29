@@ -1,8 +1,8 @@
 package com.mywork.dairy360.controller;
 
 
-import com.mywork.dairy360.dto.AuditDTO;
-import com.mywork.dairy360.entity.AuditEntity;
+import com.mywork.dairy360.dto.AdminAuditDTO;
+import com.mywork.dairy360.entity.AdminAuditEntity;
 import com.mywork.dairy360.service.AdminServiceImpl;
 import com.mywork.dairy360.service.AuditServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/")
 public class AuditController {
 
-
     @Autowired
     private AdminServiceImpl adminService;
 
@@ -27,11 +26,12 @@ public class AuditController {
 
     @GetMapping("/audit-info")
     public String auditInfoPage(Model model) {
-        List<AuditEntity> auditEntities = auditService.getAllAudits();
+        System.out.println("auditInfoPage method in AuditController");
+        List<AdminAuditEntity> auditEntities = auditService.getAllAudits();
 
-        List<AuditDTO> auditList = auditEntities.stream().map(audit -> {
-            AuditDTO dto = new AuditDTO();
-            dto.setId(audit.getId().longValue());
+        List<AdminAuditDTO> auditList = auditEntities.stream().map(audit -> {
+            AdminAuditDTO dto = new AdminAuditDTO();
+            dto.setId(audit.getId());
             if (audit.getAdmin() != null) {
                 dto.setAdmin(audit.getAdmin());
             }
