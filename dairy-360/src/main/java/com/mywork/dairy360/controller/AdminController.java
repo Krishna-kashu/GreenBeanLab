@@ -52,13 +52,17 @@ public class AdminController {
         return "admin";
     }
 
-
     @GetMapping("/admin-logout")
-    public String adminLogoutIndexPage(@RequestParam(required = false) String email) {
+    public String adminLogoutIndexPage(HttpSession session) {
         System.out.println("adminLogoutIndexPage method in AdminController");
+//        @RequestParam(required = false) String email
+
+        AdminDTO adminDTO= (AdminDTO) session.getAttribute("adminDTO");
+        String email=adminDTO.getEmail();
 
         if (email != null && !email.isEmpty()) {
             AdminEntity admin = adminService.getAdminEntityByEmail(email);
+            System.out.println("admin entity in ");
             if (admin != null) {
                 auditService.logLogout(admin);
             }
@@ -86,6 +90,7 @@ public class AdminController {
 
             session.setAttribute("adminEmail", email);
             session.setAttribute("adminName", adminDTO.getAdminName());
+            session.setAttribute("adminDTO",adminDTO);
 
             AdminEntity adminEntity = adminService.getAdminEntityByEmail(email);
             auditService.logLogin(adminEntity);
