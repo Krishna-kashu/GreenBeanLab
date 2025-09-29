@@ -170,5 +170,4 @@ public class AdminServiceImpl implements AdminService{
         System.out.println("checkMail method in service for restController");
         return adminRepository.checkMail(email);
     }
-
 }
