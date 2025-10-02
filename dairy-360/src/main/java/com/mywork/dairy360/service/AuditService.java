@@ -2,7 +2,7 @@ package com.mywork.dairy360.service;
 
 
 import com.mywork.dairy360.entity.AdminEntity;
-import com.mywork.dairy360.entity.AuditEntity;
+import com.mywork.dairy360.entity.AdminAuditEntity;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ public interface AuditService {
 
     void logLogout(AdminEntity admin);
 
-    List<AuditEntity> getAllAudits();
+    List<AdminAuditEntity> getAllAudits();
 }
