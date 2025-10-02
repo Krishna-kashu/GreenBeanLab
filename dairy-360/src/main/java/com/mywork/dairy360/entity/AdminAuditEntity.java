@@ -8,7 +8,10 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @Table(name = "admin_audit")
-public class AuditEntity {
+
+@NamedQuery(name = "updateLogoutTime",query = "update AdminAuditEntity a set a.logoutTime=: logoutTime where a.id=:id")
+@NamedQuery(name = "getAll", query = "SELECT a FROM AdminAuditEntity a WHERE a.admin = :admin ORDER BY a.loginTime DESC")
+public class AdminAuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
