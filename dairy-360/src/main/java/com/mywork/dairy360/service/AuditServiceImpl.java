@@ -1,7 +1,7 @@
 package com.mywork.dairy360.service;
 
 import com.mywork.dairy360.entity.AdminEntity;
-import com.mywork.dairy360.entity.AdminAuditEntity;
+import com.mywork.dairy360.entity.AuditEntity;
 import com.mywork.dairy360.repo.AuditRepoImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ public class AuditServiceImpl implements AuditService{
     @Override
     public void logLogin(AdminEntity admin) {
         System.out.println("logLogin method in service");
-        AdminAuditEntity audit = new AdminAuditEntity();
+        AuditEntity audit = new AuditEntity();
         audit.setAdmin(admin);
         audit.setAdminName(admin.getAdminName());
         audit.setLoginTime(LocalDateTime.now());
@@ -38,7 +38,7 @@ public class AuditServiceImpl implements AuditService{
     @Override
     public void logLogout(AdminEntity admin) {
         System.out.println("logLogout method in service");
-        AdminAuditEntity audit = auditRepository.findTopByAdminOrderByLoginTimeDesc(admin);
+        AuditEntity audit = auditRepository.findTopByAdminOrderByLoginTimeDesc(admin);
         if (audit != null && audit.getLogoutTime() == null) {
             audit.setLogoutTime(LocalDateTime.now());
             auditRepository.save(audit);
@@ -46,7 +46,7 @@ public class AuditServiceImpl implements AuditService{
     }
 
     @Override
-    public List<AdminAuditEntity> getAllAudits() {
+    public List<AuditEntity> getAllAudits() {
         log.info("getAllAudits method is running in AuditServiceImpl");
         return auditRepository.findAll();
     }
