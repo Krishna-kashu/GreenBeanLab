@@ -14,7 +14,7 @@
             padding-top: 80px;
         }
         .navbar {
-            background: linear-gradient(90deg, #38d3ff, #4CAF50);
+            background: linear-gradient(90deg, #2196F3, #4CAF50);
             position: fixed;
             top: 0;
             left: 0;
@@ -76,7 +76,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link text-white fw-semibold" href="register">Register</a></li>
+                <li class="nav-item"><a class="nav-link text-white fw-semibold" href="reg">Register</a></li>
                 <li class="nav-item"><a class="nav-link text-white fw-semibold" href="products">Products</a></li>
                 <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-info-circle me-1"></i>About Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact"><i class="bi bi-telephone me-1"></i>Contact</a></li>
@@ -146,9 +146,47 @@
 </div>
 
 <!-- Footer -->
-<footer class="text-white text-center py-3 mt-4" style="background: linear-gradient(90deg, #2196F3, #4CAF50);">
-    &copy; 2025 Dairy-360. All rights reserved.
+<footer class="text-lg-start py-4" style="background: linear-gradient(90deg, #2196F3, #4CAF50); color: #fff;">
+    <div class="container">
+        <div class="row text-center text-md-start">
+
+            <!-- Address -->
+            <div class="col-md-3 mb-3">
+                <h6 class="fw-bold">Address</h6>
+                <p class="mb-1"><i class="bi bi-geo-alt-fill me-2"></i>123 Dairy Street</p>
+                <p>India</p>
+            </div>
+
+            <!-- Contact -->
+            <div class="col-md-3 mb-3">
+                <h6 class="fw-bold">Contact</h6>
+                <p class="mb-1"><i class="bi bi-telephone-fill me-2"></i>+91-9876543210</p>
+                <small>Mon-Sat: 7am - 9pm</small>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-3 mb-3">
+                <h6 class="fw-bold">Email</h6>
+                <p><i class="bi bi-envelope-fill me-2"></i>support@dairy360.com</p>
+            </div>
+
+            <!-- Social Links -->
+            <div class="col-md-3 mb-3">
+                <h6 class="fw-bold">Follow Us</h6>
+                <a href="#" class="text-white me-3"><i class="bi bi-facebook fs-4"></i></a>
+                <a href="#" class="text-white me-3"><i class="bi bi-instagram fs-4"></i></a>
+                <a href="#" class="text-white"><i class="bi bi-twitter-x fs-4"></i></a>
+            </div>
+        </div>
+
+        <hr class="border-light">
+
+        <div class="text-center">
+            &copy; 2025 Dairy-360. All rights reserved.
+        </div>
+    </div>
 </footer>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
