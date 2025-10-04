@@ -1,15 +1,15 @@
 package com.mywork.dairy360.repo;
 
 import com.mywork.dairy360.entity.AdminEntity;
-import com.mywork.dairy360.entity.AuditEntity;
+import com.mywork.dairy360.entity.AdminAuditEntity;
 
 import java.util.List;
 
 public interface AuditRepo {
 
-    boolean save(AuditEntity auditEntity);
+    boolean save(AdminAuditEntity auditEntity);
 
-    List<AuditEntity> findAll();
+    List<AdminAuditEntity> findAll();
 
-    AuditEntity findTopByAdminOrderByLoginTimeDesc(AdminEntity admin);
+    AdminAuditEntity findTopByAdminOrderByLoginTimeDesc(AdminEntity admin);
 }

@@ -28,7 +28,7 @@ public class DairyController {
 
     @GetMapping("products")
     public String product(){
-        System.out.println("redirecting to product");
+        System.out.println("redirecting to product json");
 
         return "products";
     }

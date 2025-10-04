@@ -1,11 +1,12 @@
 package com.mywork.dairy360.repo;
 
 import com.mywork.dairy360.entity.AdminEntity;
-import com.mywork.dairy360.entity.AuditEntity;
+import com.mywork.dairy360.entity.AdminAuditEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -17,7 +18,7 @@ public class AuditRepoImpl implements AuditRepo{
 
 
     @Override
-    public boolean save(AuditEntity auditEntity) {
+    public boolean save(AdminAuditEntity auditEntity) {
         System.out.println("save method in AuditRepoImpl");
         EntityManager entityManager = null;
         EntityTransaction transaction = null;
@@ -50,11 +51,10 @@ public class AuditRepoImpl implements AuditRepo{
     }
 
     @Override
-    public List<AuditEntity> findAll() {
+    public List<AdminAuditEntity> findAll() {
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
-            String jpql = "SELECT a FROM AuditEntity a ORDER BY a.loginTime DESC";
-            TypedQuery<AuditEntity> query = em.createQuery(jpql, AuditEntity.class);
+            TypedQuery<AdminAuditEntity> query = em.createNamedQuery("getAll", AdminAuditEntity.class);
             return query.getResultList();
         } finally {
             if (em.isOpen()) em.close();
@@ -62,15 +62,31 @@ public class AuditRepoImpl implements AuditRepo{
     }
 
     @Override
-    public AuditEntity findTopByAdminOrderByLoginTimeDesc(AdminEntity admin) {
+    public AdminAuditEntity findTopByAdminOrderByLoginTimeDesc(AdminEntity admin) {
+
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
-            String jpql = "SELECT a FROM AuditEntity a WHERE a.admin = :admin ORDER BY a.loginTime DESC";
-            TypedQuery<AuditEntity> query = entityManager.createQuery(jpql, AuditEntity.class);
+            entityManager.getTransaction().begin();
+            TypedQuery<AdminAuditEntity> query = entityManager.createNamedQuery("getAll", AdminAuditEntity.class);
             query.setParameter("admin", admin);
             query.setMaxResults(1);
-            return query.getSingleResult();
+
+            AdminAuditEntity entity = query.getSingleResult();
+
+            System.out.println("entity in findTop by admin order: "+entity);
+
+            int rows=entityManager.createNamedQuery("updateLogoutTime")
+                    .setParameter("logoutTime", LocalDateTime.now())
+                    .setParameter("id",entity.getId()).executeUpdate();
+            entityManager.getTransaction().commit();
+            System.out.println("rows affected: "+rows);
+
+            if(rows==1){
+                return entity;
+            }
+            return null;
+
         } catch (NoResultException e) {
             return null;
         } finally {

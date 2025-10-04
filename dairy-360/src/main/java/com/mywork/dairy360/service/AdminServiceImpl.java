@@ -131,6 +131,7 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public boolean isValidResetToken(String token) {
+        System.out.println("isValidResetToken method in AdminService");
         AdminEntity admin = adminRepository.getByResetToken(token);
         return admin != null && admin.getTokenExpiry().isAfter(LocalDateTime.now());
     }
@@ -157,11 +158,13 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public AdminEntity getAdminEntityByEmail(String email) {
+        log.info("getAdminEntityByEmail method in AdminService");
         return adminRepository.getAdminEntityByEmail(email);
     }
 
     @Override
     public boolean updateProfileImage(String email, String imagePath) {
+        log.info("updateProfileImage method in AdminServiceImpl");
         return adminRepository.updateProfileImage(email, imagePath);
     }
 

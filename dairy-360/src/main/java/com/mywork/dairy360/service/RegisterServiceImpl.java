@@ -3,6 +3,8 @@ package com.mywork.dairy360.service;
 import com.mywork.dairy360.dto.RegisterDTO;
 import com.mywork.dairy360.entity.RegisterEntity;
 import com.mywork.dairy360.repo.RegisterRepo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,17 @@ public class RegisterServiceImpl implements RegisterService{
 
     private static final int MAX_FAILED_ATTEMPTS = 3;
     private static final long LOCK_TIME_DURATION_MINUTES = 1;
+    private static final Logger log = LoggerFactory.getLogger(RegisterServiceImpl.class);
 
     @Autowired
     private RegisterRepo registerRepo;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    public RegisterServiceImpl(){
+        log.info("no-arg constructor of RegisterServiceImpl");
+    }
 
     public boolean saveUser(RegisterDTO dto) {
 
