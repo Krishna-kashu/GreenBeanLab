@@ -139,7 +139,7 @@
     <ul class="list-unstyled">
         <li><a href="${pageContext.request.contextPath}/list" class="drawer-link">Seller Info</a></li>
         <li><a href="${pageContext.request.contextPath}/audit" class="drawer-link">View Seller Audit Logs</a></li>
-        <li><a href="ProductServlet" class="drawer-link">Product Info</a></li>
+        <li><a href="${pageContext.request.contextPath}/product" class="text-white d-block py-2 px-3 drawer-link">Product Info</a></li>
         <li><a href="OrderServlet" class="drawer-link">Orders</a></li>
         <li><a href="#" class="drawer-link">Reports</a></li>
     </ul>
