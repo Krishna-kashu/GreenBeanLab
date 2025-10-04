@@ -3,6 +3,8 @@ package com.mywork.dairy360.service;
 import com.mywork.dairy360.entity.AdminEntity;
 import com.mywork.dairy360.entity.AuditEntity;
 import com.mywork.dairy360.repo.AuditRepoImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ public class AuditServiceImpl implements AuditService{
 
     @Autowired
     private AuditRepoImpl auditRepository;
+
+    private static final Logger log = LoggerFactory.getLogger(AdminServiceImpl.class);
 
     public AuditServiceImpl(){
         System.out.println("no-arg constructor of AuditServiceImpl");
@@ -43,7 +47,8 @@ public class AuditServiceImpl implements AuditService{
 
     @Override
     public List<AuditEntity> getAllAudits() {
-        return auditRepository.findAll(); // fetch all rows
+        log.info("getAllAudits method is running in AuditServiceImpl");
+        return auditRepository.findAll();
     }
 
 }

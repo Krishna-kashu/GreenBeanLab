@@ -156,7 +156,7 @@
     <ul class="list-unstyled">
         <li><a href="${pageContext.request.contextPath}/list" class="drawer-link">Seller Info</a></li>
         <li><a href="${pageContext.request.contextPath}/audit" class="drawer-link">View Seller Audit Logs</a></li>
-        <li><a href="ProductServlet" class="drawer-link">Product Info</a></li>
+        <li><a href="${pageContext.request.contextPath}/product" class="text-white d-block py-2 px-3 drawer-link">Product Info</a></li>
         <li><a href="OrderServlet" class="drawer-link">Orders</a></li>
         <li><a href="#" class="drawer-link">Reports</a></li>
     </ul>
@@ -176,6 +176,15 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="text-success">Seller Information</h3>
+        <div>
+            <input list="sellerList" id="sellerSearch" class="form-control me-2" placeholder="Search sellers...">
+            <datalist id="sellerList">
+                <c:forEach var="seller" items="${sellers}">
+                    <option value="${seller.firstName} ${seller.lastName}"></option>
+                </c:forEach>
+            </datalist>
+
+        </div>
         <div>
             <a href="${pageContext.request.contextPath}/add" class="btn btn-success">+ Add Seller</a>
 <!--            <a href="${pageContext.request.contextPath}/admin?email=${dto.email}" class="btn btn-secondary">Back</a>-->
@@ -251,21 +260,26 @@
     </div>
 </div>
 
-<!--&lt;!&ndash; Pagination &ndash;&gt;-->
-<!--<div class="d-flex justify-content-center mt-3">-->
-<!--    <ul class="pagination pagination-lg">-->
-<!--        <c:forEach begin="0" end="${totalPages-1}" var="i">-->
-<!--            <li class="page-item ${i == currentPage ? 'active' : ''}">-->
-<!--                <a class="page-link bg-success text-white border-0 mx-1 shadow-sm"-->
-<!--                   href="?page=${i}&size=5">${i+1}</a>-->
-<!--            </li>-->
-<!--        </c:forEach>-->
-<!--    </ul>-->
-<!--</div>-->
-
 
 <script>
-    const drawer = document.getElementById("drawer");
+
+const searchInput = document.getElementById('sellerSearch');
+const tableRows = document.querySelectorAll('table tbody tr');
+
+searchInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+
+    tableRows.forEach(row => {
+        const sellerName = row.cells[1].textContent.toLowerCase(); // 2nd column = Seller Name
+        if(sellerName.includes(query)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+
+const drawer = document.getElementById("drawer");
     const toggleBtn = document.getElementById("menu-toggle");
 
     toggleBtn.addEventListener("click", function() {
