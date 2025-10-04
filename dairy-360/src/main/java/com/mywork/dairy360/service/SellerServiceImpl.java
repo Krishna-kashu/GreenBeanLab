@@ -3,7 +3,6 @@ package com.mywork.dairy360.service;
 import com.mywork.dairy360.dto.AdminDTO;
 import com.mywork.dairy360.dto.SellerDTO;
 import com.mywork.dairy360.entity.AdminEntity;
-import com.mywork.dairy360.entity.AuditEntity;
 import com.mywork.dairy360.entity.SellerEntity;
 import com.mywork.dairy360.entity.SellerAuditEntity;
 import com.mywork.dairy360.repo.SellerAuditRepo;

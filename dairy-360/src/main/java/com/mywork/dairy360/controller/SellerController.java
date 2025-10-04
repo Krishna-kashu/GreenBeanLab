@@ -95,9 +95,6 @@ public class SellerController {
         }
 
         boolean isNew = sellerDto.getSellerId() == null;
-//        boolean saved = sellerService.saveSeller(sellerDto,
-//                adminDto != null ? adminDto.getAdminName() : null);
-
         boolean saved = sellerService.saveSeller(sellerDto,
                 adminDto != null ? adminDto : null);
 

@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <title>Seller Registration | Admin Dashboard</title>
+    <title>Product Registration | Admin Dashboard</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -122,7 +122,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/admin?email=${dto.email}">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/list">Seller info</a></li>
+                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/product">Product info</a></li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/admin-logout">Logout</a></li>
             </ul>
         </div>
@@ -147,7 +147,7 @@
 </div>
 
 <div class="container py-5">
-    <h3 class="mb-4 text-success text-center">Register New Seller</h3>
+    <h3 class="mb-4 text-success text-center">Add New Product</h3>
 
     <!-- Alerts -->
     <c:if test="${not empty successMessage}">
@@ -159,41 +159,34 @@
 
     <!-- Registration Form -->
     <div class="card shadow p-4 mx-auto" style="max-width: 750px;">
-        <form id="sellerForm" action="${pageContext.request.contextPath}/save" method="post" enctype="multipart/form-data" novalidate>
+        <form id="productForm" action="${pageContext.request.contextPath}/saveProduct" method="post" enctype="multipart/form-data" novalidate>
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label" >First Name <span class="text-danger">*</span> </label>
-                    <input name="firstName" type="text" class="form-control" required>
+                    <label class="form-label" >Product Name <span class="text-danger">*</span> </label>
+                    <input name="productName" type="text" class="form-control" required>
                 </div>
+
                 <div class="col-md-6">
-                    <label class="form-label">Last Name <span class="text-danger">*</span></label>
-                    <input name="lastName" type="text" class="form-control" required>
+                    <label class="form-label">Price (₹) <span class="text-danger">*</span></label>
+                    <input name="price" type="number" step="0.01" min="0" class="form-control" required>
                 </div>
+
                 <div class="col-md-6">
-                    <label class="form-label">Email <span class="text-danger">*</span></label>
-                    <input id="emailField" name="email" type="email" class="form-control" required>
-                    <small id="emailError" class="text-danger"></small>
+                    <label class="form-label">Product Type <span class="text-danger">*</span></label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type" value="Buy" id="typeBuy">
+                        <label class="form-check-label" for="typeBuy">Buy</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type" value="Sell" id="typeSell">
+                        <label class="form-check-label" for="typeSell">Sell</label>
+                    </div>
+                    <small class="text-danger" id="typeError"></small>
+
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Phone Number <span class="text-danger">*</span></label>
-                    <input name="phone" type="tel" pattern="[0-9]{10}" class="form-control" placeholder="10 digits" required>
-                </div>
-                <div class="col-md-12">
-                    <label class="form-label">Address</label>
-                    <textarea name="address" class="form-control" rows="2"></textarea>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Milk Type</label>
-                    <select name="milkType" class="form-select">
-                        <option value="">Choose...</option>
-                        <option>Cow Milk</option>
-                        <option>Buffalo Milk</option>
-                        <option>Goat Milk</option>
-                        <option>Organic A2 Milk</option>
-                    </select>
-                </div>
+
                 <div class="col-12 text-end mt-3">
-                    <button type="submit" class="btn btn-success">Register Seller</button>
+                    <button type="submit" class="btn btn-success">Save Product</button>
                 </div>
             </div>
         </form>
@@ -205,33 +198,6 @@
 <script>
     $(document).ready(function(){
 
-        // Email AJAX check (your existing code)
-        $("#emailField").on("blur", function(){
-            var email = $(this).val();
-            if(email.length > 0){
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/adminMailCheck",
-                    type: "GET",
-                    data: { email: email },
-                    success: function(response){
-                        $("#emailError").text("");
-                        $("#emailField").removeClass("is-invalid");
-                        $("button[type=submit]").prop("disabled", false);
-                    },
-                    error: function(xhr){
-                        if(xhr.status === 409){
-                            $("#emailError").text(xhr.responseText);
-                            $("#emailField").addClass("is-invalid");
-                            $("button[type=submit]").prop("disabled", true);
-                        } else {
-                            console.error("Unexpected error", xhr);
-                        }
-                    }
-                });
-            }
-        });
-
-        // Real-time validations
         function validateField(field, validator, errorMsg){
             var value = field.val().trim();
             if(!validator(value)){
@@ -245,50 +211,32 @@
             }
         }
 
-        // First Name validation
-        $("input[name='firstName']").after('<small class="text-danger"></small>').on("input blur", function(){
-            validateField($(this), val => /^[A-Za-z]{3,}$/.test(val), "First name must be letters and at least 3 characters");
-        });
+        // Product Name validation
+        $("input[name='productName']").after('<small class="text-danger"></small>')
+          .on("input blur", function(){
+              validateField($(this), val => /^[A-Za-z0-9\s]{3,}$/.test(val),
+                  "Product name must be at least 3 characters");
+          });
 
-        // Last Name validation
-        $("input[name='lastName']").after('<small class="text-danger"></small>').on("input blur", function(){
-            validateField($(this), val => /^[A-Za-z]+$/.test(val), "Last name must contain only letters");
-        });
+        // Price validation
+        $("input[name='price']").after('<small class="text-danger"></small>')
+          .on("input blur", function(){
+              validateField($(this), val => parseFloat(val) > 0, "Price must be greater than 0");
+          });
 
-        // Phone validation
-        $("input[name='phone']").after('<small class="text-danger"></small>').on("input blur", function(){
-            validateField($(this), val => /^[6-9][0-9]{9}$/.test(val), "Phone must start with 6-9 and be 10 digits");
-        });
+        // On Submit Validation
+        $("#productForm").on("submit", function(e){
+            var validProduct = validateField($("input[name='productName']"),
+                val => /^[A-Za-z0-9\s\-()]{3,}$/.test(val), "Product name must be at least 3 characters");
+            var validPrice = validateField($("input[name='price']"),
+                val => parseFloat(val) > 0, "Price must be greater than 0");
 
-        // Address validation
-        $("textarea[name='address']").after('<small class="text-danger"></small>').on("input blur", function(){
-            validateField($(this), val => val.length >= 6, "Address must be at least 6 characters");
-        });
-
-        // Email format validation (before AJAX)
-        $("#emailField").on("input", function(){
-            var emailVal = $(this).val();
-            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if(emailVal.length > 0 && !emailRegex.test(emailVal)){
-                $("#emailError").text("Invalid email format").addClass("is-invalid");
-                $(this).addClass("is-invalid");
-                $("button[type=submit]").prop("disabled", true);
-            } else {
-                $("#emailError").text("");
-                $(this).removeClass("is-invalid");
-                $("button[type=submit]").prop("disabled", false);
+            if(!$("input[name='type']:checked").length){
+                alert("Please select Buy or Sell");
+                e.preventDefault();
             }
-        });
 
-        // Form submission check
-        $("#sellerForm").on("submit", function(e){
-            var validFirst = validateField($("input[name='firstName']"), val => /^[A-Za-z]{3,}$/.test(val), "First name must be letters and at least 3 characters");
-            var validLast = validateField($("input[name='lastName']"), val => /^[A-Za-z]+$/.test(val), "Last name must contain only letters");
-            var validPhone = validateField($("input[name='phone']"), val => /^[6-9][0-9]{9}$/.test(val), "Phone must start with 6-9 and be 10 digits");
-            var validAddress = validateField($("textarea[name='address']"), val => val.length >= 6, "Address must be at least 6 characters");
-            var validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($("#emailField").val());
-
-            if(!validFirst || !validLast || !validPhone || !validAddress || !validEmail){
+            if(!validProduct || !validPrice){
                 e.preventDefault();
             }
         });
@@ -307,6 +255,8 @@
             drawer.classList.remove("active");
         }
     });
+
+
 </script>
 
 </body>
