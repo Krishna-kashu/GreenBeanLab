@@ -184,12 +184,14 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Milk Type</label>
-                    <select name="milkType" class="form-select">
+                    <select name="milkType" class="form-select" required>
                         <option value="">Choose...</option>
-                        <option>Cow Milk</option>
-                        <option>Buffalo Milk</option>
-                        <option>Goat Milk</option>
-                        <option>Organic A2 Milk</option>
+                        <c:forEach var="product" items="${sellProducts}">
+                            <option value="${product.productName}"
+                            <c:if test="${seller.milkType == product.productName}">selected</c:if>>
+                            ${product.productName}
+                            </option>
+                        </c:forEach>
                     </select>
                 </div>
                 <div class="col-12 text-end mt-3">
