@@ -103,4 +103,15 @@ public class ProductServiceImpl implements ProductService {
         log.info("countActiveProducts method in ProductServiceImpl");
         return productRepo.countActive();
     }
+
+    @Override
+    public List<ProductDTO> getSellProducts() {
+        return productRepo.findAllSellProducts().stream().map(entity -> {
+            ProductDTO dto = new ProductDTO();
+            BeanUtils.copyProperties(entity, dto);
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+
 }
