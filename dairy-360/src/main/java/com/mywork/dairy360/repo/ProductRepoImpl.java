@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class ProductRepoImpl implements ProductRepo{
@@ -108,6 +109,22 @@ public class ProductRepoImpl implements ProductRepo{
         } finally {
             if (manager != null && manager.isOpen()) manager.close();
         }
-}
+    }
+
+    public List<ProductEntity> findAllSellProducts() {
+        EntityManager manager = null;
+        try {
+            manager = entityManagerFactory.createEntityManager();
+            TypedQuery<ProductEntity> query = manager.createNamedQuery(
+                    "getAllActiveProducts", ProductEntity.class
+            );
+            List<ProductEntity> allProducts = query.getResultList();
+            return allProducts.stream()
+                    .filter(p -> "Sell".equalsIgnoreCase(p.getType()))
+                    .collect(Collectors.toList());
+        } finally {
+            if (manager != null && manager.isOpen()) manager.close();
+        }
+    }
 
 }
