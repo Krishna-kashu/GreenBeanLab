@@ -1,11 +1,9 @@
 package com.mywork.dairy360.controller;
 
 import com.mywork.dairy360.dto.AdminDTO;
+import com.mywork.dairy360.dto.ProductDTO;
 import com.mywork.dairy360.dto.SellerDTO;
-import com.mywork.dairy360.service.AdminServiceImpl;
-import com.mywork.dairy360.service.MailService;
-import com.mywork.dairy360.service.SellerAuditService;
-import com.mywork.dairy360.service.SellerService;
+import com.mywork.dairy360.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +28,10 @@ public class SellerController {
 
     @Autowired
     private AdminServiceImpl adminService;
+
+    @Autowired
+    private ProductServiceImpl productService;
+
 
     public SellerController(){
         System.out.println("constructor SellerRestController");
@@ -78,6 +80,10 @@ public class SellerController {
     public String showAddForm(HttpSession session, Model model) {
         System.out.println("showAddForm method in SellerRestController");
         model.addAttribute("seller", new SellerDTO());
+
+        List<ProductDTO> sellProducts = productService.getSellProducts();
+        model.addAttribute("sellProducts", sellProducts);
+
         addAdminDtoToModel(session, model);
         return "sellerForm";
     }
@@ -123,6 +129,10 @@ public class SellerController {
             return "redirect:/list";
         }
         model.addAttribute("seller", seller);
+
+        List<ProductDTO> sellProducts = productService.getSellProducts();
+        model.addAttribute("sellProducts", sellProducts);
+
         addAdminDtoToModel(session, model);
         return "editSeller";
     }
