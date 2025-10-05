@@ -38,5 +38,5 @@ public class ProductEntity {
     private String updatedOn;
 
     @Column(name = "is_active")
-    private Boolean active;
+    private Boolean active = true;
 }
