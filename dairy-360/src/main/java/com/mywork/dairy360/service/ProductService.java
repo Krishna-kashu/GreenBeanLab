@@ -17,4 +17,6 @@ public interface ProductService {
     List<ProductDTO> getAllActiveProducts(int page, int size);
 
     long countActiveProducts();
+
+    List<ProductDTO> getSellProducts();
 }
