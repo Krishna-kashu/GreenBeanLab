@@ -107,6 +107,7 @@ public class RegisterServiceImpl implements RegisterService{
 
     @Override
     public void increaseFailedAttempts(RegisterEntity user) {
+        System.out.println("increaseFailedAttempts method in RegisterController");
         int newFailAttempts = user.getFailedAttempts() + 1;
         user.setFailedAttempts(newFailAttempts);
 
