@@ -70,6 +70,7 @@ public class RegisterServiceImpl implements RegisterService{
 
     @Override
     public RegisterEntity getByEmail(String email) {
+        System.out.println("getBYEmail method");
         return registerRepo.findByEmail(email);
     }
 
