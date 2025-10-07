@@ -82,6 +82,7 @@ public class RegisterServiceImpl implements RegisterService{
 
     @Override
     public boolean login(String email, String rawPassword) {
+        System.out.println("login method in Register controller");
         RegisterEntity user = getByEmail(email);
 
         if (user == null) {
