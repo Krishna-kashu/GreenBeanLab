@@ -76,6 +76,7 @@ public class RegisterServiceImpl implements RegisterService{
 
     @Override
     public RegisterEntity getByResetToken(String token) {
+        System.out.println("getByResetToken method in Register Controller");
         return registerRepo.findByResetToken(token);
     }
 
