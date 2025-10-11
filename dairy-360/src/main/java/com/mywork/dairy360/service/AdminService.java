@@ -26,4 +26,6 @@ public interface AdminService
     boolean updateProfileImage(String email, String imagePath);
 
     String checkMail(String email);
+
+    AdminEntity findEntityById(Integer id);
 }
