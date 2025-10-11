@@ -1,44 +1,49 @@
 package com.mywork.dairy360.service;
 
 import com.mywork.dairy360.dto.CollectMilkDTO;
+import com.mywork.dairy360.entity.CollectMilkAuditEntity;
 import com.mywork.dairy360.entity.CollectMilkEntity;
-import com.mywork.dairy360.repo.MilkRepo;
+import com.mywork.dairy360.repo.MilkRepoImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class MilkServiceImpl implements MilkService {
 
     @Autowired
-    private MilkRepo repo;
+    private MilkRepoImpl repo;
+
+    @Autowired
+    private SellerService sellerService;
+
+    @Autowired
+    private AdminService adminService;
 
     @Override
     public boolean validateAndSave(CollectMilkDTO dto) {
-        if (dto == null) {
-            System.out.println("MilkDTO is null, cannot save.");
-            return false;
-        }
+        if (dto == null) return false;
+
+        if (repo.findByPhoneNumber(dto.getPhoneNumber()) != null) return false;
 
         CollectMilkEntity entity = new CollectMilkEntity();
-        BeanUtils.copyProperties(dto, entity);
 
-        double total = dto.getPrice() * dto.getQuantity();
-        entity.setTotalAmount(total);
+        entity.setSeller(sellerService.findEntityById(dto.getSeller()));
+        entity.setAdmin(adminService.findEntityById(dto.getAdmin()));
+        entity.setTypeOfMilk(dto.getTypeOfMilk());
+        entity.setPrice(dto.getPrice());
+        entity.setQuantity(dto.getQuantity());
+        entity.setCollectedDate(dto.getCollectedDate());
 
-        repo.save(entity);
-        System.out.println("Milk details saved successfully.");
-        return true;
-    }
+        CollectMilkAuditEntity audit = new CollectMilkAuditEntity();
+        audit.setCreatedAt(LocalDateTime.now());
+        audit.setCreatedBy(entity.getAdmin().getAdminName());
+        audit.setCollectMilkEntity(entity);
+        entity.setCollectMilkAuditEntity(audit);
 
-    @Override
-    public boolean calculateAndUpdateTotalAmount(int id) {
-        CollectMilkEntity entity = repo.findByPhoneNumber(String.valueOf(id));
-        if (entity != null) {
-            double total = entity.getPrice() * entity.getQuantity();
-            return repo.updateTotalAmountById(total, id);
-        }
-        return false;
+        return repo.save(entity);
     }
 
     @Override
