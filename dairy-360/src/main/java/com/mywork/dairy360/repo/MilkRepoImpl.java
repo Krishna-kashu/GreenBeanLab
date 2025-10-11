@@ -23,7 +23,7 @@ public class MilkRepoImpl implements MilkRepo{
     @Override
     public CollectMilkEntity findByPhoneNumber(String phoneNumber) {
         try {
-            Query query = entityManager.createQuery("SELECT m FROM MilkEntity m WHERE m.phoneNumber = :ph");
+            Query query = entityManager.createQuery("SELECT m FROM CollectMilkEntity m WHERE m.phoneNumber = :ph");
             query.setParameter("ph", phoneNumber);
             return (CollectMilkEntity) query.getSingleResult();
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class MilkRepoImpl implements MilkRepo{
     public boolean updateTotalAmountById(double totalAmount, int id) {
         try {
             Query query = entityManager.createQuery(
-                    "UPDATE MilkEntity m SET m.totalAmount = :amt WHERE m.id = :id");
+                    "UPDATE CollectMilkEntity m SET m.totalAmount = :amt WHERE m.id = :id");
             query.setParameter("amt", totalAmount);
             query.setParameter("id", id);
             int updated = query.executeUpdate();
