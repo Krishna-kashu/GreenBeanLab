@@ -172,4 +172,14 @@ public class AdminRepoImpl implements AdminRepo {
             if(manager != null) manager.close();
         }
     }
+    public AdminEntity getAdminEntityById(Integer id) {
+        EntityManager manager = null;
+
+        try {
+            manager = entityManagerFactory.createEntityManager();
+            return manager.find(AdminEntity.class, id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
