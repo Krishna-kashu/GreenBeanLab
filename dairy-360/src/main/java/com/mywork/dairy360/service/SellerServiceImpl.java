@@ -146,4 +146,10 @@ public class SellerServiceImpl implements SellerService {
     public long countActiveSellers() {
         return sellerRepo.countActive();
     }
+
+    @Override
+    public SellerEntity findEntityById(Integer id) {
+        if (id == null) return null;
+        return sellerRepo.findById(id);
+    }
 }
