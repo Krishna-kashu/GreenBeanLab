@@ -2,6 +2,7 @@ package com.mywork.dairy360.service;
 
 import com.mywork.dairy360.dto.AdminDTO;
 import com.mywork.dairy360.dto.SellerDTO;
+import com.mywork.dairy360.entity.SellerEntity;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface SellerService {
     List<SellerDTO> getAllActiveSellers(int page, int size);
 
     long countActiveSellers();
+
+    SellerEntity findEntityById(Integer id);
 }
