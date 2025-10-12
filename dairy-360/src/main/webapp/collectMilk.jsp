@@ -10,8 +10,20 @@
 <form:form action="collectMilk" method="post" modelAttribute="milkDTO">
     <table>
         <tr>
-            <td>Collector Name:</td>
-            <td><form:input path="collectorName" /></td>
+            <td>Seller:</td>
+            <td>
+                <form:select path="sellerId">
+                    <form:options items="${sellers}" itemValue="id" itemLabel="name"/>
+                </form:select>
+            </td>
+        </tr>
+        <tr>
+            <td>Admin:</td>
+            <td>
+                <form:select path="adminId">
+                    <form:options items="${admins}" itemValue="id" itemLabel="name"/>
+                </form:select>
+            </td>
         </tr>
         <tr>
             <td>Phone Number:</td>
@@ -19,7 +31,11 @@
         </tr>
         <tr>
             <td>Type of Milk:</td>
-            <td><form:input path="typeOfMilk" /></td>
+            <td>
+                <form:select path="typeOfMilk">
+                    <form:options items="${milkTypes}" itemValue="name" itemLabel="name"/>
+                </form:select>
+            </td>
         </tr>
         <tr>
             <td>Quantity (L):</td>
