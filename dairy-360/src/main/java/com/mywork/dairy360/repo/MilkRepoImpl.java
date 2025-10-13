@@ -16,6 +16,7 @@ public class MilkRepoImpl implements MilkRepo{
 
     @Override
     public boolean save(CollectMilkEntity entity) {
+        System.out.println("save method in milkRepo");
         entityManager.persist(entity);
         return true;
     }
