@@ -20,6 +20,7 @@ public class CollectorController {
 
     @GetMapping("/collectMilk")
     public String showCollectMilkPage(Model model) {
+        System.out.println("showCollectMilkPage method in CollectorController");
         model.addAttribute("milkDTO", new CollectMilkDTO());
         return "collectMilk";
     }
@@ -28,6 +29,8 @@ public class CollectorController {
     public String collectMilk(@Valid @ModelAttribute("milkDTO") CollectMilkDTO milkDTO,
                               BindingResult result,
                               Model model) {
+
+        System.out.println("collectMilk method in CollectController");
         if (result.hasErrors()) {
             model.addAttribute("errorMsg", "Please correct the form errors!");
             return "collectMilk";
