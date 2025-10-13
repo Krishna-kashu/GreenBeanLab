@@ -24,6 +24,7 @@ public class MilkServiceImpl implements MilkService {
 
     @Override
     public boolean validateAndSave(CollectMilkDTO dto) {
+        System.out.println("validateAndSave method in Service");
         if (dto == null) return false;
 
         if (repo.findByPhoneNumber(dto.getPhoneNumber()) != null) return false;
