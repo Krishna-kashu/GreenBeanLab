@@ -221,6 +221,7 @@
                 <li class="nav-item"><a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/products">Products</a></li>
                 <li class="nav-item"><a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/audit-info">Audit Info</a></li>
 
+
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="adminDropdown"
                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -259,7 +260,7 @@
         <li><a href="${pageContext.request.contextPath}/audit" class="text-white d-block py-2 px-3 drawer-link">View Seller Audit Logs</a></li>
 
         <li><a href="${pageContext.request.contextPath}/product" class="text-white d-block py-2 px-3 drawer-link">Product Info</a></li>
-
+        <li><a href="${pageContext.request.contextPath}/collectMilk" class="text-white d-block py-2 px-3 drawer-link">Collect Milk</a></li>
         <li><a href="OrderServlet" class="drawer-link">Orders</a></li>
 
         <li><a href="#" class="drawer-link">Reports</a></li>
