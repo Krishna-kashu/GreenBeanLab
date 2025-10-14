@@ -12,16 +12,16 @@
         <tr>
             <td>Seller:</td>
             <td>
-                <form:select path="sellerId">
-                    <form:options items="${sellers}" itemValue="id" itemLabel="name"/>
+                <form:select path="seller.sellerId">
+                    <form:options items="${sellers}" itemValue="sellerId" itemLabel="firstName"/>
                 </form:select>
             </td>
         </tr>
         <tr>
             <td>Admin:</td>
             <td>
-                <form:select path="adminId">
-                    <form:options items="${admins}" itemValue="id" itemLabel="name"/>
+                <form:select path="admin.adminId">
+                    <form:options items="${admins}" itemValue="adminId" itemLabel="adminName"/>
                 </form:select>
             </td>
         </tr>
