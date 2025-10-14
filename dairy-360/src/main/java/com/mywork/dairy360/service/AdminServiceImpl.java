@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -178,5 +180,17 @@ public class AdminServiceImpl implements AdminService{
     public AdminEntity findEntityById(Integer id) {
         if (id == null) return null;
         return adminRepository.getAdminEntityById(id);
+    }
+
+    @Override
+    public List<AdminDTO> getAllAdmins() {
+        List<AdminEntity> entities = adminRepository.getAllAdmins();
+        List<AdminDTO> dtos = new ArrayList<>();
+        for (AdminEntity e : entities) {
+            AdminDTO dto = new AdminDTO();
+            BeanUtils.copyProperties(e, dto);
+            dtos.add(dto);
+        }
+        return dtos;
     }
 }
