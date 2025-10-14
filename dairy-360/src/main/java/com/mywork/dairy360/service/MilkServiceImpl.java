@@ -31,8 +31,8 @@ public class MilkServiceImpl implements MilkService {
 
         CollectMilkEntity entity = new CollectMilkEntity();
 
-        entity.setSeller(sellerService.findEntityById(dto.getSeller()));
-        entity.setAdmin(adminService.findEntityById(dto.getAdmin()));
+        entity.setSeller(sellerService.findEntityById(dto.getSeller().getSellerId()));
+        entity.setAdmin(adminService.findEntityById(dto.getAdmin().getAdminId()));
         entity.setTypeOfMilk(dto.getTypeOfMilk());
         entity.setPrice(dto.getPrice());
         entity.setQuantity(dto.getQuantity());
