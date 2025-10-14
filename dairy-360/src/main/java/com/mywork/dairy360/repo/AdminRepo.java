@@ -2,6 +2,8 @@ package com.mywork.dairy360.repo;
 
 import com.mywork.dairy360.entity.AdminEntity;
 
+import java.util.List;
+
 public interface AdminRepo {
     boolean save(AdminEntity adminEntity);
 
@@ -16,4 +18,6 @@ public interface AdminRepo {
     boolean updateProfileImage(String email, String imagePath);
 
     String checkMail(String email);
+
+    List<AdminEntity> getAllAdmins();
 }
