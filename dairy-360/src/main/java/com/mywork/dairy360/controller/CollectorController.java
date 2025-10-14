@@ -1,7 +1,7 @@
 package com.mywork.dairy360.controller;
 
 import com.mywork.dairy360.dto.CollectMilkDTO;
-import com.mywork.dairy360.service.MilkService;
+import com.mywork.dairy360.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,17 +11,34 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class CollectorController {
 
     @Autowired
-    private MilkService milkService;
+    private MilkServiceImpl milkService;
+
+    @Autowired
+    private SellerServiceImpl sellerService;
+
+    @Autowired
+    private AdminServiceImpl adminService;
 
     @GetMapping("/collectMilk")
     public String showCollectMilkPage(Model model) {
         System.out.println("showCollectMilkPage method in CollectorController");
         model.addAttribute("milkDTO", new CollectMilkDTO());
+
+        model.addAttribute("sellers", sellerService.getAllActiveSellers());
+        model.addAttribute("admins", adminService.getAllAdmins());
+        List<String> milkTypes = new ArrayList<>();
+        milkTypes.add("Cow");
+        milkTypes.add("Buffalo");
+        milkTypes.add("Mixed");
+        model.addAttribute("milkTypes", milkTypes);
+
         return "collectMilk";
     }
 
