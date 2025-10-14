@@ -4,6 +4,7 @@ import com.mywork.dairy360.dto.AdminDTO;
 import com.mywork.dairy360.entity.AdminEntity;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 public interface AdminService
 {
@@ -28,4 +29,6 @@ public interface AdminService
     String checkMail(String email);
 
     AdminEntity findEntityById(Integer id);
+
+    List<AdminDTO> getAllAdmins();
 }
