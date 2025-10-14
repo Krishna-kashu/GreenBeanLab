@@ -182,4 +182,15 @@ public class AdminRepoImpl implements AdminRepo {
             return null;
         }
     }
+
+    @Override
+    public List<AdminEntity> getAllAdmins() {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            return em.createQuery("SELECT a FROM AdminEntity a", AdminEntity.class)
+                    .getResultList();
+        } finally {
+            if (em != null && em.isOpen()) em.close();
+        }
+    }
 }
