@@ -33,7 +33,7 @@
             <td>Type of Milk:</td>
             <td>
                 <form:select path="typeOfMilk">
-                    <form:options items="${milkTypes}" itemValue="name" itemLabel="name"/>
+                    <form:options items="${milkTypes}" />
                 </form:select>
             </td>
         </tr>
