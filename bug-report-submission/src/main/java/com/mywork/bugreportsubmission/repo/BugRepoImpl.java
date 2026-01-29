@@ -4,7 +4,14 @@ import com.mywork.bugreportsubmission.entity.BugEntity;
 import org.hibernate.QueryException;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.PersistenceException;
+import jakarta.persistence.Query;
+import jakarta.persistence.NoResultException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
